@@ -49,8 +49,8 @@
 
     <EditText
         android:id="@+id/edt_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="290dp"
+        android:layout_height="45dp"
         android:layout_below="@id/tv_create_account"
         android:layout_centerInParent="true"
         android:layout_marginTop="25dp"
@@ -67,8 +67,8 @@
 
     <EditText
         android:id="@+id/edt_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="290dp"
+        android:layout_height="45dp"
         android:layout_below="@id/edt_name"
         android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
@@ -86,8 +86,8 @@
 
     <EditText
         android:id="@+id/edt_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="290dp"
+        android:layout_height="45dp"
         android:layout_below="@id/edt_email"
         android:layout_centerInParent="true"
         android:layout_marginTop="15dp"

@@ -2,6 +2,7 @@
     <string name="app_name">Plant_Library</string>
     <string name="skip">Skip</string>
     <string name="back">Back</string>
+    <string name="back_to_login">Back to Login</string>
     <string name="next">Next</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -16,5 +17,8 @@ plant knowledge</string>
     <string name="sign_up_finish2">Account is created!</string>
     <string name="sign_up_finish3">Time to start exploring the world of plants and start building your own garden.</string>
     <string name="login_welcome">Welcome Back</string>
-
+    <string name="forgot_password">Forgot Password</string>
+    <string name="forgot_password_decrip">*We will send you a message to resent your password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="reset_password_decrip">Set your new password and re-enter. It must contain at least 8 characters.</string>
 </resources>

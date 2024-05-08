@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.LoginFragment1">
+    <TextView
+        android:id="@+id/tv_login1"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:fontFamily="@font/literata_24pt_medium"
+        android:text="@string/forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/edt_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_login1"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_textview_email"
+        android:drawableStart="@drawable/img_email_icon"
+        android:drawablePadding="15dp"
+        android:fontFamily="@font/generalsans_light"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <EditText
+        android:visibility="invisible"
+        android:id="@+id/edt_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_email"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_textview_email"
+        android:drawableStart="@drawable/img_password_icon"
+        android:drawableEnd="@drawable/img_eye_login_icon"
+        android:drawablePadding="15dp"
+        android:fontFamily="@font/generalsans_light"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:textSize="14sp" />
+    <TextView
+        android:id="@+id/tv_fogot_pass"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/generalsans_light"
+        android:textSize="10sp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/edt_password"
+        android:text="@string/forgot_password_decrip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_fogot_pass"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_button_signup"
+        android:fontFamily="@font/generalsans_light"
+        android:text="Submit"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+    <RelativeLayout
+        android:visibility="invisible"
+        android:id="@+id/relative_layout_line"
+        android:layout_marginTop="6dp"
+        android:layout_below="@id/btn_submit"
+        android:paddingEnd="35dp"
+        android:paddingStart="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/horizontalLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/black" />
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/middleText"
+            android:textColor="@color/black"
+            android:layout_marginBottom="6dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="or log in with"
+            android:textSize="12sp"
+            android:fontFamily="@font/generalsans_light"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/horizontalLine"
+            android:background="@android:color/white" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/google_img"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@id/relative_layout_line"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/img_google_icon"
+        android:visibility="invisible" />
+
+
+</RelativeLayout>
