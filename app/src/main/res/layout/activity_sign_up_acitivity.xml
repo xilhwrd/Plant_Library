@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SignUpAcitivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingTop="30dp"
+        android:id="@+id/constrant_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_bg_sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/img_seeding_bro1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:layout_constraintVertical_bias="0.5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:inputType="textEmailAddress"
+        android:id="@+id/tv_create_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/constrant_layout"
+        android:layout_alignParentStart="true"
+        android:fontFamily="@font/literata_24pt_medium"
+        android:text="Create Account"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/edt_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_create_account"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/bg_textview_email"
+        android:drawableStart="@drawable/img_name_icon"
+        android:drawablePadding="15dp"
+        android:fontFamily="@font/generalsans_light"
+        android:hint="Name"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_name"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_textview_email"
+        android:drawableStart="@drawable/img_email_icon"
+        android:drawablePadding="15dp"
+        android:fontFamily="@font/generalsans_light"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_email"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_textview_email"
+        android:drawableStart="@drawable/img_password_icon"
+        android:drawableEnd="@drawable/img_eye_icon"
+        android:drawablePadding="15dp"
+        android:fontFamily="@font/generalsans_light"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_password"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bg_button_signup"
+        android:fontFamily="@font/generalsans_light"
+        android:text="Sign up"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+    <RelativeLayout
+        android:id="@+id/relative_layout_line"
+        android:layout_marginTop="6dp"
+        android:layout_below="@id/btn_signup"
+        android:paddingEnd="60dp"
+        android:paddingStart="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/horizontalLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/black" />
+
+        <TextView
+            android:textColor="@color/black"
+            android:layout_marginBottom="6dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:id="@+id/middleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="or"
+            android:textSize="12sp"
+            android:fontFamily="@font/generalsans_light"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/horizontalLine"
+            android:background="@android:color/white" />
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relative_layout_line"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_button_login"
+        android:fontFamily="@font/generalsans_light"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="@color/black" />
+    <TextView
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:id="@+id/tv_or"
+        android:paddingTop="6dp"
+        android:text="or sign up with"
+        android:layout_below="@id/btn_login"
+        android:fontFamily="@font/generalsans_light"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@id/tv_or"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/img_google_icon" />
+</RelativeLayout>

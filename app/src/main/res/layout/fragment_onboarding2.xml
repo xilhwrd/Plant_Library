@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.OnboardingFragment1">
+
+    <TextView
+        android:id="@+id/tv_title_ob2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/literata_24pt_medium"
+        android:text="@string/onboard2"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"/>
+    <ImageView
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:src="@drawable/img_onboarding2"
+        android:layout_width="240dp"
+        android:layout_height="270dp"/>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:textSize="13sp"
+        android:fontFamily="@font/generalsans_mediumitalic"
+        android:textColor="@color/black"
+        android:text="@string/onboard2decrip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

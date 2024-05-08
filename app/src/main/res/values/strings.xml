@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Plant_Library</string>
+    <string name="skip">Skip</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="onboard1">Update extremely useful
+plant knowledge</string>
+    <string name="onboard2">Supports quick search and classification of plants</string>
+    <string name="onboard3">Plant care is easy with the schedule provided</string>
+    <string name="onboard1decrip">Story articles revolving  around related topics are continuously updated</string>
+    <string name="onboard2decrip">Searching by image and classifying by plant properties helps find in a snap</string>
+    <string name="onboard3decrip">Determine the plant\'\s condition to come up with the most appropriate care process</string>
+    <string name="sign_up_finish1">Congratulation!</string>
+    <string name="sign_up_finish2">Account is created!</string>
+    <string name="sign_up_finish3">Time to start exploring the world of plants and start building your own garden.</string>
+    <string name="login_welcome">Welcome Back</string>
+
+</resources>
