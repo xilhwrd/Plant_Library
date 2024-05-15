@@ -8,6 +8,8 @@
     android:background="@color/bg"
     tools:context=".Activity.MainActivity">
     <TextView
+        android:id="@+id/tv_main"
+        android:background="@drawable/bg_button_signup"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="Nhìn cái cặc"

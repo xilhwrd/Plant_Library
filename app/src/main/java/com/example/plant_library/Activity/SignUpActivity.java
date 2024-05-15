@@ -140,8 +140,9 @@ public class SignUpActivity extends AppCompatActivity {
                 prgSignUp.setVisibility(View.GONE);
                 Intent i = new Intent(SignUpActivity.this, MainActivity.class);
                 startActivity(i);
+                finish();
             } catch (ApiException e) {
-                // Đăng nhập thất bại
+                prgSignUp.setVisibility(View.GONE);
             }
         }
     }

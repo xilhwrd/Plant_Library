@@ -176,8 +176,8 @@
         android:layout_height="wrap_content"/>
 
     <ImageButton
-        android:padding="15dp"
         android:id="@+id/google_SignIn"
+        android:padding="15dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_below="@id/tv_or"

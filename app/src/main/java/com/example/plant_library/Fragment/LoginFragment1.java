@@ -132,8 +132,12 @@ public class LoginFragment1 extends Fragment {
                 // Đăng nhập thành công, lấy thông tin tài khoản Google
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+                hideProgressBar();
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                startActivity(i);
+                getActivity().finish();
             } catch (ApiException e) {
-                // Đăng nhập thất bại
+                hideProgressBar();
             }
         }
     }
@@ -147,9 +151,7 @@ public class LoginFragment1 extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            hideProgressBar();
-//                            Intent i = new Intent(getActivity(), MainActivity.class);
-//                            startActivity(i);
+
                         } else {
                             // Đăng nhập thất bại
                         }
