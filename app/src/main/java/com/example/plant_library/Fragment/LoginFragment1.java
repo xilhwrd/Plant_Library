@@ -23,11 +23,17 @@ import com.example.plant_library.Activity.LoginActivity;
 import com.example.plant_library.Activity.MainActivity;
 import com.example.plant_library.Activity.SignUpActivity;
 import com.example.plant_library.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginFragment1 extends Fragment {
     EditText edtEmail, edtPass;
@@ -36,6 +42,7 @@ public class LoginFragment1 extends Fragment {
     ImageView imgViewGoogle;
     View mView;
     FirebaseAuth mAuth;
+    private static final int RC_SIGN_IN = 123;
     public LoginFragment1() {
     }
 
@@ -59,6 +66,13 @@ public class LoginFragment1 extends Fragment {
         btnLogIn        = mView.findViewById(R.id.btn_login);
     }
     private void initListener(){
+        imgViewGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgressBar();
+                signInWithGoogle();
+            }
+        });
         tvForgot.setPaintFlags(tvForgot.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tvForgot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +112,49 @@ public class LoginFragment1 extends Fragment {
                         });
             }
         });
+    }
+    public void signInWithGoogle() {
+        Intent signInIntent = GoogleSignIn.getClient(getContext(), new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()).getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    // Xử lý kết quả của việc đăng nhập bằng Google
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Đăng nhập thành công, lấy thông tin tài khoản Google
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Đăng nhập thất bại
+            }
+        }
+    }
+
+    // Xác thực tài khoản Google bằng Firebase Authentication
+    public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            hideProgressBar();
+//                            Intent i = new Intent(getActivity(), MainActivity.class);
+//                            startActivity(i);
+                        } else {
+                            // Đăng nhập thất bại
+                        }
+                    }
+                });
     }
 
     public void showProgressBar() {

@@ -112,6 +112,7 @@
             android:layout_below="@id/horizontalLine"
             android:background="@color/bg" />
     </RelativeLayout>
+
     <ImageButton
         android:id="@+id/google_img"
         android:layout_width="25dp"

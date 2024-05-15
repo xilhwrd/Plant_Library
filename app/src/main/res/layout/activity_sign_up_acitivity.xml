@@ -176,11 +176,12 @@
         android:layout_height="wrap_content"/>
 
     <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:padding="15dp"
+        android:id="@+id/google_SignIn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_below="@id/tv_or"
         android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
         android:background="@null"
         android:scaleType="fitCenter"
         android:src="@drawable/img_google_icon" />
