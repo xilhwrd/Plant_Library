@@ -12,35 +12,22 @@ import androidx.fragment.app.FragmentTransaction;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
-
+    ProgressBar prgLoginActi;
     TextView tvBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        prgLoginActi = findViewById(R.id.prg_Log);
         tvBack = findViewById(R.id.back);
         tvBack.setPaintFlags(tvBack.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-//        FragmentManager fragmentmng = getFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentmng.beginTransaction();
-//        LoginFragment1 loginFragment1 = new LoginFragment1();
-//        fragmentTransaction.add(R.id.frame_login, loginFragment1,"fragLogin1");
-//        fragmentTransaction.addToBackStack("Frag1");
-//        fragmentTransaction.commit();
-//
-//        tvBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            onBackPressed();
-//            }
-//        });
-
         addInitialFragment();
-
         tvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +58,12 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
     }
+    public void showProgressBar() {
+        prgLoginActi.setVisibility(View.VISIBLE);
+    }
 
+    public void hideProgressBar() {
+        prgLoginActi.setVisibility(View.GONE);
+    }
 
 }

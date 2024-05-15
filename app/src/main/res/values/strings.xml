@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Plant_Library</string>
+    <string name="app_name">PlantBox</string>
     <string name="skip">Skip</string>
     <string name="back">Back</string>
     <string name="back_to_login">Back to Login</string>

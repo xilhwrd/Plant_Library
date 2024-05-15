@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.SignUpAcitivity">
+    android:background="@color/bg"
+    tools:context=".Activity.SignUpActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingTop="30dp"
@@ -146,7 +147,7 @@
             android:fontFamily="@font/generalsans_light"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/horizontalLine"
-            android:background="@android:color/white" />
+            android:background="@color/bg" />
     </RelativeLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -170,7 +171,7 @@
         android:layout_below="@id/btn_login"
         android:fontFamily="@font/generalsans_light"
         android:layout_centerHorizontal="true"
-        android:background="@android:color/white"
+        android:background="@color/bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -183,4 +184,11 @@
         android:background="@null"
         android:scaleType="fitCenter"
         android:src="@drawable/img_google_icon" />
+
+    <ProgressBar
+        android:id="@+id/prg_SignUp"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 </RelativeLayout>

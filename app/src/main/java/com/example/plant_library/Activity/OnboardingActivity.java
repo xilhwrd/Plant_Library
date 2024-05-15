@@ -66,7 +66,7 @@ public class OnboardingActivity extends AppCompatActivity {
                     btnNext.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(OnboardingActivity.this, SignUpAcitivity.class);
+                            Intent intent = new Intent(OnboardingActivity.this, SplashActivity.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.enter_left_to_right,R.anim.exit_left_to_right);
                         }
@@ -102,7 +102,7 @@ public class OnboardingActivity extends AppCompatActivity {
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OnboardingActivity.this, SignUpAcitivity.class);
+                Intent intent = new Intent(OnboardingActivity.this, SignUpActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter_left_to_right,R.anim.exit_left_to_right);
             }

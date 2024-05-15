@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "517252213551",
+    "project_id": "plant-box-b4958",
+    "storage_bucket": "plant-box-b4958.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517252213551:android:4456f2b0f57a82a5144fda",
+        "android_client_info": {
+          "package_name": "com.example.plant_library"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2DbNRNfS5JJSAVAqcVXWPCanvfeN294w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
