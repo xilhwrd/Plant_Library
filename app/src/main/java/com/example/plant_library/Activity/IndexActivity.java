@@ -1,0 +1,53 @@
+package com.example.plant_library.Activity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.plant_library.Fragment.GardenFragment;
+import com.example.plant_library.Fragment.HomeFragment;
+import com.example.plant_library.Fragment.MeFragment;
+import com.example.plant_library.Fragment.SearchFragment;
+import com.example.plant_library.R;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+
+import android.os.Bundle;
+import android.view.MenuItem;
+
+public class IndexActivity extends AppCompatActivity {
+    BottomNavigationView bottomNavigationView;
+    HomeFragment homeFragment = new HomeFragment();
+    SearchFragment searchFragment = new SearchFragment();
+    GardenFragment gardenFragment = new GardenFragment();
+    MeFragment meFragment = new MeFragment();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_index);
+
+        bottomNavigationView = findViewById(R.id.nav_menu);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_index,homeFragment).commit();
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.home_menu:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_index,homeFragment).commit();
+                        return true;
+                    case R.id.search_menu:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_index,searchFragment).commit();
+                        return true;
+                    case R.id.garden_menu:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_index,gardenFragment).commit();
+                        return true;
+                    case R.id.me_menu:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_index,meFragment).commit();
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+}

@@ -10,4 +10,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="next_text">#FFFFFF</color>
     <color name="splash_bg">#FFF6E9</color>
+    <color name="main_color">#0D9276</color>
 </resources>

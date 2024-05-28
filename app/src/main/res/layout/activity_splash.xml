@@ -9,16 +9,10 @@
     tools:context=".Activity.SplashActivity"
     android:background="@color/splash_bg">
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/img_logo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/img_logo" />
-    <TextView
-        android:layout_margin="20dp"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        android:fontFamily="@font/literata_24pt_medium"
-        android:text="@string/app_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
 
 </LinearLayout>

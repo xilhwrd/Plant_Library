@@ -11,8 +11,8 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        FirebaseApp.initializeApp(getApplicationContext());
-        Log.d(TAG, "Firebase initialized successfully");
+//        FirebaseApp.initializeApp(getApplicationContext());
+//        Log.d(TAG, "Firebase initialized successfully");
 
     }
 }

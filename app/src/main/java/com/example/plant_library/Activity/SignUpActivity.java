@@ -82,7 +82,7 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                prgSignUp.setVisibility(View.VISIBLE);
+
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 String email = edtEmail.getText().toString().trim();
                 String password = edtPass.getText().toString().trim();
@@ -98,6 +98,7 @@ public class SignUpActivity extends AppCompatActivity {
                     btnSignUp.setEnabled(false);
                     signUpCheck(btnSignUp);
                 } else {
+                    prgSignUp.setVisibility(View.VISIBLE);
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -106,10 +107,11 @@ public class SignUpActivity extends AppCompatActivity {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         prgSignUp.setVisibility(View.GONE);
                                         Toast.makeText(SignUpActivity.this, "đăng ký ọk", Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent(SignUpActivity.this, MainActivity.class);
+                                        Intent i = new Intent(SignUpActivity.this, IndexActivity.class);
                                         startActivity(i);
                                     } else {
-                                        Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                                        prgSignUp.setVisibility(View.VISIBLE);
+                                        Toast.makeText(SignUpActivity.this, "Some thing wrong, check your connection.",
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -126,7 +128,7 @@ public class SignUpActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    // Xử lý kết quả của việc đăng nhập bằng Google
+    // xử lý kết quả của việc đăng nhập bằng Google
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -134,14 +136,15 @@ public class SignUpActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Đăng nhập thành công, lấy thông tin tài khoản Google
+                // đăng nhập thành công, lấy thông tin tài khoản Google
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
                 prgSignUp.setVisibility(View.GONE);
-                Intent i = new Intent(SignUpActivity.this, MainActivity.class);
+                Intent i = new Intent(SignUpActivity.this, SignUpFinishActivity.class);
                 startActivity(i);
                 finish();
             } catch (ApiException e) {
+                Toast.makeText(this, "Some thing wrong, check your connection.", Toast.LENGTH_SHORT).show();
                 prgSignUp.setVisibility(View.GONE);
             }
         }
@@ -188,7 +191,7 @@ public class SignUpActivity extends AppCompatActivity {
         }else  btnSignUp.setBackground(getDrawable(R.drawable.bg_button_signup_false));
         return false;
     }
-    private boolean isValidEmail(CharSequence email) {
+    public boolean isValidEmail(CharSequence email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg"
+    tools:context=".Fragment.HomeFragment">
+   <LinearLayout
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+<!--   <com.google.android.material.tabs.TabLayout-->
+<!--       android:paddingLeft="20dp"-->
+<!--       android:paddingRight="20dp"-->
+<!--       android:layout_marginTop="30dp"-->
+<!--       app:tabTextColor="@color/black"-->
+<!--       android:textAllCaps="false"-->
+<!--       android:id="@+id/tab_layout"-->
+<!--       app:tabMode="fixed"-->
+<!--       app:tabGravity="center"-->
+<!--       app:tabIndicatorGravity="stretch"-->
+<!--       app:tabSelectedTextColor="@color/white"-->
+<!--       app:tabIndicatorAnimationMode="elastic"-->
+<!--       app:tabIconTint="@color/main_color"-->
+<!--       app:tabIndicator="@drawable/tab_indi"-->
+<!--       android:layout_width="match_parent"-->
+<!--       android:layout_height="40dp">-->
+<!--   </com.google.android.material.tabs.TabLayout>-->
+      <LinearLayout
+          android:gravity="center"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+
+         <TextView
+             android:id="@+id/tab_all"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:gravity="center"
+             android:padding="10dp"
+             android:layout_margin="5dp"
+             android:text="All"
+             android:textSize="13sp" />
+
+         <TextView
+             android:singleLine="true"
+             android:layout_margin="5dp"
+             android:id="@+id/tab_article"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:gravity="center"
+             android:padding="10dp"
+             android:text="Article"
+             android:textSize="13sp" />
+
+         <TextView
+             android:singleLine="true"
+             android:layout_margin="5dp"
+             android:id="@+id/tab_flowering"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:gravity="center"
+             android:padding="10dp"
+             android:text="Flowering"
+             android:textSize="13sp" />
+         <TextView
+             android:singleLine="true"
+             android:layout_margin="5dp"
+             android:id="@+id/tab_foliage"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:gravity="center"
+             android:padding="10dp"
+             android:text="Foliage"
+             android:textSize="13sp" />
+      </LinearLayout>
+   <FrameLayout
+       android:id="@+id/frame_home"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content">
+   </FrameLayout>
+   </LinearLayout>
+</FrameLayout>

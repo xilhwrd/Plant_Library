@@ -1,9 +1,18 @@
 package com.example.plant_library.Fragment;
 
+import static androidx.core.content.ContextCompat.getDrawable;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.plant_library.Activity.LoginActivity;
+import com.example.plant_library.Activity.SignUpActivity;
 import com.example.plant_library.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,7 +37,6 @@ public class LoginFragment2 extends Fragment {
     FirebaseAuth mAuth;
     public LoginFragment2() {
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,6 +45,8 @@ public class LoginFragment2 extends Fragment {
         mView = inflater.inflate(R.layout.fragment_login2, container, false);
         initUI();
         initListener();
+        checkWatcher((EditText) edtEmail);
+
         return mView;
     }
     private void initUI(){
@@ -43,15 +54,21 @@ public class LoginFragment2 extends Fragment {
         btnSubmit = mView.findViewById(R.id.btn_submit);
     }
     private void initListener(){
+        String email = edtEmail.getText().toString();
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showProgressBar();
-                String email = edtEmail.getText().toString().trim();
+                if (!isValidEmail(email)){
+                    edtEmail.setError("Email invalid");
+                    edtEmail.requestFocus();
+                    btnSubmit.setEnabled(false);
+                    signUpCheck(btnSubmit);
+                    hideProgressBar();
+                }else {
                 mAuth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-
                         FragmentManager fragmentmng = getFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentmng.beginTransaction();
                         LoginFragment1 loginFragment1 = new LoginFragment1();
@@ -72,6 +89,7 @@ public class LoginFragment2 extends Fragment {
                     }
                 });
             }
+            }
         });
     }
     public void showProgressBar() {
@@ -83,5 +101,34 @@ public class LoginFragment2 extends Fragment {
         if (getActivity() != null) {
             ((LoginActivity) getActivity()).hideProgressBar();
         }
+    }
+    private boolean isValidEmail(CharSequence email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+    private boolean signUpCheck(Button btnSign){
+        if(btnSign.isEnabled() == true){
+            btnSubmit.setBackground(getDrawable(getContext(),R.drawable.bg_button_signup));
+        }else  btnSubmit.setBackground(getDrawable(getContext(),R.drawable.bg_button_signup_false));
+        return false;
+    }
+    private void checkWatcher(EditText edt){
+        edt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @SuppressLint("SuspiciousIndentation")
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(edt.getText())){
+                    btnSubmit.setEnabled(false);
+                    signUpCheck(btnSubmit);
+                }else
+                    btnSubmit.setEnabled(true);
+                signUpCheck(btnSubmit);
+            }
+        });
     }
 }

@@ -1,13 +1,21 @@
 package com.example.plant_library.Fragment;
 
+import static androidx.core.content.ContextCompat.getDrawable;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.plant_library.Activity.IndexActivity;
 import com.example.plant_library.Activity.LoginActivity;
 import com.example.plant_library.Activity.MainActivity;
 import com.example.plant_library.Activity.SignUpActivity;
@@ -34,6 +43,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.snapshot.Index;
+
 
 public class LoginFragment1 extends Fragment {
     EditText edtEmail, edtPass;
@@ -55,6 +66,8 @@ public class LoginFragment1 extends Fragment {
 
         initUI();
         initListener();
+        checkWatcher(edtEmail);
+        checkWatcher(edtPass);
         setEmail();
         return mView;
     }
@@ -100,9 +113,9 @@ public class LoginFragment1 extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    Toast.makeText(getActivity(), "đăng nhập ọk", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Login Succes!", Toast.LENGTH_SHORT).show();
                                     hideProgressBar();
-                                    Intent i = new Intent(getActivity(), MainActivity.class);
+                                    Intent i = new Intent(getActivity(), IndexActivity.class);
                                     startActivity(i);
                                 } else {
                                     Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -133,9 +146,9 @@ public class LoginFragment1 extends Fragment {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
                 hideProgressBar();
-                Intent i = new Intent(getActivity(), MainActivity.class);
+                Intent i = new Intent(getActivity(), Index.class);
                 startActivity(i);
-                getActivity().finish();
+                getActivity().finishAffinity();
             } catch (ApiException e) {
                 hideProgressBar();
             }
@@ -174,7 +187,33 @@ public class LoginFragment1 extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             String data = bundle.getString("emailUser");
-            edtEmail.setText(data.toString().trim());
+            edtEmail.setText(data.trim());
         }
+    }
+    private void checkWatcher(EditText edt){
+        edt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @SuppressLint("SuspiciousIndentation")
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(edt.getText())){
+                    btnLogIn.setEnabled(false);
+                    signUpCheck(btnLogIn);
+                }else
+                    btnLogIn.setEnabled(true);
+                signUpCheck(btnLogIn);
+            }
+        });
+    }
+    private boolean signUpCheck(Button btnSign){
+        if(btnSign.isEnabled() == true){
+            btnLogIn.setBackground(getDrawable(getContext(),R.drawable.bg_button_signup));
+        }else  btnLogIn.setBackground(getDrawable(getContext(),R.drawable.bg_button_signup_false));
+        return false;
     }
 }
