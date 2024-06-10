@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
+    android:layout_marginTop="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg"
     tools:context=".Fragment.HomeFragment">
@@ -29,6 +30,52 @@
 <!--       android:layout_width="match_parent"-->
 <!--       android:layout_height="40dp">-->
 <!--   </com.google.android.material.tabs.TabLayout>-->
+
+
+<!--       <RelativeLayout-->
+<!--           android:id="@+id/rlt_layout_index"-->
+<!--           android:layout_width="match_parent"-->
+<!--           android:layout_height="wrap_content"-->
+<!--           android:layout_marginLeft="10dp"-->
+<!--           android:padding="10dp"-->
+<!--           app:layout_constraintEnd_toEndOf="parent"-->
+<!--           app:layout_constraintStart_toStartOf="parent"-->
+<!--           app:layout_constraintTop_toTopOf="parent">-->
+
+<!--           <de.hdodenhof.circleimageview.CircleImageView-->
+<!--               android:id="@+id/img_circle_view"-->
+<!--               android:layout_width="80dp"-->
+<!--               android:layout_height="80dp"-->
+<!--               android:src="@drawable/img_plant_cate" />-->
+
+<!--           <LinearLayout-->
+<!--               android:layout_width="wrap_content"-->
+<!--               android:layout_height="wrap_content"-->
+<!--               android:layout_alignBottom="@id/img_circle_view"-->
+<!--               android:layout_alignParentTop="true"-->
+<!--               android:layout_marginLeft="15dp"-->
+<!--               android:layout_toEndOf="@+id/img_circle_view"-->
+<!--               android:gravity="center_vertical">-->
+
+<!--               <TextView-->
+<!--                   android:id="@+id/tv_user"-->
+<!--                   android:layout_width="wrap_content"-->
+<!--                   android:layout_height="wrap_content"-->
+<!--                   android:fontFamily="@font/generalsans_medium"-->
+<!--                   android:gravity="center_horizontal"-->
+<!--                   android:text="Hello, User"-->
+<!--                   android:textColor="@color/black" />-->
+<!--           </LinearLayout>-->
+
+<!--           <ImageView-->
+<!--               android:layout_width="20dp"-->
+<!--               android:layout_height="20dp"-->
+<!--               android:layout_alignBottom="@id/img_circle_view"-->
+<!--               android:layout_alignParentTop="true"-->
+<!--               android:layout_alignParentEnd="true"-->
+<!--               android:layout_marginEnd="10dp"-->
+<!--               android:src="@drawable/img_notification" />-->
+<!--       </RelativeLayout>-->
       <LinearLayout
           android:gravity="center"
           android:layout_width="match_parent"
@@ -36,6 +83,7 @@
           android:orientation="horizontal">
 
          <TextView
+             android:textColor="@color/black"
              android:id="@+id/tab_all"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
@@ -43,9 +91,10 @@
              android:padding="10dp"
              android:layout_margin="5dp"
              android:text="All"
-             android:textSize="13sp" />
+             android:textSize="11sp" />
 
          <TextView
+             android:textColor="@color/black"
              android:singleLine="true"
              android:layout_margin="5dp"
              android:id="@+id/tab_article"
@@ -54,9 +103,10 @@
              android:gravity="center"
              android:padding="10dp"
              android:text="Article"
-             android:textSize="13sp" />
+             android:textSize="11sp" />
 
          <TextView
+             android:textColor="@color/black"
              android:singleLine="true"
              android:layout_margin="5dp"
              android:id="@+id/tab_flowering"
@@ -65,8 +115,9 @@
              android:gravity="center"
              android:padding="10dp"
              android:text="Flowering"
-             android:textSize="13sp" />
+             android:textSize="11sp" />
          <TextView
+             android:textColor="@color/black"
              android:singleLine="true"
              android:layout_margin="5dp"
              android:id="@+id/tab_foliage"
@@ -75,7 +126,7 @@
              android:gravity="center"
              android:padding="10dp"
              android:text="Foliage"
-             android:textSize="13sp" />
+             android:textSize="11sp" />
       </LinearLayout>
    <FrameLayout
        android:id="@+id/frame_home"
@@ -83,4 +134,10 @@
        android:layout_height="wrap_content">
    </FrameLayout>
    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/prg_home"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 </FrameLayout>

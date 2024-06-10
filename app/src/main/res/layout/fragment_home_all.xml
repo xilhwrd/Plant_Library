@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
     tools:context=".Fragment.HomeFragmentAll">
     <androidx.core.widget.NestedScrollView
         android:layout_marginLeft="5dp"
@@ -52,6 +53,111 @@
             android:id="@+id/rcv_article"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/tv_interest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/literata_24pt_medium"
+                android:text="Maybe you are interested"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:layout_below="@+id/rcv_article"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/tv_interest"
+                android:id="@+id/rcv_interest"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/tv_air_puring_plants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/literata_24pt_medium"
+                android:text="Air-purifying plants"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:layout_below="@+id/rcv_interest"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/tv_air_puring_plants"
+                android:id="@+id/rcv_air_puring_plants"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/tv_plant_cate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/literata_24pt_medium"
+                android:text="Plant Categories"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:layout_below="@+id/rcv_air_puring_plants"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/tv_plant_cate"
+                android:id="@+id/rcv_plant_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/tv_lowmain_plant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/literata_24pt_medium"
+                android:text="Low-maintenance plants"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:layout_below="@+id/rcv_plant_category"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/tv_lowmain_plant"
+                android:id="@+id/rcv_lowmain_plant"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/tv_other_plant_cate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/literata_24pt_medium"
+                android:text="Other Plant Categories"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:layout_below="@+id/rcv_lowmain_plant"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/tv_other_plant_cate"
+                android:id="@+id/rcv_other_plant_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+            <LinearLayout
+                android:layout_below="@+id/rcv_other_plant_category"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="120dp">
+            </LinearLayout>
         </RelativeLayout>
         </androidx.core.widget.NestedScrollView>
 </FrameLayout>

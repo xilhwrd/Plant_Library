@@ -15,6 +15,20 @@
         android:theme="@style/Theme.Plant_Library"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.ArticleDetailActivity"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Activity.DetailActivity"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activity.IndexActivity"
             android:exported="true">
             <meta-data
@@ -27,6 +41,7 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

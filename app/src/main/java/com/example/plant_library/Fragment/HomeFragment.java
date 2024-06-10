@@ -9,19 +9,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.plant_library.FragmentHelper;
+import com.example.plant_library.Interface.FragmentHandler;
 import com.example.plant_library.R;
 import com.google.android.material.tabs.TabLayout;
 
 import org.w3c.dom.Text;
 
 public class HomeFragment extends Fragment {
-    View mView;
-    TextView tab1, tab2, tab3, tab4;
+    private View mView;
+    private TextView tab1, tab2, tab3, tab4;
     private TabLayout mTabLayout;
-    Button btn;
-
+    private Button btn;
+    private FragmentHandler fragmentHandler;
+    private ProgressBar progressBar;
+    HomeFragment homeFragment;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -29,23 +34,36 @@ public class HomeFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_home, container, false);
 
         initUI();
+
         return mView;
     }
 
     private void initUI() {
+        fragmentHandler = new FragmentHelper(getActivity().getSupportFragmentManager(), R.id.frame_index);
+        progressBar = mView.findViewById(R.id.prg_home);
+
         tab1 = mView.findViewById(R.id.tab_all);
         tab2 = mView.findViewById(R.id.tab_article);
         tab3 = mView.findViewById(R.id.tab_flowering);
         tab4 = mView.findViewById(R.id.tab_foliage);
 
+
         Fragment selectedFragment = new HomeFragmentAll();
         loadFragment(selectedFragment);
         tab1.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
+        tab1.setTextColor(getResources().getColor(R.color.white));
         setBG(tab2, tab3, tab4);
+
         tab1.setOnClickListener(tabClickListener);
         tab2.setOnClickListener(tabClickListener);
         tab3.setOnClickListener(tabClickListener);
         tab4.setOnClickListener(tabClickListener);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            int tabIndex = bundle.getInt("tab_index");
+            selectTab(tabIndex);
+        }
+
 //        mTabLayout = mView.findViewById(R.id.tab_layout);
 //        mTabLayout.setBackgroundColor(getResources().getColor(R.color.bg));
 //        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.main_color));
@@ -96,29 +114,37 @@ public class HomeFragment extends Fragment {
             switch (view.getId()) {
                 case R.id.tab_all:
                     selectedFragment = new HomeFragmentAll();
+                    loadFragment(selectedFragment);
                     tab1.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
+                    tab1.setTextColor(getResources().getColor(R.color.white));
                     setBG(tab2, tab3, tab4);
                     break;
                 case R.id.tab_article:
-                    selectedFragment = new HomeFragmentAll();
+                    selectedFragment = new HomeFragmentArticle();
+                    loadFragment(selectedFragment);
                     tab2.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
+                    tab2.setTextColor(getResources().getColor(R.color.white));
                     setBG(tab1, tab3, tab4);
                     break;
                 case R.id.tab_flowering:
                     selectedFragment = new HomeFragmentAll();
+                    loadFragment(selectedFragment);
                     tab3.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
+                    tab3.setTextColor(getResources().getColor(R.color.white));
                     setBG(tab1, tab2, tab4);
                     break;
                 case R.id.tab_foliage:
                     selectedFragment = new HomeFragmentAll();
+                    loadFragment(selectedFragment);
                     tab4.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
+                    tab4.setTextColor(getResources().getColor(R.color.white));
                     setBG(tab1, tab2, tab3);
                     break;
             }
-            if (selectedFragment != null) {
-                loadFragment(selectedFragment);
-
-            }
+//            if (selectedFragment != null) {
+//                loadFragment(selectedFragment);
+//
+//            }
         }
     };
     private void loadFragment(Fragment fragment) {
@@ -128,19 +154,36 @@ public class HomeFragment extends Fragment {
     }
     private void setBG(TextView tab1, TextView tab2, TextView tab3){
         tab1.setBackground(getResources().getDrawable(R.drawable.bg_tab));
+        tab1.setTextColor(getResources().getColor(R.color.black));
         tab2.setBackground(getResources().getDrawable(R.drawable.bg_tab));
+        tab2.setTextColor(getResources().getColor(R.color.black));
         tab3.setBackground(getResources().getDrawable(R.drawable.bg_tab));
+        tab3.setTextColor(getResources().getColor(R.color.black));
     }
     public void selectTab(int tabIndex) {
         Fragment selectedFragment;
         switch (tabIndex) {
             case 1:
-                selectedFragment = new HomeFragmentAll();
+                selectedFragment = new HomeFragmentArticle();
                 tab2.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                 setBG(tab1, tab3, tab4);
                 break;
-            default:
+            case 2:
                 selectedFragment = new HomeFragmentAll();
+                loadFragment(selectedFragment);
+                tab3.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
+                tab3.setTextColor(getResources().getColor(R.color.white));
+                setBG(tab1, tab2, tab4);
+                break;
+            case 3:
+                selectedFragment = new HomeFragmentAll();
+                loadFragment(selectedFragment);
+                tab4.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
+                tab4.setTextColor(getResources().getColor(R.color.white));
+                setBG(tab1, tab2, tab3);
+                break;
+            default:
+                selectedFragment = new HomeFragmentArticle();
                 tab1.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                 setBG(tab2, tab3, tab4);
                 break;

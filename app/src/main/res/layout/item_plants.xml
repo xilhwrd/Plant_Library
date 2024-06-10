@@ -2,28 +2,43 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/plants_layout"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp"
     android:layout_marginLeft="5dp"
-    android:layout_marginRight="10dp">
-
+    android:layout_marginRight="5dp">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="30dp"
+        android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout"
         android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:background="@drawable/tab_indi"
+        android:layout_height="170dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/img_article"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="11dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/img_bg_sign_up_finish"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:alpha="0.5"
+            android:alpha="1"
             android:background="@drawable/bg_infor_plants"
-
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/tv_article_name"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,6 +46,8 @@
             app:layout_constraintVertical_bias="0.35">
 
             <ImageView
+                android:alpha="2"
+                android:id="@+id/img_sun"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginLeft="3dp"
@@ -40,6 +57,8 @@
                 android:src="@drawable/img_sun_level1" />
 
             <ImageView
+                android:alpha="2"
+                android:id="@+id/img_water"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginLeft="3dp"
@@ -49,6 +68,8 @@
                 android:src="@drawable/img_water_level1" />
 
             <ImageView
+                android:alpha="2"
+                android:id="@+id/img_hard"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginLeft="3dp"
@@ -57,24 +78,10 @@
                 android:layout_marginBottom="8dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/img_hard_level1" />
-
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/img_article"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="11dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/img_bg_sign_up_finish"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
+            android:textAlignment="center"
             android:id="@+id/tv_article_name"
-            android:paddingStart="20dp"
             android:alpha="0.5"
             android:textColor="#FFFFFF"
             android:fontFamily="@font/generalsans_light"
@@ -83,9 +90,14 @@
             android:layout_height="40dp"
             android:background="@drawable/bg_textview_item"
             android:text="Plants name"
-            android:gravity="center_vertical"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/constraint_layout"
             app:layout_constraintStart_toStartOf="@+id/constraint_layout" />
+        <LinearLayout
+            android:background="@drawable/tab_indi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
