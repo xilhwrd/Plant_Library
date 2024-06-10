@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.ArticleDetailActivity">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView_detail"
+        style="@style/CustomCardViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/img_bg_sign_up"
+            app:shapeAppearanceOverlay="@style/MyCardViewOverlay" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_border_detail" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_article_detail"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="10dp"
+            android:theme="@style/MyThemeOverlay_Toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_detail">
+
+        <TextView
+            android:id="@+id/tv_article_name_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:fontFamily="@font/literata_24pt_medium"
+            android:gravity="center"
+            android:text="How To Grow And Care For Sasanqua Camellia."
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_article_descript_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:fontFamily="@font/generalsans_light"
+            android:gravity="center"
+            android:text="The easy-to-grow Sasanqua camellia, commonly known as Yuletide camellia, combines stunning autumn flowers with handsome foliage."
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+        <TextView
+            android:id="@+id/tv_article_content_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:fontFamily="@font/generalsans_light"
+            android:gravity="center"
+            android:text="The easy-to-grow Sasanqua camellia, commonly known as Yuletide camellia, combines stunning autumn flowers with handsome foliage."
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
