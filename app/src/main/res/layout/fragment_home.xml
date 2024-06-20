@@ -129,6 +129,7 @@
              android:textSize="11sp" />
       </LinearLayout>
    <FrameLayout
+       android:layout_gravity="center"
        android:id="@+id/frame_home"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content">

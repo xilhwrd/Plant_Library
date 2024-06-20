@@ -20,6 +20,7 @@ import com.example.plant_library.Adapter.PlantCategoryAdapter;
 import com.example.plant_library.Adapter.PlantsAdapter;
 import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.Article;
+import com.example.plant_library.Object.Genre;
 import com.example.plant_library.Object.PlantCategory;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
@@ -43,7 +44,7 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
         setArticleAdapter();
         setPlantsAdapter();
         setAirPlantsAdapter();
-        setPlantCategoryAdapter();
+//        setPlantCategoryAdapter();
         setLowMainPlantsAdapter();
         setOtherPlantCategoryAdapter();
         initUI();
@@ -97,16 +98,16 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
         plantsAdapter.setData(getListPlants());
         recyclerView.setAdapter(plantsAdapter);
     }
-    private void setPlantCategoryAdapter(){
-        recyclerView = mView.findViewById(R.id.rcv_plant_category);
-        plantCategoryAdapter = new PlantCategoryAdapter(getContext(), R.layout.item_category_plants, this,R.id.rcv_plant_category);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(manager);
-
-        plantCategoryAdapter.setData(getListPlantCategory());
-        recyclerView.setAdapter(plantCategoryAdapter);
-    }
+//    private void setPlantCategoryAdapter(){
+//        recyclerView = mView.findViewById(R.id.rcv_plant_category);
+//        plantCategoryAdapter = new PlantCategoryAdapter(getContext(), R.layout.item_category_plants, this,R.id.rcv_plant_category);
+//        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
+//        recyclerView.setLayoutManager(manager);
+//
+//        plantCategoryAdapter.setData(getListPlantCategory());
+//        recyclerView.setAdapter(plantCategoryAdapter);
+//    }
     private void setLowMainPlantsAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_lowmain_plant);
         plantsAdapter = new PlantsAdapter(this, getContext(), R.id.rcv_lowmain_plant);
@@ -149,17 +150,17 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
     }
     private List<PlantCategory> getListPlantCategory() {
         List<PlantCategory> plantCategoryListList = new ArrayList<>();
-        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Foliage"));
-        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Foliage"));
+//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Foliage"));
+//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Foliage"));
         return plantCategoryListList;
     }
-    private List<PlantCategory> getListOtherPlantCategory() {
-        List<PlantCategory> plantCategoryListList = new ArrayList<>();
-        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
-        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
-        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
-        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
-        return plantCategoryListList;
+    private List<Genre> getListOtherPlantCategory() {
+        List<Genre> genreList = new ArrayList<>();
+//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
+//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
+//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
+//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
+        return genreList;
     }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

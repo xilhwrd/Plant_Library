@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.plant_library.Object.Genre;
 import com.example.plant_library.Object.PlantCategory;
 import com.example.plant_library.R;
 
@@ -17,13 +18,13 @@ import java.util.List;
 
 public class OtherPlantCategoryAdapter extends RecyclerView.Adapter<OtherPlantCategoryAdapter.UserViewHolder> {
     private Context context;
-    private List<PlantCategory> plantCategoryList;
+    private List<Genre> genreList;
 
     public OtherPlantCategoryAdapter(Context context) {
         this.context = context;
     }
-     public void setData(List<PlantCategory> list){
-        this.plantCategoryList = list;
+     public void setData(List<Genre> list){
+        this.genreList = list;
         notifyDataSetChanged();
     }
 
@@ -36,19 +37,19 @@ public class OtherPlantCategoryAdapter extends RecyclerView.Adapter<OtherPlantCa
 
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
-        PlantCategory plantCategory = plantCategoryList.get(position);
-        if(plantCategory == null){
+        Genre genre = genreList.get(position);
+        if(genre == null){
             return;
         }else {
-            holder.imgPlantCategory.setImageResource(plantCategory.getResourceID());
-            holder.tvCategoryName.setText(plantCategory.getCategoryName());
+            holder.imgPlantCategory.setImageResource(genre.getResourceID());
+            holder.tvCategoryName.setText(genre.getCategoryName());
         }
     }
 
     @Override
     public int getItemCount() {
-        if(plantCategoryList != null){
-            return plantCategoryList.size();
+        if(genreList != null){
+            return genreList.size();
         }
         return 0;
     }

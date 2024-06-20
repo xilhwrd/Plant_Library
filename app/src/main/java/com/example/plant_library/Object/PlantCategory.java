@@ -1,20 +1,24 @@
 package com.example.plant_library.Object;
 
 public class PlantCategory {
-    private int resourceID;
+    private int categoryID;
     private String categoryName;
+    private String categoryImageURL;
 
-    public PlantCategory(int resourceID, String categoryName) {
-        this.resourceID = resourceID;
+    public PlantCategory() {}
+
+    public PlantCategory(int categoryID, String categoryName, String categoryImageURL) {
+        this.categoryID = categoryID;
         this.categoryName = categoryName;
+        this.categoryImageURL = categoryImageURL;
     }
 
-    public int getResourceID() {
-        return resourceID;
+    public int getCategoryID() {
+        return categoryID;
     }
 
-    public void setResourceID(int resourceID) {
-        this.resourceID = resourceID;
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
     }
 
     public String getCategoryName() {
@@ -23,5 +27,13 @@ public class PlantCategory {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public String getCategoryImageURL() {
+        return categoryImageURL;
+    }
+
+    public void setCategoryImageURL(String categoryImageURL) {
+        this.categoryImageURL = categoryImageURL;
     }
 }

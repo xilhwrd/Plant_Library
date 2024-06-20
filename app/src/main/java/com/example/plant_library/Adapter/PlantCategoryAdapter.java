@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.PlantCategory;
 import com.example.plant_library.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -22,15 +23,13 @@ public class PlantCategoryAdapter extends RecyclerView.Adapter<PlantCategoryAdap
     private int layout;
     private final RecyclerViewInterface recyclerViewInterface;
     private final int recyclerViewId;
-    public PlantCategoryAdapter(Context context, int layout, RecyclerViewInterface recyclerViewInterface, int recyclerViewId) {
+
+    public PlantCategoryAdapter(List<PlantCategory> list, Context context, int layout, RecyclerViewInterface recyclerViewInterface, int recyclerViewId) {
+        this.plantCategoryList = list;
         this.context = context;
         this.layout = layout;
         this.recyclerViewInterface = recyclerViewInterface;
         this.recyclerViewId = recyclerViewId;
-    }
-     public void setData(List<PlantCategory> list){
-        this.plantCategoryList = list;
-        notifyDataSetChanged();
     }
 
     @NonNull
@@ -43,37 +42,30 @@ public class PlantCategoryAdapter extends RecyclerView.Adapter<PlantCategoryAdap
     @Override
     public void onBindViewHolder(@NonNull PlantsViewHolder holder, int position) {
         PlantCategory plantCategory = plantCategoryList.get(position);
-        if(plantCategory == null){
-            return;
-        }else {
-            holder.imgPlantCategory.setImageResource(plantCategory.getResourceID());
-            holder.tvCategoryName.setText(plantCategory.getCategoryName());
-        }
+        holder.tvCategoryName.setText(plantCategory.getCategoryName());
+        Picasso.get().load(plantCategory.getCategoryImageURL()).into(holder.imgPlantCategory);
     }
 
     @Override
     public int getItemCount() {
-        if(plantCategoryList != null){
-            return plantCategoryList.size();
-        }
-        return 0;
+        return plantCategoryList != null ? plantCategoryList.size() : 0;
     }
 
-    public class PlantsViewHolder extends RecyclerView.ViewHolder{
+    public class PlantsViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgPlantCategory;
         private TextView tvCategoryName;
+
         public PlantsViewHolder(@NonNull View itemView) {
             super(itemView);
-
             imgPlantCategory = itemView.findViewById(R.id.img_category);
             tvCategoryName = itemView.findViewById(R.id.tv_plant_category);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(recyclerViewInterface != null){
+                    if (recyclerViewInterface != null) {
                         int pos = getAdapterPosition();
-                        if (pos != RecyclerView.NO_POSITION){
-                            recyclerViewInterface.onItemClick(recyclerViewId,pos);
+                        if (pos != RecyclerView.NO_POSITION) {
+                            recyclerViewInterface.onItemClick(recyclerViewId, pos);
                         }
                     }
                 }

@@ -21,5 +21,4 @@ plant knowledge</string>
     <string name="forgot_password_decrip">*We will send you a message to resent your password</string>
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_decrip">Set your new password and re-enter. It must contain at least 8 characters.</string>
-    <string name="default_web_client_id">517252213551-gb1qljtoqtoneijgfbo1khiap5d43q0n.apps.googleusercontent.com</string>
 </resources>

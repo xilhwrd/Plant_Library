@@ -2,6 +2,7 @@ package com.example.plant_library.Fragment;
 
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ public class HomeFragmentArticle extends Fragment implements RecyclerViewInterfa
     View mView;
     RecyclerView recyclerView;
     ArticleAdapter articleAdapter;
+    private ConstraintLayout constraintLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,8 +34,8 @@ public class HomeFragmentArticle extends Fragment implements RecyclerViewInterfa
     }
     private void setArticleAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_article_fragment);
-        int desiredWidth = 650;  // Thay thế bằng giá trị kích thước mong muốn của bạn
-        int desiredHeight = 375; // Thay thế bằng giá trị kích thước mong muốn của bạn
+        int desiredWidth = ViewGroup.LayoutParams.MATCH_PARENT;;  // Thay thế bằng giá trị kích thước mong muốn của bạn
+        int desiredHeight = 400; // Thay thế bằng giá trị kích thước mong muốn của bạn
 
         articleAdapter = new ArticleAdapter(getContext(), desiredWidth, desiredHeight, this, R.id.rcv_article_fragment);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
