@@ -17,6 +17,7 @@ import com.example.plant_library.Activity.DetailActivity;
 import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -25,14 +26,11 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.UserViewHo
     private Context context;
     private List<Plants> plantsList;
     private final int recyclerViewId;
-    public PlantsAdapter(RecyclerViewInterface recyclerViewInterface, Context context, int recyclerViewId) {
+    public PlantsAdapter(List<Plants> list,RecyclerViewInterface recyclerViewInterface, Context context, int recyclerViewId) {
+        this.plantsList = list;
         this.recyclerViewInterface = recyclerViewInterface;
         this.context = context;
         this.recyclerViewId = recyclerViewId;
-    }
-     public void setData(List<Plants> list){
-        this.plantsList = list;
-        notifyDataSetChanged();
     }
 
     @NonNull
@@ -48,11 +46,39 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.UserViewHo
         if(plants == null){
             return;
         }else {
-            holder.imgPlants.setImageResource(plants.getResourceID());
-            holder.tvName.setText(plants.getPlantName());
-            holder.imgHard.setImageResource(plants.getResourceHard());
-            holder.imgSun.setImageResource(plants.getResourceSun());
-            holder.imgWater.setImageResource(plants.getResourceWater());
+            Picasso.get().load(plants.getPlantImage()).into(holder.imgPlants);
+            holder.tvName.setText(""+plants.getCommonName());
+
+            switch (plants.getLightRequirements()){
+                case "1" : holder.imgSun.setImageResource(R.drawable.img_sun_level1);
+                    break;
+                case "2" : holder.imgSun.setImageResource(R.drawable.img_sun_level2);
+                    break;
+                case "3" : holder.imgSun.setImageResource(R.drawable.img_sun_level3);
+                    break;
+                default: holder.imgSun.setImageResource(R.drawable.img_sun_level1);
+                    break;
+            }
+            switch (plants.getWaterRequirements()){
+                case "1" : holder.imgWater.setImageResource(R.drawable.img_water_level1);
+                    break;
+                case "2" : holder.imgWater.setImageResource(R.drawable.img_water_level2);
+                    break;
+                case "3" : holder.imgWater.setImageResource(R.drawable.img_water_level3);
+                    break;
+                default:holder.imgWater.setImageResource(R.drawable.img_water_level1);
+                    break;
+            }
+            switch (plants.getCareRequirements()){
+                case "1" : holder.imgHard.setImageResource(R.drawable.img_hard_level1);
+                    break;
+                case "2" : holder.imgHard.setImageResource(R.drawable.img_hard_level2);
+                    break;
+                case "3" : holder.imgHard.setImageResource(R.drawable.img_hard_level3);
+                    break;
+                default:holder.imgHard.setImageResource(R.drawable.img_hard_level1);
+                    break;
+            }
         }
     }
 
@@ -75,8 +101,8 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.UserViewHo
             imgSun = itemView.findViewById(R.id.img_sun);
             imgHard = itemView.findViewById(R.id.img_hard);
             imgWater = itemView.findViewById(R.id.img_water);
-            imgPlants = itemView.findViewById(R.id.img_article);
-            tvName = itemView.findViewById(R.id.tv_article_name);
+            imgPlants = itemView.findViewById(R.id.img_plant);
+            tvName = itemView.findViewById(R.id.tv_plant_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,18 +111,45 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.UserViewHo
                         int pos = getAdapterPosition();
                         if (pos != RecyclerView.NO_POSITION){
                             recyclerViewInterface.onItemClick(recyclerViewId,pos);
+                            Plants plant = plantsList.get(pos);
+                            Bundle bundle = new Bundle();
+
+                                bundle.putInt("plant_id",plant.getPlantID());
+                                bundle.putString("plant_scientificName",plant.getScientificName());
+                                bundle.putString("plant_commonName",plant.getCommonName());
+                                bundle.putString("plant_family", plant.getFamily());
+                                bundle.putString("plant_genus", plant.getGenus());
+                                bundle.putString("plant_spieces", plant.getSpecies());
+                                bundle.putString("plant_description", plant.getDescription());
+                                bundle.putString("plant_growth_rate", plant.getGrowthRate());
+
+                                bundle.putString("plant_light", plant.getLightRequirements());
+                                bundle.putString("plant_water", plant.getWaterRequirements());
+                                bundle.putString("plant_hard", plant.getCareRequirements());
+                                bundle.putString("plant_soil", plant.getSoilType());
+                                bundle.putString("plant_ph", plant.getPHRange());
+                                bundle.putString("plant_temperature", plant.getTemperatureRange());
+                                bundle.putString("plant_bloom", plant.getBloomtime());
+                                bundle.putString("plant_propagation", plant.getPropagation());
+                                bundle.putString("plant_size", plant.getSize());
+                                bundle.putString("plant_img", plant.getPlantImage());
+
+                                Intent intent = new Intent(context, DetailActivity.class);
+                                intent.putExtra("plant_infor", bundle);
+                                context.startActivity(intent);
                         }
                     }
                 }
             });
-            plantsLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    Intent intent = new Intent(context, DetailActivity.class);
-                    context.startActivity(intent);
-                }
-            });
+//            plantsLayout.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Bundle bundle = new Bundle();
+//                    bundle.putInt("plant_id",plants.getPlantID);
+//                    Intent intent = new Intent(context, DetailActivity.class);
+//                    context.startActivity(intent);
+//                }
+//            });
         }
     }
 }

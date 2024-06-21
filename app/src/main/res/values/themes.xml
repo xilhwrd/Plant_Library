@@ -22,8 +22,8 @@
         <!-- below items does not work with normal ImageView -->
         <item name="cornerSizeTopRight">0dp</item>
         <item name="cornerSizeTopLeft">0dp</item>
-        <item name="cornerSizeBottomRight">100dp</item>
-        <item name="cornerSizeBottomLeft">100dp</item>
+        <item name="cornerSizeBottomRight">60dp</item>
+        <item name="cornerSizeBottomLeft">60dp</item>
         <item name="android:solidColor">@color/main_color</item>
         <item name="color">@color/main_color</item>
     </style>
@@ -31,4 +31,20 @@
     <style name="MyThemeOverlay_Toolbar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlNormal">@color/black</item>
     </style>
+
+    <style name="CustomCardViewGenre" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/MyCardViewGenre</item>
+    </style>
+
+    <style name="MyCardViewGenre">
+        <item name="cornerFamily">cut</item>
+        <!-- below items does not work with normal ImageView -->
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomRight">100dp</item>
+        <item name="cornerSizeBottomLeft">100dp</item>
+        <item name="android:solidColor">@color/main_color</item>
+        <item name="color">@color/main_color</item>
+    </style>
+
 </resources>

@@ -1,39 +1,41 @@
 package com.example.plant_library.Object;
 
 public class PlantCategory {
-    private int categoryID;
-    private String categoryName;
-    private String categoryImageURL;
+    private int CategoryID;
+    private String CategoryImage;
+    private String CategoryName;
+
 
     public PlantCategory() {}
 
-    public PlantCategory(int categoryID, String categoryName, String categoryImageURL) {
-        this.categoryID = categoryID;
-        this.categoryName = categoryName;
-        this.categoryImageURL = categoryImageURL;
+    public PlantCategory(int categoryID, String categoryName, String categoryImage) {
+        this.CategoryID = categoryID;
+        this.CategoryImage = categoryImage;
+        this.CategoryName = categoryName;
+
     }
 
     public int getCategoryID() {
-        return categoryID;
+        return CategoryID;
     }
 
     public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
+        this.CategoryID = categoryID;
     }
 
     public String getCategoryName() {
-        return categoryName;
+        return CategoryName;
     }
 
     public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+        this.CategoryName = categoryName;
     }
 
-    public String getCategoryImageURL() {
-        return categoryImageURL;
+    public String getCategoryImage() {
+        return CategoryImage;
     }
 
-    public void setCategoryImageURL(String categoryImageURL) {
-        this.categoryImageURL = categoryImageURL;
+    public void setCategoryImageURL(String categoryImage) {
+        this.CategoryImage = categoryImage;
     }
 }

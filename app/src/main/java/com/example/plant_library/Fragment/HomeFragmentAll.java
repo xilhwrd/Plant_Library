@@ -35,6 +35,7 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
     PlantsAdapter plantsAdapter;
     PlantCategoryAdapter plantCategoryAdapter;
     OtherPlantCategoryAdapter otherPlantCategoryAdapter;
+    private List<Plants> plantList;
     View mView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,9 +44,9 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
         mView = inflater.inflate(R.layout.fragment_home_all, container, false);
         setArticleAdapter();
         setPlantsAdapter();
-        setAirPlantsAdapter();
+//        setAirPlantsAdapter();
 //        setPlantCategoryAdapter();
-        setLowMainPlantsAdapter();
+//        setLowMainPlantsAdapter();
         setOtherPlantCategoryAdapter();
         initUI();
 
@@ -79,25 +80,26 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
     }
     private void setPlantsAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_interest);
-        plantsAdapter = new PlantsAdapter(this, getContext(), R.id.rcv_interest);
+        plantList = new ArrayList<>();
+        plantsAdapter = new PlantsAdapter(plantList,this, getContext(), R.id.rcv_category_search);
+
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(manager);
 
-        plantsAdapter.setData(getListPlants());
         recyclerView.setAdapter(plantsAdapter);
     }
 
-    private void setAirPlantsAdapter(){
-        recyclerView = mView.findViewById(R.id.rcv_air_puring_plants);
-        plantsAdapter = new PlantsAdapter(this, getContext(), R.id.rcv_air_puring_plants);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(manager);
-
-        plantsAdapter.setData(getListPlants());
-        recyclerView.setAdapter(plantsAdapter);
-    }
+//    private void setAirPlantsAdapter(){
+//        recyclerView = mView.findViewById(R.id.rcv_air_puring_plants);
+//        plantsAdapter = new PlantsAdapter(this, getContext(), R.id.rcv_air_puring_plants);
+//        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
+//        recyclerView.setLayoutManager(manager);
+//
+//        plantsAdapter.setData(getListPlants());
+//        recyclerView.setAdapter(plantsAdapter);
+//    }
 //    private void setPlantCategoryAdapter(){
 //        recyclerView = mView.findViewById(R.id.rcv_plant_category);
 //        plantCategoryAdapter = new PlantCategoryAdapter(getContext(), R.layout.item_category_plants, this,R.id.rcv_plant_category);
@@ -108,16 +110,16 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
 //        plantCategoryAdapter.setData(getListPlantCategory());
 //        recyclerView.setAdapter(plantCategoryAdapter);
 //    }
-    private void setLowMainPlantsAdapter(){
-        recyclerView = mView.findViewById(R.id.rcv_lowmain_plant);
-        plantsAdapter = new PlantsAdapter(this, getContext(), R.id.rcv_lowmain_plant);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(manager);
-
-        plantsAdapter.setData(getListPlants());
-        recyclerView.setAdapter(plantsAdapter);
-    }
+//    private void setLowMainPlantsAdapter(){
+//        recyclerView = mView.findViewById(R.id.rcv_lowmain_plant);
+//        plantsAdapter = new PlantsAdapter(this, getContext(), R.id.rcv_lowmain_plant);
+//        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
+//        recyclerView.setLayoutManager(manager);
+//
+//        plantsAdapter.setData(getListPlants());
+//        recyclerView.setAdapter(plantsAdapter);
+//    }
     private void setOtherPlantCategoryAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_other_plant_category);
         otherPlantCategoryAdapter = new OtherPlantCategoryAdapter(getContext());
@@ -128,15 +130,15 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
         otherPlantCategoryAdapter.setData(getListOtherPlantCategory());
         recyclerView.setAdapter(otherPlantCategoryAdapter);
     }
-    private List<Plants> getListPlants() {
-        List<Plants> plantsList = new ArrayList<>();
-        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
-        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
-        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
-        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
-        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
-        return plantsList;
-    }
+//    private List<Plants> getListPlants() {
+//        List<Plants> plantsList = new ArrayList<>();
+//        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
+//        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
+//        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
+//        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
+//        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
+//        return plantsList;
+//    }
 
     private List<Article> getListArticle() {
         List<Article> articleList = new ArrayList<>();

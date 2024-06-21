@@ -42,8 +42,8 @@ public class PlantCategoryAdapter extends RecyclerView.Adapter<PlantCategoryAdap
     @Override
     public void onBindViewHolder(@NonNull PlantsViewHolder holder, int position) {
         PlantCategory plantCategory = plantCategoryList.get(position);
-        holder.tvCategoryName.setText(plantCategory.getCategoryName());
-        Picasso.get().load(plantCategory.getCategoryImageURL()).into(holder.imgPlantCategory);
+        holder.tvCategoryName.setText(""+plantCategory.getCategoryName());
+        Picasso.get().load(plantCategory.getCategoryImage()).into(holder.imgPlantCategory);
     }
 
     @Override

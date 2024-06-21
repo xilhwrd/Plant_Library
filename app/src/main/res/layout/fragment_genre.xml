@@ -7,6 +7,7 @@
     tools:context=".Fragment.GenreFragment">
 
     <androidx.core.widget.NestedScrollView
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_width="match_parent"
@@ -25,9 +26,9 @@
             android:layout_width="300dp"
             android:layout_height="120dp">
             <ImageView
-                android:id="@+id/img_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/img_category_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/test"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -43,10 +44,10 @@
                 android:text="Foliage"
                 android:textColor="@color/white"
                 android:textSize="25sp"
-                app:layout_constraintBottom_toBottomOf="@+id/img_category"
+                app:layout_constraintBottom_toBottomOf="@+id/img_category_detail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/img_category" />
+                app:layout_constraintTop_toTopOf="@+id/img_category_detail" />
             <LinearLayout
                 android:background="@drawable/custom_card_corner"
                 android:layout_width="match_parent"
