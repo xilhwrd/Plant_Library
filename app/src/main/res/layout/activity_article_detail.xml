@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +26,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_article_detail"
             android:layout_width="match_parent"
+            android:scaleType="centerCrop"
             android:layout_height="300dp"
             android:src="@drawable/img_bg_sign_up"
             app:shapeAppearanceOverlay="@style/MyCardViewOverlay" />
@@ -32,15 +38,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_border_detail" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_article_detail"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_marginTop="10dp"
-            android:theme="@style/MyThemeOverlay_Toolbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
     </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
@@ -74,6 +72,18 @@
             android:gravity="center"
             android:text="The easy-to-grow Sasanqua camellia, commonly known as Yuletide camellia, combines stunning autumn flowers with handsome foliage."
             android:textColor="@color/black"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/tv_article_content_intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:fontFamily="@font/generalsans_light"
+            android:gravity="center"
+            android:text="The easy-to-grow Sasanqua camellia, commonly known as Yuletide camellia, combines stunning autumn flowers with handsome foliage."
+            android:textColor="@color/black"
             android:textSize="10sp" />
         <TextView
             android:id="@+id/tv_article_content_detail"
@@ -87,6 +97,54 @@
             android:text="The easy-to-grow Sasanqua camellia, commonly known as Yuletide camellia, combines stunning autumn flowers with handsome foliage."
             android:textColor="@color/black"
             android:textSize="10sp" />
+        <TextView
+            android:id="@+id/tv_article_content_detail2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:fontFamily="@font/generalsans_light"
+            android:gravity="center"
+            android:text="The easy-to-grow Sasanqua camellia, commonly known as Yuletide camellia, combines stunning autumn flowers with handsome foliage."
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+        <TextView
+            android:id="@+id/tv_article_content_detail3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:fontFamily="@font/generalsans_light"
+            android:gravity="center"
+            android:text="The easy-to-grow Sasanqua camellia, commonly known as Yuletide camellia, combines stunning autumn flowers with handsome foliage."
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+        <TextView
+            android:id="@+id/tv_article_content_detail4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:fontFamily="@font/generalsans_light"
+            android:gravity="center"
+            android:text="The easy-to-grow Sasanqua camellia, commonly known as Yuletide camellia, combines stunning autumn flowers with handsome foliage."
+            android:textColor="@color/black"
+            android:textSize="10sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    </ScrollView>
+    <androidx.appcompat.widget.Toolbar
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:id="@+id/toolbar_article_detail"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="10dp"
+        android:theme="@style/MyThemeOverlay_Toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</FrameLayout>

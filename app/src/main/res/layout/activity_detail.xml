@@ -381,8 +381,8 @@
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
     <androidx.appcompat.widget.Toolbar
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:id="@+id/toolbar_detail"
         app:titleTextColor="@color/white"
         android:layout_width="match_parent"

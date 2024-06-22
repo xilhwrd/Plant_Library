@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment {
                     setBG(tab1, tab3, tab4);
                     break;
                 case R.id.tab_flowering:
-                    selectedFragment = new HomeFragmentAll();
+                    selectedFragment = new HomeFragmentFlowering();
                     loadFragment(selectedFragment);
                     tab3.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                     tab3.setTextColor(getResources().getColor(R.color.white));

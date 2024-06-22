@@ -1,14 +1,18 @@
 package com.example.plant_library.Fragment;
 
+import static android.content.ContentValues.TAG;
+
 import android.graphics.Paint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +28,11 @@ import com.example.plant_library.Object.Genre;
 import com.example.plant_library.Object.PlantCategory;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +45,7 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
     PlantCategoryAdapter plantCategoryAdapter;
     OtherPlantCategoryAdapter otherPlantCategoryAdapter;
     private List<Plants> plantList;
+    private List<Article> articleList;
     View mView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,13 +81,39 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
         recyclerView = mView.findViewById(R.id.rcv_article);
         int desiredWidth = 500;  // Thay thế bằng giá trị kích thước mong muốn của bạn
         int desiredHeight = 350; // Thay thế bằng giá trị kích thước mong muốn của bạn
-
-        articleAdapter = new ArticleAdapter(getContext(), desiredWidth, desiredHeight, this, R.id.rcv_article);
+        articleList = new ArrayList<>();
+        articleAdapter = new ArticleAdapter(articleList, getContext(), desiredWidth, desiredHeight, this, R.id.rcv_article);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(manager);
-        articleAdapter.setData(getListArticle());
+
         recyclerView.setAdapter(articleAdapter);
+        getListArticle();
     }
+
+    private void getListArticle() {
+        DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference("Article");
+        categoriesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                articleList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "DataSnapshot: " + snapshot.toString());
+                    Article article = snapshot.getValue(Article.class);
+                    if (article != null) {
+                        articleList.add(article);
+                    }
+                }
+                articleAdapter.notifyDataSetChanged();
+                Log.d(TAG, "Updated plantCategoryList: " + articleList.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+            }
+        });
+    }
+
     private void setPlantsAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_interest);
         plantList = new ArrayList<>();
@@ -140,16 +176,6 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
 //        return plantsList;
 //    }
 
-    private List<Article> getListArticle() {
-        List<Article> articleList = new ArrayList<>();
-
-        articleList.add(new Article(R.drawable.img_onboarding2,"plans name"));
-        articleList.add(new Article(R.drawable.img_onboarding2,"plans name"));
-        articleList.add(new Article(R.drawable.img_onboarding2,"plans name"));
-        articleList.add(new Article(R.drawable.img_onboarding2,"plans name"));
-        articleList.add(new Article(R.drawable.img_onboarding2,"plans name"));
-        return articleList;
-    }
     private List<PlantCategory> getListPlantCategory() {
         List<PlantCategory> plantCategoryListList = new ArrayList<>();
 //        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Foliage"));

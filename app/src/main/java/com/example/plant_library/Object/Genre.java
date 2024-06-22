@@ -1,27 +1,39 @@
 package com.example.plant_library.Object;
 
 public class Genre {
-    private int resourceID;
-    private String categoryName;
+    private int GenreID;
+    private String GenreName, GenreImage;
 
-    public Genre(int resourceID, String categoryName) {
-        this.resourceID = resourceID;
-        this.categoryName = categoryName;
+    public Genre() {
     }
 
-    public int getResourceID() {
-        return resourceID;
+    public Genre(int genreID, String genreName, String genreImage) {
+        GenreID = genreID;
+        GenreName = genreName;
+        GenreImage = genreImage;
     }
 
-    public void setResourceID(int resourceID) {
-        this.resourceID = resourceID;
+    public int getGenreID() {
+        return GenreID;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public void setGenreID(int genreID) {
+        GenreID = genreID;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public String getGenreName() {
+        return GenreName;
+    }
+
+    public void setGenreName(String genreName) {
+        GenreName = genreName;
+    }
+
+    public String getGenreImage() {
+        return GenreImage;
+    }
+
+    public void setGenreImage(String genreImage) {
+        GenreImage = genreImage;
     }
 }

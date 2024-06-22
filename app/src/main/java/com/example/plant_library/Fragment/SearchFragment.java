@@ -48,6 +48,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
     View mView;
     private FragmentHandler fragmentHandler;
     private List<PlantCategory> plantCategoryList;
+    private List<Genre> genreList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,13 +62,39 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
 
     private void setGenreAdapter() {
         recyclerView = mView.findViewById(R.id.rcv_genre);
-        genreAdapter = new GenreAdapter(getContext(), R.id.rcv_genre,this);
+        genreList = new ArrayList<>();
+        genreAdapter = new GenreAdapter(genreList,getContext(), R.id.rcv_genre,this);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),3);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        genreAdapter.setData(getGenre());
         recyclerView.setAdapter(genreAdapter);
+        getListGenre();
+    }
+
+    private void getListGenre() {
+        DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference("Genre");
+        categoriesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                genreList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "DataSnapshot: " + snapshot.toString());
+                    Genre genre = snapshot.getValue(Genre.class);
+                    if (genre != null) {
+                        Log.d(TAG, "Parsed category: " + genre.getGenreName() + ", " + genre.getGenreImage());
+                        genreList.add(genre);
+                    }
+                }
+                genreAdapter.notifyDataSetChanged();
+                Log.d(TAG, "Updated plantCategoryList: " + genreList.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+            }
+        });
     }
 
     private void setPlantCategoryAdapter(){
@@ -182,6 +209,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
     private void replaceFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.frame_index, fragment, tag);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 }

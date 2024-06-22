@@ -14,6 +14,7 @@ import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.Genre;
 import com.example.plant_library.Object.PlantCategory;
 import com.example.plant_library.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHolder> {
@@ -22,16 +23,13 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
     private final RecyclerViewInterface recyclerViewInterface;
     private final int recyclerViewId;
 
-    public GenreAdapter(Context context, int recyclerViewId, RecyclerViewInterface recyclerViewInterface) {
+    public GenreAdapter(List<Genre> list, Context context, int recyclerViewId, RecyclerViewInterface recyclerViewInterface) {
+        this.genreList = list;
         this.context = context;
         this.recyclerViewInterface = recyclerViewInterface;
         this.recyclerViewId = recyclerViewId;
     }
 
-    public void setData(List<Genre> list){
-        this.genreList = list;
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
@@ -46,8 +44,8 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
         if(genre == null){
             return;
         } else {
-            holder.imgGenre.setImageResource(genre.getResourceID());
-            holder.tvGenre.setText(genre.getCategoryName());
+            Picasso.get().load(genre.getGenreImage()).into(holder.imgGenre);
+            holder.tvGenre.setText(genre.getGenreName());
         }
     }
 

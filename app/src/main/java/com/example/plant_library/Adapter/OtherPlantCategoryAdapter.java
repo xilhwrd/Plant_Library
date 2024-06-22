@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plant_library.Object.Genre;
 import com.example.plant_library.Object.PlantCategory;
 import com.example.plant_library.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class OtherPlantCategoryAdapter extends RecyclerView.Adapter<OtherPlantCa
         if(genre == null){
             return;
         }else {
-            holder.imgPlantCategory.setImageResource(genre.getResourceID());
-            holder.tvCategoryName.setText(genre.getCategoryName());
+            Picasso.get().load(genre.getGenreImage()).into(holder.imgPlantCategory);
+            holder.tvCategoryName.setText(genre.getGenreName());
         }
     }
 

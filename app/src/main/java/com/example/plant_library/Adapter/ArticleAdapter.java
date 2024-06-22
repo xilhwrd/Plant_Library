@@ -2,6 +2,7 @@ package com.example.plant_library.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plant_library.Object.Article;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -28,16 +30,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     private final RecyclerViewInterface recyclerViewInterface;
     private final int recyclerViewId;
 
-    public ArticleAdapter(Context context, int width, int height, RecyclerViewInterface recyclerViewInterface, int recyclerViewId) {
+    public ArticleAdapter(List<Article> list, Context context, int width, int height, RecyclerViewInterface recyclerViewInterface, int recyclerViewId) {
+        this.articleList = list;
         this.context = context;
         this.width = width;
         this.height = height;
         this.recyclerViewInterface = recyclerViewInterface;
         this.recyclerViewId = recyclerViewId;
-    }
-    public void setData(List<Article> list){
-        this.articleList = list;
-        notifyDataSetChanged();
     }
     @NonNull
     @Override
@@ -52,8 +51,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         if(article == null){
             return;
         }else {
-            holder.imgArticle.setImageResource(article.getResourceID());
-            holder.tvName.setText(article.getArticleName());
+            Picasso.get().load(article.getArticleImage()).into(holder.imgArticle);
+            holder.tvName.setText(article.getArticleTitle());
         }
         ViewGroup.LayoutParams layoutParams = holder.constraintLayoutArticle.getLayoutParams();
         layoutParams.width = width;  // Đặt chiều rộng mong muốn, thay thế bằng giá trị của bạn
@@ -85,15 +84,24 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
                         int pos = getAdapterPosition();
                         if (pos != RecyclerView.NO_POSITION){
                             recyclerViewInterface.onItemClick(recyclerViewId,pos);
+                            Article article = articleList.get(pos);
+                            Bundle bundle = new Bundle();
+
+                            bundle.putInt("article_id", article.getArticleID());
+                            bundle.putString("article_title",article.getArticleTitle());
+                            bundle.putString("article_image",article.getArticleImage());
+                            bundle.putString("article_content",article.getArticleContent());
+                            bundle.putString("article_content_intro", article.getArtileContentIntro());
+                            bundle.putString("article_description", article.getArticleDescrip());
+                            bundle.putString("article_content2",article.getArticleContent2());
+                            bundle.putString("article_content3",article.getArticleContent3());
+                            bundle.putString("article_content4",article.getArticleContent4());
+
+                            Intent intent = new Intent(context, ArticleDetailActivity.class);
+                            intent.putExtra("article_infor", bundle);
+                            context.startActivity(intent);
                         }
                     }
-                }
-            });
-            constraintLayoutArticle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, ArticleDetailActivity.class);
-                    context.startActivity(intent);
                 }
             });
         }
