@@ -62,4 +62,32 @@
         <item name="android:solidColor">@color/main_color</item>
         <item name="color">@color/main_color</item>
     </style>
+
+    <style name="CustomCardViewDetail" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/DetailCardViewOverlay</item>
+    </style>
+
+    <style name="DetailCardViewOverlay">
+        <item name="cornerFamily">rounded</item>
+        <!-- below items does not work with normal ImageView -->
+        <item name="cornerSizeBottomRight">40dp</item>
+        <item name="cornerSizeBottomLeft">40dp</item>
+        <item name="android:solidColor">@color/main_color</item>
+        <item name="color">@color/main_color</item>
+    </style>
+
+    <style name="CustomCardViewDetail2" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/DetailCardViewOverlay2</item>
+    </style>
+
+    <style name="DetailCardViewOverlay2">
+        <item name="cornerFamily">rounded</item>
+        <!-- below items does not work with normal ImageView -->
+        <item name="cornerSizeBottomRight">40dp</item>
+        <item name="cornerSizeBottomLeft">40dp</item>
+        <item name="android:topRightRadius">40dp</item>
+        <item name="android:topLeftRadius">40dp</item>
+        <item name="android:solidColor">@color/main_color</item>
+        <item name="color">@color/main_color</item>
+    </style>
 </resources>

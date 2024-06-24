@@ -79,8 +79,8 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
     }
     private void setArticleAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_article);
-        int desiredWidth = 500;  // Thay thế bằng giá trị kích thước mong muốn của bạn
-        int desiredHeight = 350; // Thay thế bằng giá trị kích thước mong muốn của bạn
+        int desiredWidth = 600;  // Thay thế bằng giá trị kích thước mong muốn của bạn
+        int desiredHeight = 450; // Thay thế bằng giá trị kích thước mong muốn của bạn
         articleList = new ArrayList<>();
         articleAdapter = new ArticleAdapter(articleList, getContext(), desiredWidth, desiredHeight, this, R.id.rcv_article);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);

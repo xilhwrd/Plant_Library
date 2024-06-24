@@ -5,6 +5,7 @@ import static java.security.AccessController.getContext;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,6 +40,7 @@ public class GenreActivity extends AppCompatActivity implements RecyclerViewInte
     private PlantsAdapter plantsAdapter;
     private FragmentHandler fragmentHandler;
     private List<Plants> plantList;
+    private Toolbar toolbarGenre;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,19 @@ public class GenreActivity extends AppCompatActivity implements RecyclerViewInte
         setPlantsAdapter();
         setData();
 
+
+        toolbarGenre = findViewById(R.id.toolbar_genre);
+        setSupportActionBar(toolbarGenre);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(null);
+            Drawable backArrow = getResources().getDrawable(R.drawable.bg_back_button);
+
+
+            // Thiết lập Drawable cho nút back trên Toolbar
+            getSupportActionBar().setHomeAsUpIndicator(backArrow);
+        }
     }
     private void setPlantsAdapter(){
         recyclerView = findViewById(R.id.rcv_category_search);
@@ -99,6 +116,14 @@ public class GenreActivity extends AppCompatActivity implements RecyclerViewInte
                         plantList.add(plant);
                     }
                 }
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        plantsAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
+
                 plantsAdapter.notifyDataSetChanged();
                 Log.d(TAG, "Number of plants loaded: " + plantList.size());
             }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/plants_layout"
+    android:id="@+id/shimmer_layout_plant"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -10,94 +10,99 @@
     android:layout_marginTop="5dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp">
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        app:cardCornerRadius="30dp"
-        android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_layout"
-        android:layout_width="150dp"
-        android:layout_height="170dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/img_plant"
+        android:layout_width="match_parent"
+        android:id="@+id/plants_layout"
+        android:layout_height="match_parent">
+        <com.google.android.material.card.MaterialCardView
+            style="@style/CustomCardViewDetail2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="11dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_bg_sign_up_finish"
+            app:cardCornerRadius="30dp"
+            app:strokeColor="@color/main_color"
+            app:strokeWidth="1.5dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:alpha="1"
-            android:background="@drawable/bg_infor_plants"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/tv_plant_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.35">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:alpha="2"
-                android:id="@+id/img_sun"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="3dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/img_sun_level1" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_layout"
+                style="@style/CustomCardViewDetail2"
+                android:layout_width="170dp"
+                android:layout_height="220dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/img_plant"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_bg_sign_up_finish"
+                    app:shapeAppearanceOverlay="@style/CustomCardViewDetail2" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="18dp"
+                    android:alpha="0.8"
+                    android:background="@drawable/bg_infor_plants"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_plant_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.35">
 
-            <ImageView
-                android:alpha="2"
-                android:id="@+id/img_water"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="3dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/img_water_level1" />
+                    <ImageView
+                        android:id="@+id/img_sun"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="5dp"
+                        android:alpha="2"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_sun_level1" />
 
-            <ImageView
-                android:alpha="2"
-                android:id="@+id/img_hard"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginBottom="8dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/img_hard_level1" />
-        </LinearLayout>
-        <TextView
-            android:textAlignment="center"
-            android:id="@+id/tv_plant_name"
-            android:alpha="0.5"
-            android:textColor="#FFFFFF"
-            android:fontFamily="@font/generalsans_light"
-            android:textSize="10sp"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_textview_item"
-            android:text="Plants name"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/constraint_layout"
-            app:layout_constraintStart_toStartOf="@+id/constraint_layout" />
-        <LinearLayout
-            android:background="@drawable/tab_indi"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+                    <ImageView
+                        android:id="@+id/img_water"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="5dp"
+                        android:alpha="2"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_water_level1" />
+
+                    <ImageView
+                        android:id="@+id/img_hard"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="8dp"
+                        android:alpha="2"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_hard_level1" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_plant_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:alpha="0.8"
+                    android:background="@drawable/bg_textview_item"
+                    android:fontFamily="@font/generalsans_light"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/constraint_layout"
+                    app:layout_constraintStart_toStartOf="@+id/constraint_layout" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

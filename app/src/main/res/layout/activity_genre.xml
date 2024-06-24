@@ -5,27 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.GenreActivity">
+
     <androidx.core.widget.NestedScrollView
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <androidx.cardview.widget.CardView
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                app:cardCornerRadius="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_marginBottom="20dp"
+                android:id="@+id/cardView_detail"
+                style="@style/CustomCardViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardPreventCornerOverlap="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="300dp"
-                    android:layout_height="120dp">
-                    <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp">
+                    <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/img_category_detail"
+                        app:shapeAppearanceOverlay="@style/DetailCardViewOverlay"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
@@ -47,16 +50,13 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/img_category_detail" />
-                    <LinearLayout
-                        android:background="@drawable/custom_card_corner"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
             <androidx.recyclerview.widget.RecyclerView
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:layout_gravity="center"
+
                 android:id="@+id/rcv_category_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -67,4 +67,16 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <androidx.appcompat.widget.Toolbar
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:id="@+id/toolbar_genre"
+        app:titleTextColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="10dp"
+        android:theme="@style/MyThemeOverlay_Toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
