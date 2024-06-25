@@ -16,6 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -106,24 +107,35 @@ public class SignUpActivity extends AppCompatActivity {
                     btnSignUp.setEnabled(false);
                     signUpCheck(btnSignUp);
                 }
-                    prgSignUp.setVisibility(View.VISIBLE);
-                    mAuth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        FirebaseUser user = mAuth.getCurrentUser();
-                                        prgSignUp.setVisibility(View.GONE);
-                                        saveUserToDatabase(user, username);
-                                    } else {
-                                        prgSignUp.setVisibility(View.GONE);
-                                        Toast.makeText(SignUpActivity.this, "Some thing wrong, check your connection.",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                }
-
+                mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                        prgSignUp.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
+                            if (isNewUser) {
+                                prgSignUp.setVisibility(View.VISIBLE);
+                                mAuth.createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    FirebaseUser user = mAuth.getCurrentUser();
+                                                    prgSignUp.setVisibility(View.GONE);
+                                                    saveUserToDatabase(user, username);
+                                                }
+                                            }
+                                        });
+                            } else {
+                                // Email đã tồn tại
+                                Toast.makeText(SignUpActivity.this, "Email đã được đăng ký.", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Error occurred. Please try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
         });
     }
     private void saveUserToDatabase(FirebaseUser user, String username) {

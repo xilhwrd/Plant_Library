@@ -1,5 +1,6 @@
 package com.example.plant_library.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.plant_library.Activity.AccountSettings;
 import com.example.plant_library.Object.Genre;
 import com.example.plant_library.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,10 +22,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MeFragment extends Fragment {
-    private TextView userEmailTextView, userNameTextView;
+    private TextView userEmailTextView, userNameTextView, accountSettingTextview;
     private FirebaseAuth mAuth;
+    private StorageReference mStorageRef;
+    CircleImageView imgUser;
+    private FirebaseUser currentUser;
     View mView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,16 +41,30 @@ public class MeFragment extends Fragment {
         // Inflate the layout for this fragment
         mView =  inflater.inflate(R.layout.fragment_me, container, false);
         initUI();
+        setOnClick();
         setUserInformation();
         // Lấy email của người dùng và đưa vào TextView
 
         return mView;
     }
     private void initUI(){
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("Profile");
         mAuth = FirebaseAuth.getInstance();
         userEmailTextView = mView.findViewById(R.id.tv_email_user);
         userNameTextView = mView.findViewById(R.id.tv_name_user);
-
+        accountSettingTextview = mView.findViewById(R.id.tv_account_setting);
+        imgUser = mView.findViewById(R.id.cir_img_user);
+        currentUser = mAuth.getCurrentUser();
+    }
+    private void setOnClick(){
+        accountSettingTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AccountSettings.class);
+                startActivity(intent);
+            }
+        });
     }
     private void setUserInformation(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -48,11 +72,43 @@ public class MeFragment extends Fragment {
             String email = currentUser.getEmail();
             userEmailTextView.setText(""+email);
             String username = currentUser.getDisplayName();
-            userNameTextView.setText(""+ username);
+            if (username.isEmpty() || username == null){
+                loadDataUser();
+            }else {
+                userNameTextView.setText(username);
+            }
         }
     }
     private void loadDataUser(){
-        DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference("UserInformation");
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("UserInformation");
 
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            userEmailTextView.setText(currentUser.getEmail());
+
+            mDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String userName = dataSnapshot.child("UserName").getValue(String.class);
+                        userNameTextView.setText(userName);
+                        String userImage = dataSnapshot.child("ProfileImage").getValue(String.class);
+                        Picasso.get().load(userImage).into(imgUser);
+                        if (userImage != null && !userImage.isEmpty()) {
+                            Picasso.get().load(userImage).into(imgUser);
+                        } else {
+                            Log.e("MeFragment", "UserImage is null or empty");
+                        }
+                    } else {
+                        userNameTextView.setText("Username not found");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    userNameTextView.setText("Error loading username");
+                }
+            });
+        }
     }
 }
