@@ -130,7 +130,7 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantViewH
                 public void onClick(View v) {
                     if(recyclerViewInterface != null){
                         int pos = getAdapterPosition();
-                        if (pos != RecyclerView.NO_POSITION){
+                        if (pos != RecyclerView.NO_POSITION && pos < plantsList.size() && !showShimmer){
                             recyclerViewInterface.onItemClick(recyclerViewId,pos);
                             Plants plant = plantsList.get(pos);
                             Bundle bundle = new Bundle();

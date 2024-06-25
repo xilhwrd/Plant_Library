@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.PlantCategory;
 import com.example.plant_library.R;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class PlantCategoryAdapter extends RecyclerView.Adapter<PlantCategoryAdap
     private int layout;
     private final RecyclerViewInterface recyclerViewInterface;
     private final int recyclerViewId;
+    private boolean showShimmer = true;
 
     public PlantCategoryAdapter(List<PlantCategory> list, Context context, int layout, RecyclerViewInterface recyclerViewInterface, int recyclerViewId) {
         this.plantCategoryList = list;
@@ -41,30 +43,47 @@ public class PlantCategoryAdapter extends RecyclerView.Adapter<PlantCategoryAdap
 
     @Override
     public void onBindViewHolder(@NonNull PlantsViewHolder holder, int position) {
+        if (showShimmer) {
+            holder.shimmerLayout.startShimmer();
+            holder.shimmerLayout.setAlpha((float) 1);
+
+        } else {
+            holder.shimmerLayout.stopShimmer();
+            holder.shimmerLayout.setShimmer(null);
         PlantCategory plantCategory = plantCategoryList.get(position);
         holder.tvCategoryName.setText(""+plantCategory.getCategoryName());
         Picasso.get().load(plantCategory.getCategoryImage()).into(holder.imgPlantCategory);
+
+        }
     }
 
     @Override
     public int getItemCount() {
-        return plantCategoryList != null ? plantCategoryList.size() : 0;
+        if(plantCategoryList != null) {
+            return showShimmer ? 8 : plantCategoryList.size();
+        }
+        return 0;
     }
-
+    public void setShowShimmer(boolean showShimmer) {
+        this.showShimmer = showShimmer;
+        notifyDataSetChanged();
+    }
     public class PlantsViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgPlantCategory;
         private TextView tvCategoryName;
+        private ShimmerFrameLayout shimmerLayout;
 
         public PlantsViewHolder(@NonNull View itemView) {
             super(itemView);
             imgPlantCategory = itemView.findViewById(R.id.img_category);
             tvCategoryName = itemView.findViewById(R.id.tv_plant_category);
+            shimmerLayout = itemView.findViewById(R.id.shimmer_layout_category);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (recyclerViewInterface != null) {
                         int pos = getAdapterPosition();
-                        if (pos != RecyclerView.NO_POSITION) {
+                        if (pos != RecyclerView.NO_POSITION && pos < plantCategoryList.size() && !showShimmer) {
                             recyclerViewInterface.onItemClick(recyclerViewId, pos);
                         }
                     }

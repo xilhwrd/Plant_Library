@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,6 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
         initUI();
 
         return mView;
-
     }
     private void initUI(){
 
@@ -79,8 +79,8 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
     }
     private void setArticleAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_article);
-        int desiredWidth = 600;  // Thay thế bằng giá trị kích thước mong muốn của bạn
-        int desiredHeight = 450; // Thay thế bằng giá trị kích thước mong muốn của bạn
+        int desiredWidth = 560;  // Thay thế bằng giá trị kích thước mong muốn của bạn
+        int desiredHeight = 410; // Thay thế bằng giá trị kích thước mong muốn của bạn
         articleList = new ArrayList<>();
         articleAdapter = new ArticleAdapter(articleList, getContext(), desiredWidth, desiredHeight, this, R.id.rcv_article);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
@@ -103,6 +103,14 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
                         articleList.add(article);
                     }
                 }
+                articleAdapter.notifyDataSetChanged();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        articleAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
                 articleAdapter.notifyDataSetChanged();
                 Log.d(TAG, "Updated plantCategoryList: " + articleList.toString());
             }

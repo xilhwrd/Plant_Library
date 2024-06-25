@@ -16,6 +16,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -34,6 +36,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignUpActivity extends AppCompatActivity {
     private EditText edtName, edtEmail, edtPass;
     private ProgressBar prgSignUp;
@@ -41,6 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
     private AppCompatButton btnLogin, btnSignUp;
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 123;
+    private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btn_signup);
         btnLogin = findViewById(R.id.btn_login);
         imgGoogle = findViewById(R.id.google_SignIn);
+        mDatabase = FirebaseDatabase.getInstance().getReference("UserInformation");
     }
     private void initListener(){
         imgGoogle.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +93,9 @@ public class SignUpActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 String email = edtEmail.getText().toString().trim();
                 String password = edtPass.getText().toString().trim();
+                String username = edtName.getText().toString().trim();
 
-                if (edtName.length() == 0 || edtEmail.length() == 0 || edtPass.length() == 0) {
+                if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                     Toast.makeText(SignUpActivity.this, "Please enter information", Toast.LENGTH_SHORT).show();
                     edtName.requestFocus();
                     imm.showSoftInput(edtName, InputMethodManager.SHOW_IMPLICIT);
@@ -97,7 +105,7 @@ public class SignUpActivity extends AppCompatActivity {
                     edtEmail.requestFocus();
                     btnSignUp.setEnabled(false);
                     signUpCheck(btnSignUp);
-                } else {
+                }
                     prgSignUp.setVisibility(View.VISIBLE);
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -106,19 +114,41 @@ public class SignUpActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         prgSignUp.setVisibility(View.GONE);
-                                        Toast.makeText(SignUpActivity.this, "đăng ký ọk", Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent(SignUpActivity.this, IndexActivity.class);
-                                        startActivity(i);
+                                        saveUserToDatabase(user, username);
                                     } else {
-                                        prgSignUp.setVisibility(View.VISIBLE);
+                                        prgSignUp.setVisibility(View.GONE);
                                         Toast.makeText(SignUpActivity.this, "Some thing wrong, check your connection.",
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
                 }
-            }
+
         });
+    }
+    private void saveUserToDatabase(FirebaseUser user, String username) {
+        if (user != null) {
+            String userId = user.getUid();
+            Map<String, Object> userInfo = new HashMap<>();
+            userInfo.put("UserID", userId);
+            userInfo.put("UserName", username);
+            userInfo.put("ProfileImage", "https://firebasestorage.googleapis.com/v0/b/plant-box-b4958.appspot.com/o/Profile%2FImage%20Profile%20Default.png?alt=media&token=600a4541-85a3-477b-bae9-8062291c5871");
+
+            mDatabase.child(userId).setValue(userInfo)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                finishAffinity();
+                                Toast.makeText(SignUpActivity.this, "User registered successfully", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(SignUpActivity.this, SignUpFinishActivity.class));
+                                prgSignUp.setVisibility(View.GONE);
+                            } else {
+                                Toast.makeText(SignUpActivity.this, "Failed to save user information", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
     }
     public void signInWithGoogle() {
         Intent signInIntent = GoogleSignIn.getClient(this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -160,7 +190,8 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                         } else {
-                            // Đăng nhập thất bại
+                            Toast.makeText(SignUpActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                            prgSignUp.setVisibility(View.GONE);
                         }
                     }
                 });

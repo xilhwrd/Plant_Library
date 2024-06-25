@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plant_library.Object.Article;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     private int height;
     private final RecyclerViewInterface recyclerViewInterface;
     private final int recyclerViewId;
+    private boolean showShimmer = true;
 
     public ArticleAdapter(List<Article> list, Context context, int width, int height, RecyclerViewInterface recyclerViewInterface, int recyclerViewId) {
         this.articleList = list;
@@ -47,42 +49,52 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
+        if (showShimmer) {
+            holder.shimmerLayout.startShimmer();
+            holder.shimmerLayout.setAlpha((float) 1);
+
+        } else {
+            holder.shimmerLayout.stopShimmer();
+            holder.shimmerLayout.setShimmer(null);
         Article article = articleList.get(position);
-        if(article == null){
-            return;
-        }else {
             Picasso.get().load(article.getArticleImage()).into(holder.imgArticle);
             holder.tvName.setText(article.getArticleTitle());
         }
-        ViewGroup.LayoutParams layoutParams = holder.constraintLayoutArticle.getLayoutParams();
+        ViewGroup.LayoutParams layoutParams = holder.shimmerLayout.getLayoutParams();
         layoutParams.width = width;  // Đặt chiều rộng mong muốn, thay thế bằng giá trị của bạn
         layoutParams.height = height; // Đặt chiều cao mong muốn, thay thế bằng giá trị của bạn
-        holder.constraintLayoutArticle.setLayoutParams(layoutParams);
+        holder.shimmerLayout.setLayoutParams(layoutParams);
     }
 
     @Override
     public int getItemCount() {
         if(articleList != null){
-            return articleList.size();
+            return showShimmer ? 5 : articleList.size();
         }
         return 0;
+    }
+    public void setShowShimmer(boolean showShimmer) {
+        this.showShimmer = showShimmer;
+        notifyDataSetChanged();
     }
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder{
         private ImageView imgArticle;
         private ConstraintLayout constraintLayoutArticle;
         private TextView tvName;
+        private ShimmerFrameLayout shimmerLayout;
         public ArticleViewHolder(@NonNull View itemView) {
             super(itemView);
             constraintLayoutArticle = itemView.findViewById(R.id.constraint_layout_article);
             imgArticle = itemView.findViewById(R.id.img_article);
             tvName = itemView.findViewById(R.id.tv_article_name);
+            shimmerLayout = itemView.findViewById(R.id.shimmer_layout_article);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(recyclerViewInterface != null){
                         int pos = getAdapterPosition();
-                        if (pos != RecyclerView.NO_POSITION){
+                        if (pos != RecyclerView.NO_POSITION && pos < articleList.size() && !showShimmer){
                             recyclerViewInterface.onItemClick(recyclerViewId,pos);
                             Article article = articleList.get(pos);
                             Bundle bundle = new Bundle();

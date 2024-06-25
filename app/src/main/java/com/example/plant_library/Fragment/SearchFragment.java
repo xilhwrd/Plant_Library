@@ -4,6 +4,7 @@ import static android.service.controls.ControlsProviderService.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +88,13 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
                     }
                 }
                 genreAdapter.notifyDataSetChanged();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        genreAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
                 Log.d(TAG, "Updated plantCategoryList: " + genreList.toString());
             }
 
@@ -123,7 +131,14 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
                         plantCategoryList.add(category);
                     }
                 }
-                plantCategoryAdapter.notifyDataSetChanged();
+                    plantCategoryAdapter.notifyDataSetChanged();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        plantCategoryAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
                 Log.d(TAG, "Updated plantCategoryList: " + plantCategoryList.toString());
             }
 
@@ -133,16 +148,6 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
             }
         });
     }
-
-    private List<Genre> getGenre() {
-        List<Genre> genreList = new ArrayList<>();
-//        genreList.add(new PlantCategory(R.drawable.img_plant_genre,"foliage"));
-//        genreList.add(new PlantCategory(R.drawable.img_plant_genre,"flowering"));
-//        genreList.add(new PlantCategory(R.drawable.img_plant_genre,"article"));
-        return genreList;
-    }
-
-
     @Override
     public void onItemClick(int recyclerViewId, int position) {
         switch (recyclerViewId) {

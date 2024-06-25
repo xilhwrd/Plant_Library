@@ -116,6 +116,7 @@ public class GenreActivity extends AppCompatActivity implements RecyclerViewInte
                         plantList.add(plant);
                     }
                 }
+                plantsAdapter.notifyDataSetChanged();
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -123,8 +124,6 @@ public class GenreActivity extends AppCompatActivity implements RecyclerViewInte
                         plantsAdapter.setShowShimmer(false);
                     }
                 }, 3000);
-
-                plantsAdapter.notifyDataSetChanged();
                 Log.d(TAG, "Number of plants loaded: " + plantList.size());
             }
 

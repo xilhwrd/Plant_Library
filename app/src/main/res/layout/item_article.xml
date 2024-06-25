@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/constraint_layout_article"
+    android:id="@+id/shimmer_layout_article"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp">
 <!--    w200 h150-->
 
-<com.google.android.material.card.MaterialCardView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout_article"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+    <com.google.android.material.card.MaterialCardView
     style="@style/CustomCardViewArticle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:cardPreventCornerOverlap="false"
+    app:strokeColor="@color/main_color"
+    app:strokeWidth="1.5dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
@@ -23,41 +29,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <com.google.android.material.imageview.ShapeableImageView
-            app:shapeAppearanceOverlay="@style/ArticleCardViewOverlay"
             android:id="@+id/img_article"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/img_bg_sign_up_finish"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ArticleCardViewOverlay" />
 
         <TextView
             android:id="@+id/tv_article_name"
-            android:paddingStart="20dp"
-            android:alpha="0.5"
-            android:textColor="#FFFFFF"
-            android:fontFamily="@font/generalsans_light"
-            android:textSize="10sp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:alpha="0.8"
+            android:gravity="center"
+            android:paddingRight="20dp"
             android:background="@drawable/bg_textview_item2"
-            android:text="Plants name"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/constraint_layout"
-            app:layout_constraintStart_toStartOf="@+id/constraint_layout" />
-
-
-
+            android:fontFamily="@font/generalsans_light"
+            android:textColor="#FFFFFF"
+            android:textAlignment="center"
+            android:paddingStart="20dp"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <LinearLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:background="@drawable/tv_item"
-        />
-</com.google.android.material.card.MaterialCardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.facebook.shimmer.ShimmerFrameLayout>
