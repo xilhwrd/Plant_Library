@@ -64,7 +64,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
     private void setGenreAdapter() {
         recyclerView = mView.findViewById(R.id.rcv_genre);
         genreList = new ArrayList<>();
-        genreAdapter = new GenreAdapter(genreList,getContext(), R.id.rcv_genre,this);
+        genreAdapter = new GenreAdapter(genreList, R.layout.item_category_search,getContext(), R.id.rcv_genre,this);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),3);
         recyclerView.setLayoutManager(gridLayoutManager);

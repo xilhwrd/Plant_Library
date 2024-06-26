@@ -25,18 +25,20 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
     private final RecyclerViewInterface recyclerViewInterface;
     private final int recyclerViewId;
     private boolean showShimmer = true;
-    public GenreAdapter(List<Genre> list, Context context, int recyclerViewId, RecyclerViewInterface recyclerViewInterface) {
+    private int itemLayout;
+    public GenreAdapter(List<Genre> list, int itemLayout, Context context, int recyclerViewId, RecyclerViewInterface recyclerViewInterface) {
         this.genreList = list;
         this.context = context;
         this.recyclerViewInterface = recyclerViewInterface;
         this.recyclerViewId = recyclerViewId;
+        this.itemLayout = itemLayout;
     }
 
 
     @NonNull
     @Override
     public GenreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genre, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
         return new GenreViewHolder(view);
     }
 

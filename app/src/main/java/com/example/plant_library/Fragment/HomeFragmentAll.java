@@ -226,10 +226,9 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
     private void setPlantCategoryAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_plant_category);
         plantCategoryList = new ArrayList<>();
-        plantCategoryAdapter = new GenreAdapter(plantCategoryList,getContext(), R.id.rcv_plant_category,this);
+        plantCategoryAdapter = new GenreAdapter(plantCategoryList, R.layout.item_category_plants,getContext(), R.id.rcv_plant_category,this);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(plantCategoryAdapter);
         getListGenre();
     }
