@@ -1,19 +1,20 @@
 package com.example.plant_library.Object;
 
 public class Plants {
-    private int PlantID, CategoryID;
+    private int PlantID, CategoryID,  AirPurifying;;
     private String ScientificName, CommonName, Family, Genus, Species, Description, GrowthRate,
             LightRequirements, WaterRequirements, CareRequirements, SoilType, PHRange,
             TemperatureRange, Bloomtime,Propagation, Size, PlantImage;
 
     public Plants(){}
-    public Plants(int plantID,int categoryID, String scientificName, String commonName, String family,
+    public Plants(int plantID,int categoryID, int airPurifying, String scientificName, String commonName, String family,
                   String genus, String species, String description, String growthRate,
                   String lightRequirements, String waterRequirements, String careRequirements,
                   String soilType, String PHRange, String temperatureRange, String bloomtime,
                   String propagation, String size, String plantImage) {
         this.PlantID = plantID;
         this.CategoryID = categoryID;
+        this.AirPurifying = airPurifying;
         this.ScientificName = scientificName;
         this.CommonName = commonName;
         this.Family = family;
@@ -183,5 +184,13 @@ public class Plants {
 
     public void setPlantImage(String plantImage) {
         PlantImage = plantImage;
+    }
+
+    public int getAirPurifying() {
+        return AirPurifying;
+    }
+
+    public void setAirPurifying(int airPurifying) {
+        AirPurifying = airPurifying;
     }
 }

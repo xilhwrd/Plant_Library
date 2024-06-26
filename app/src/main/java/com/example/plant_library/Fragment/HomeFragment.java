@@ -26,7 +26,9 @@ public class HomeFragment extends Fragment {
     private Button btn;
     private FragmentHandler fragmentHandler;
     private ProgressBar progressBar;
-    HomeFragment homeFragment;
+    private HomeFragmentAll homeFragmentAll = new HomeFragmentAll();
+    private HomeFragmentArticle homeFragmentArticle = new HomeFragmentArticle();
+    private HomeFragmentFlowering homeFragmentFlowering = new HomeFragmentFlowering();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,94 +66,60 @@ public class HomeFragment extends Fragment {
             selectTab(tabIndex);
         }
 
-//        mTabLayout = mView.findViewById(R.id.tab_layout);
-//        mTabLayout.setBackgroundColor(getResources().getColor(R.color.bg));
-//        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.main_color));
-//        mTabLayout.addTab(mTabLayout.newTab().setText("All"));
-//        mTabLayout.addTab(mTabLayout.newTab().setText("Article"));
-//        mTabLayout.addTab(mTabLayout.newTab().setText("Flowering"));
-//        mTabLayout.addTab(mTabLayout.newTab().setText("Foliage"));
-//        loadFragment(new HomeFragmentAll());
-//
-//        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(@NonNull TabLayout.Tab tab) {
-//                Fragment selectedFragment = null;
-//                switch (tab.getPosition()) {
-//                    case 0:
-//                        selectedFragment = new HomeFragmentAll();
-//                        break;
-//                    case 1:
-//                        selectedFragment = new HomeFragmentAll();
-//                        break;
-//                    case 2:
-//                        selectedFragment = new HomeFragmentAll();
-//                        break;
-//                    case 3:
-//                        selectedFragment = new HomeFragmentAll();
-//                        break;
-//                }
-//                if (selectedFragment != null) {
-//                    loadFragment(selectedFragment);
-//                }
-//            }
-//
-//            @Override
-//            public void onTabUnselected(@NonNull TabLayout.Tab tab) {
-//                // Do nothing
-//            }
-//
-//            @Override
-//            public void onTabReselected(@NonNull TabLayout.Tab tab) {
-//                // Do nothing
-//            }
-//        });
     }
     private View.OnClickListener tabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Fragment selectedFragment = new HomeFragmentAll();
+            Fragment selectedFragment = homeFragmentAll;
             switch (view.getId()) {
                 case R.id.tab_all:
-                    selectedFragment = new HomeFragmentAll();
-                    loadFragment(selectedFragment);
+                    selectedFragment = homeFragmentAll;
                     tab1.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                     tab1.setTextColor(getResources().getColor(R.color.white));
                     setBG(tab2, tab3, tab4);
                     break;
                 case R.id.tab_article:
-                    selectedFragment = new HomeFragmentArticle();
-                    loadFragment(selectedFragment);
+                    selectedFragment = homeFragmentArticle;
                     tab2.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                     tab2.setTextColor(getResources().getColor(R.color.white));
                     setBG(tab1, tab3, tab4);
                     break;
                 case R.id.tab_flowering:
-                    selectedFragment = new HomeFragmentFlowering();
-                    loadFragment(selectedFragment);
+                    selectedFragment = homeFragmentFlowering;
                     tab3.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                     tab3.setTextColor(getResources().getColor(R.color.white));
                     setBG(tab1, tab2, tab4);
                     break;
                 case R.id.tab_foliage:
-                    selectedFragment = new HomeFragmentAll();
-                    loadFragment(selectedFragment);
+                    selectedFragment = homeFragmentFlowering;
                     tab4.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                     tab4.setTextColor(getResources().getColor(R.color.white));
                     setBG(tab1, tab2, tab3);
                     break;
             }
-//            if (selectedFragment != null) {
-//                loadFragment(selectedFragment);
-//
-//            }
+            loadFragment(selectedFragment);
         }
     };
+
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_home, fragment);
+
+        // Hide all fragments
+        if (homeFragmentAll.isAdded()) transaction.hide(homeFragmentAll);
+        if (homeFragmentArticle.isAdded()) transaction.hide(homeFragmentArticle);
+        if (homeFragmentFlowering.isAdded()) transaction.hide(homeFragmentFlowering);
+//        if (homeFragmentFoliage.isAdded()) transaction.hide(homeFragmentFoliage);
+
+        // Show the selected fragment
+        if (fragment.isAdded()) {
+            transaction.show(fragment);
+        } else {
+            transaction.add(R.id.frame_home, fragment);
+        }
+
         transaction.commit();
     }
+
     private void setBG(TextView tab1, TextView tab2, TextView tab3){
         tab1.setBackground(getResources().getDrawable(R.drawable.bg_tab));
         tab1.setTextColor(getResources().getColor(R.color.black));

@@ -16,8 +16,8 @@
         android:layout_height="match_parent">
         <com.google.android.material.card.MaterialCardView
             style="@style/CustomCardViewDetail2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="155dp"
+            android:layout_height="205dp"
             app:cardCornerRadius="30dp"
             app:strokeColor="@color/main_color"
             app:strokeWidth="1.5dp"
@@ -28,8 +28,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint_layout"
                 style="@style/CustomCardViewDetail2"
-                android:layout_width="170dp"
-                android:layout_height="220dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">

@@ -108,6 +108,10 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantViewH
         this.showShimmer = showShimmer;
         notifyDataSetChanged();
     }
+    public void updateData(List<Plants> newPlantList) {
+        this.plantsList = newPlantList;
+        notifyDataSetChanged();
+    }
 
     public class PlantViewHolder extends RecyclerView.ViewHolder{
         private ImageView imgPlants, imgSun, imgHard, imgWater;

@@ -3,6 +3,7 @@ package com.example.plant_library.Fragment;
 import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,13 @@ public class HomeFragmentFlowering extends Fragment implements RecyclerViewInter
                     }
                 }
                 plantsAdapter.notifyDataSetChanged();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        plantsAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
             }
 
             @Override
@@ -106,6 +114,14 @@ public class HomeFragmentFlowering extends Fragment implements RecyclerViewInter
                     }
                 }
                 easyPlantsAdapter.notifyDataSetChanged();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        easyPlantsAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
+
             }
 
             @Override

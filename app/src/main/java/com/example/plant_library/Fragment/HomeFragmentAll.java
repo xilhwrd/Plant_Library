@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.plant_library.Adapter.ArticleAdapter;
+import com.example.plant_library.Adapter.GenreAdapter;
 import com.example.plant_library.Adapter.OtherPlantCategoryAdapter;
 import com.example.plant_library.Adapter.PlantCategoryAdapter;
 import com.example.plant_library.Adapter.PlantsAdapter;
@@ -36,17 +37,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
     RecyclerView recyclerView;
     TextView tvViewAllArticle;
     ArticleAdapter articleAdapter;
-    PlantsAdapter plantsAdapter;
-    PlantCategoryAdapter plantCategoryAdapter;
+    PlantsAdapter interestPlantsAdapter, airPlantAdapter;
+    GenreAdapter plantCategoryAdapter;
     OtherPlantCategoryAdapter otherPlantCategoryAdapter;
-    private List<Plants> plantList;
+    private List<Plants> plantList, interestPlant, airPlant;
     private List<Article> articleList;
+    private List<Genre> plantCategoryList;
     View mView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,9 +57,9 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_home_all, container, false);
         setArticleAdapter();
-        setPlantsAdapter();
-//        setAirPlantsAdapter();
-//        setPlantCategoryAdapter();
+        setInterestPlantsAdapter();
+        setAirPlantsAdapter();
+        setPlantCategoryAdapter();
 //        setLowMainPlantsAdapter();
         setOtherPlantCategoryAdapter();
         initUI();
@@ -122,28 +125,93 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
         });
     }
 
-    private void setPlantsAdapter(){
+    private void setInterestPlantsAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_interest);
-        plantList = new ArrayList<>();
-        plantsAdapter = new PlantsAdapter(plantList,this, getContext(), R.id.rcv_category_search);
+        interestPlant = new ArrayList<>();
+        interestPlantsAdapter = new PlantsAdapter(interestPlant,this, getContext(), R.id.rcv_interest);
 
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(manager);
 
-        recyclerView.setAdapter(plantsAdapter);
+        recyclerView.setAdapter(interestPlantsAdapter);
+        getListInterestPlants();
+
+
+    }
+    private void getListInterestPlants() {
+        DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference("Plants");
+        plantsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Plants plant = snapshot.getValue(Plants.class);
+                    if (plant != null) {
+                        interestPlant.add(plant);
+                    }
+                }
+                Collections.shuffle(interestPlant);
+                List<Plants> limitedInterestPlant = interestPlant;
+                if (interestPlant.size() > 10) {
+                    limitedInterestPlant = interestPlant.subList(0, 10);
+                }
+
+                // Update the adapter's data and notify changes
+                interestPlantsAdapter.updateData(limitedInterestPlant);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        interestPlantsAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
+                Log.d(TAG, "Number of plants loaded: " + interestPlant.size());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+            }
+        });
     }
 
-//    private void setAirPlantsAdapter(){
-//        recyclerView = mView.findViewById(R.id.rcv_air_puring_plants);
-//        plantsAdapter = new PlantsAdapter(this, getContext(), R.id.rcv_air_puring_plants);
-//        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
-//        recyclerView.setLayoutManager(manager);
-//
-//        plantsAdapter.setData(getListPlants());
-//        recyclerView.setAdapter(plantsAdapter);
-//    }
+    private void setAirPlantsAdapter(){
+        recyclerView = mView.findViewById(R.id.rcv_air_puring_plants);
+        airPlant = new ArrayList<>();
+        airPlantAdapter = new PlantsAdapter(airPlant,this, getContext(), R.id.rcv_air_puring_plants);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(airPlantAdapter);
+        getListPlants();
+    }
+    private void getListPlants() {
+        DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference("Plants");
+        plantsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                airPlant.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Plants plant = snapshot.getValue(Plants.class);
+                    if (plant != null && plant.getAirPurifying() == 1) {
+                        airPlant.add(plant);
+                    }
+                }
+                airPlantAdapter.notifyDataSetChanged();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        airPlantAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+            }
+        });
+    }
+
 //    private void setPlantCategoryAdapter(){
 //        recyclerView = mView.findViewById(R.id.rcv_plant_category);
 //        plantCategoryAdapter = new PlantCategoryAdapter(getContext(), R.layout.item_category_plants, this,R.id.rcv_plant_category);
@@ -154,6 +222,48 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
 //        plantCategoryAdapter.setData(getListPlantCategory());
 //        recyclerView.setAdapter(plantCategoryAdapter);
 //    }
+
+    private void setPlantCategoryAdapter(){
+        recyclerView = mView.findViewById(R.id.rcv_plant_category);
+        plantCategoryList = new ArrayList<>();
+        plantCategoryAdapter = new GenreAdapter(plantCategoryList,getContext(), R.id.rcv_plant_category,this);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(plantCategoryAdapter);
+        getListGenre();
+    }
+    private void getListGenre() {
+        DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference("Genre");
+        categoriesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                plantCategoryList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "DataSnapshot: " + snapshot.toString());
+                    Genre genre = snapshot.getValue(Genre.class);
+                    if (genre != null && (genre.getGenreID()==2 || genre.getGenreID() ==3)) {
+                        Log.d(TAG, "Parsed category: " + genre.getGenreName() + ", " + genre.getGenreImage());
+                        plantCategoryList.add(genre);
+                    }
+                }
+                plantCategoryAdapter.notifyDataSetChanged();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        plantCategoryAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+            }
+        });
+    }
+
 //    private void setLowMainPlantsAdapter(){
 //        recyclerView = mView.findViewById(R.id.rcv_lowmain_plant);
 //        plantsAdapter = new PlantsAdapter(this, getContext(), R.id.rcv_lowmain_plant);
