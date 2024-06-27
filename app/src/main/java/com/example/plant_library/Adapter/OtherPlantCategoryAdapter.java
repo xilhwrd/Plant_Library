@@ -60,9 +60,9 @@ public class OtherPlantCategoryAdapter extends RecyclerView.Adapter<OtherPlantCa
         private TextView tvCategoryName;
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            imgPlantCategory = itemView.findViewById(R.id.cir_img_other_plant);
-            tvCategoryName = itemView.findViewById(R.id.tv_other_plants);
+//
+//            imgPlantCategory = itemView.findViewById(R.id.cir_img_other_plant);
+//            tvCategoryName = itemView.findViewById(R.id.tv_other_plants);
 
         }
     }

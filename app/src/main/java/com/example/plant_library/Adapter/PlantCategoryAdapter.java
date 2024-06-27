@@ -1,6 +1,8 @@
 package com.example.plant_library.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.plant_library.Activity.GenreActivity;
 import com.example.plant_library.Interface.RecyclerViewInterface;
+import com.example.plant_library.Object.Genre;
 import com.example.plant_library.Object.PlantCategory;
 import com.example.plant_library.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -25,19 +29,20 @@ public class PlantCategoryAdapter extends RecyclerView.Adapter<PlantCategoryAdap
     private final RecyclerViewInterface recyclerViewInterface;
     private final int recyclerViewId;
     private boolean showShimmer = true;
-
-    public PlantCategoryAdapter(List<PlantCategory> list, Context context, int layout, RecyclerViewInterface recyclerViewInterface, int recyclerViewId) {
+    private int itemLayout;
+    public PlantCategoryAdapter(List<PlantCategory> list, int itemLayout, Context context, int layout, RecyclerViewInterface recyclerViewInterface, int recyclerViewId) {
         this.plantCategoryList = list;
         this.context = context;
         this.layout = layout;
         this.recyclerViewInterface = recyclerViewInterface;
         this.recyclerViewId = recyclerViewId;
+        this.itemLayout = itemLayout;
     }
 
     @NonNull
     @Override
     public PlantsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
         return new PlantsViewHolder(view);
     }
 
@@ -68,6 +73,10 @@ public class PlantCategoryAdapter extends RecyclerView.Adapter<PlantCategoryAdap
         this.showShimmer = showShimmer;
         notifyDataSetChanged();
     }
+    public void updateData(List<PlantCategory>  newCateList) {
+        this.plantCategoryList = newCateList;
+        notifyDataSetChanged();
+    }
     public class PlantsViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgPlantCategory;
         private TextView tvCategoryName;
@@ -85,6 +94,15 @@ public class PlantCategoryAdapter extends RecyclerView.Adapter<PlantCategoryAdap
                         int pos = getAdapterPosition();
                         if (pos != RecyclerView.NO_POSITION && pos < plantCategoryList.size() && !showShimmer) {
                             recyclerViewInterface.onItemClick(recyclerViewId, pos);
+                            PlantCategory  category = plantCategoryList.get(pos);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("category_name", category.getCategoryName());
+                            bundle.putString("category_img", category.getCategoryImage());
+                            bundle.putInt("category_id", category.getCategoryID());
+
+                            Intent intent = new Intent(context, GenreActivity.class);
+                            intent.putExtra("category_infor", bundle);
+                            context.startActivity(intent);
                         }
                     }
                 }

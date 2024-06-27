@@ -76,12 +76,29 @@ public class GenreActivity extends AppCompatActivity implements RecyclerViewInte
 
 
     private void setData() {
+//
+//        Intent intent = getIntent();
+//        Bundle bundle = intent.getExtras();
+//        String categoryName = null;
+//        int categoryID = 0;
+//        if (bundle != null) {
+//            categoryName = bundle.getString("category_name");
+//            String categoryIMG = bundle.getString("category_img");
+//            categoryID = bundle.getInt("category_id");
+//
+//            TextView categoryNameTextView = findViewById(R.id.tv_plant_category);
+//            ImageView categoryIMGview = findViewById(R.id.img_category_detail);
+//            categoryNameTextView.setText(categoryName);
+//            Picasso.get().load(categoryIMG).into(categoryIMGview);
+//        }
+//        setPlantsAdapter();
+//        loadPlantsByCategoryAndFamily(categoryID, categoryName);
+//        loadPlantsByCategory(categoryName);
 
         Intent intent = getIntent();
-
-        Bundle bundle = intent.getExtras();
         String categoryName = null;
         int categoryID = 0;
+        Bundle bundle = intent.getBundleExtra("category_infor");
         if (bundle != null) {
             categoryName = bundle.getString("category_name");
             String categoryIMG = bundle.getString("category_img");
@@ -94,14 +111,13 @@ public class GenreActivity extends AppCompatActivity implements RecyclerViewInte
         }
         setPlantsAdapter();
         loadPlantsByCategoryAndFamily(categoryID, categoryName);
-//        loadPlantsByCategory(categoryName);
     }
 
 
     @Override
     public void onItemClick(int recyclerViewId, int position) {
-
     }
+
 
 
     private void loadPlantsByCategoryAndFamily(int categoryID, String family) {

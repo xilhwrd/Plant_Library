@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.Genre;
 import com.example.plant_library.Object.PlantCategory;
+import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.squareup.picasso.Picasso;
@@ -58,7 +59,10 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
             holder.tvGenre.setText(genre.getGenreName());
         }
     }
-
+    public void updateData(List<Genre> newGenreList) {
+        this.genreList = newGenreList;
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
         if(genreList != null){
@@ -87,6 +91,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
                         int pos = getAdapterPosition();
                         if (pos != RecyclerView.NO_POSITION && pos < genreList.size() && !showShimmer){
                             recyclerViewInterface.onItemClick(recyclerViewId, pos);
+
                         }
                     }
                 }

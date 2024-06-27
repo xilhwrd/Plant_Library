@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import com.example.plant_library.FragmentHelper;
 import com.example.plant_library.Interface.FragmentHandler;
+import com.example.plant_library.Interface.OnGenreSelectedListener;
+import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.R;
 import com.google.android.material.tabs.TabLayout;
 
 import org.w3c.dom.Text;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements RecyclerViewInterface, OnGenreSelectedListener {
     private View mView;
     private TextView tab1, tab2, tab3, tab4;
     private TabLayout mTabLayout;
@@ -132,23 +134,21 @@ public class HomeFragment extends Fragment {
         Fragment selectedFragment;
         switch (tabIndex) {
             case 1:
-                selectedFragment = new HomeFragmentArticle();
+                selectedFragment = homeFragmentArticle;
                 tab2.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                 setBG(tab1, tab3, tab4);
                 break;
             case 2:
-                selectedFragment = new HomeFragmentAll();
-                loadFragment(selectedFragment);
+                selectedFragment = homeFragmentFlowering;
                 tab3.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                 tab3.setTextColor(getResources().getColor(R.color.white));
                 setBG(tab1, tab2, tab4);
                 break;
             case 3:
-                selectedFragment = new HomeFragmentAll();
-                loadFragment(selectedFragment);
-                tab4.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
-                tab4.setTextColor(getResources().getColor(R.color.white));
-                setBG(tab1, tab2, tab3);
+                selectedFragment = homeFragmentFlowering;
+                tab3.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
+                tab3.setTextColor(getResources().getColor(R.color.white));
+                setBG(tab1, tab2, tab4);
                 break;
             default:
                 selectedFragment = new HomeFragmentArticle();
@@ -159,5 +159,14 @@ public class HomeFragment extends Fragment {
         if (selectedFragment != null) {
             loadFragment(selectedFragment);
         }
+    }
+
+    @Override
+    public void onItemClick(int recyclerViewId, int position) {
+    }
+
+    @Override
+    public void onGenreSelected(int position) {
+        selectTab(position + 1);
     }
 }

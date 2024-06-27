@@ -2,11 +2,13 @@ package com.example.plant_library.Fragment;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,11 +21,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.plant_library.Activity.AccountSettings;
+import com.example.plant_library.Activity.IndexActivity;
 import com.example.plant_library.Adapter.ArticleAdapter;
 import com.example.plant_library.Adapter.GenreAdapter;
 import com.example.plant_library.Adapter.OtherPlantCategoryAdapter;
 import com.example.plant_library.Adapter.PlantCategoryAdapter;
 import com.example.plant_library.Adapter.PlantsAdapter;
+import com.example.plant_library.Interface.OnGenreSelectedListener;
 import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.Article;
 import com.example.plant_library.Object.Genre;
@@ -34,6 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -44,12 +50,14 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
     RecyclerView recyclerView;
     TextView tvViewAllArticle;
     ArticleAdapter articleAdapter;
-    PlantsAdapter interestPlantsAdapter, airPlantAdapter;
+    PlantsAdapter interestPlantsAdapter, airPlantAdapter, lowMainPlantAdapter;
     GenreAdapter plantCategoryAdapter;
-    OtherPlantCategoryAdapter otherPlantCategoryAdapter;
-    private List<Plants> plantList, interestPlant, airPlant;
+    PlantCategoryAdapter otherCateAdapter;
+    private List<Plants> plantList, interestPlant, airPlant, lowMainPlant;
     private List<Article> articleList;
     private List<Genre> plantCategoryList;
+    private List<PlantCategory> otherCateList;
+    private OnGenreSelectedListener onGenreSelectedListener;
     View mView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +68,7 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
         setInterestPlantsAdapter();
         setAirPlantsAdapter();
         setPlantCategoryAdapter();
-//        setLowMainPlantsAdapter();
+        setLowMainPlantsAdapter();
         setOtherPlantCategoryAdapter();
         initUI();
 
@@ -263,50 +271,99 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
         });
     }
 
-//    private void setLowMainPlantsAdapter(){
-//        recyclerView = mView.findViewById(R.id.rcv_lowmain_plant);
-//        plantsAdapter = new PlantsAdapter(this, getContext(), R.id.rcv_lowmain_plant);
-//        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
-//        recyclerView.setLayoutManager(manager);
-//
-//        plantsAdapter.setData(getListPlants());
-//        recyclerView.setAdapter(plantsAdapter);
-//    }
+    private void setLowMainPlantsAdapter(){
+        recyclerView = mView.findViewById(R.id.rcv_lowmain_plant);
+        lowMainPlant = new ArrayList<>();
+        lowMainPlantAdapter = new PlantsAdapter(lowMainPlant,this, getContext(), R.id.rcv_lowmain_plant);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(lowMainPlantAdapter);
+        getListLowMain();
+    }
+
+    private void getListLowMain() {
+        DatabaseReference plantRef = FirebaseDatabase.getInstance().getReference("Plants");
+        Query query = plantRef.orderByChild("CareRequirements").equalTo("1");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                lowMainPlant.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Plants plants = snapshot.getValue(Plants.class);
+                    if (plants != null) {
+                        lowMainPlant.add(plants);
+                    }
+                }
+                Collections.shuffle(lowMainPlant);
+                List<Plants> limitLowmain = lowMainPlant;
+                if (lowMainPlant.size() > 10) {
+                    limitLowmain = lowMainPlant.subList(0, 10);
+                }
+
+                // Update the adapter's data and notify changes
+                lowMainPlantAdapter.updateData(limitLowmain);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        lowMainPlantAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+            }
+        });
+    }
+
     private void setOtherPlantCategoryAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_other_plant_category);
-        otherPlantCategoryAdapter = new OtherPlantCategoryAdapter(getContext());
+        otherCateList = new ArrayList<>();
+        otherCateAdapter = new PlantCategoryAdapter(otherCateList, R.layout.item_other_plants,getContext(),R.layout.item_other_plants, this, R.id.rcv_cate);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(otherCateAdapter);
+        getListOtherCate();
+    }
 
-        otherPlantCategoryAdapter.setData(getListOtherPlantCategory());
-        recyclerView.setAdapter(otherPlantCategoryAdapter);
-    }
-//    private List<Plants> getListPlants() {
-//        List<Plants> plantsList = new ArrayList<>();
-//        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
-//        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
-//        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
-//        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
-//        plantsList.add(new Plants(R.drawable.img_onboarding3, R.drawable.img_sun_level1, R.drawable.img_water_level1, R.drawable.img_hard_level1, "plants nameeee"));
-//        return plantsList;
-//    }
+    private void getListOtherCate() {
+        DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference("Category");
+        categoriesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                otherCateList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "DataSnapshot: " + snapshot.toString());
+                    PlantCategory category = snapshot.getValue(PlantCategory.class);
+                    if (category != null) {
+                       otherCateList.add(category);
+                        Log.d(TAG, "Parsed category: " + category.getCategoryName() + ", " + category.getCategoryImage());
+                    }
+                }Collections.shuffle(otherCateList);
+                List<PlantCategory> limitedCate = otherCateList;
+                if (otherCateList.size() > 10) {
+                    limitedCate = otherCateList.subList(0, 6);
+                }
+                otherCateAdapter.updateData(limitedCate);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        otherCateAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
+                Log.d(TAG, "Updated plantCategoryList: " + otherCateAdapter.toString());
+            }
 
-    private List<PlantCategory> getListPlantCategory() {
-        List<PlantCategory> plantCategoryListList = new ArrayList<>();
-//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Foliage"));
-//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Foliage"));
-        return plantCategoryListList;
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+            }
+        });
     }
-    private List<Genre> getListOtherPlantCategory() {
-        List<Genre> genreList = new ArrayList<>();
-//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
-//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
-//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
-//        plantCategoryListList.add(new PlantCategory(R.drawable.img_plant_cate,"Drought-tolerant plants"));
-        return genreList;
-    }
+
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_home, fragment);
@@ -315,37 +372,27 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
 
     @Override
     public void onItemClick(int recyclerViewId,int position) {
-//        Article articleFragment = new ArticleFrag();
-//        Bundle bundle = new Bundle();
-//        // Giả sử bạn muốn truyền tên của thể loại từ danh sách thể loại (getListPlants)
-//        Article selectedArticle = getListArticle().get(position);
-//        PlantCategory selectedCategory = getListPlantCategory().get(position);
-//        bundle.putString("article_name", selectedArticle.getArticleName());
-//        genreFragment.setArguments(bundle);
-//        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentById(R.id.frame_index));
-//
-//        fragmentTransaction.add(R.id.frame_index, genreFragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-
         switch (recyclerViewId) {
             case R.id.rcv_article:
-                // Handle article item click
                 break;
             case R.id.rcv_interest:
             case R.id.rcv_air_puring_plants:
+                break;
             case R.id.rcv_lowmain_plant:
-                // Handle plants item click
                 break;
             case R.id.rcv_plant_category:
-                // Handle plant category item click
+                handleGenreClick(position);
                 break;
             case R.id.rcv_other_plant_category:
-                // Handle other plant category item click
                 break;
             default:
                 break;
+        }
+    }
+    private void handleGenreClick(int position) {
+        HomeFragment homeFragment = (HomeFragment) getParentFragment();
+        if (homeFragment != null) {
+            homeFragment.selectTab(position + 2);
         }
     }
 }

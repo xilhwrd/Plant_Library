@@ -75,6 +75,8 @@ public class GenreFragment extends Fragment implements RecyclerViewInterface {
 
     }
 
+
+
     private void loadPlantsByCategory(String categoryName) {
         DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference("PlantInformation");
         plantsRef.orderByChild("Family").equalTo(categoryName).addListenerForSingleValueEvent(new ValueEventListener() {

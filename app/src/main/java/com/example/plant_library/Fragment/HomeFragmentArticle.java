@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,7 @@ public class HomeFragmentArticle extends Fragment implements RecyclerViewInterfa
     private void setArticleAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_article_fragment);
         int desiredWidth = ViewGroup.LayoutParams.MATCH_PARENT;;  // Thay thế bằng giá trị kích thước mong muốn của bạn
-        int desiredHeight = 550; // Thay thế bằng giá trị kích thước mong muốn của bạn
+        int desiredHeight = 410; // Thay thế bằng giá trị kích thước mong muốn của bạn
         articleList = new ArrayList<>();
         articleAdapter = new ArticleAdapter(articleList, getContext(), desiredWidth, desiredHeight, this, R.id.rcv_article_fragment);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
@@ -54,7 +55,6 @@ public class HomeFragmentArticle extends Fragment implements RecyclerViewInterfa
         recyclerView.setAdapter(articleAdapter);
         getListArticle();
     }
-
     private void getListArticle() {
         DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference("Article");
         categoriesRef.addValueEventListener(new ValueEventListener() {
@@ -68,6 +68,14 @@ public class HomeFragmentArticle extends Fragment implements RecyclerViewInterfa
                         articleList.add(article);
                     }
                 }
+                articleAdapter.notifyDataSetChanged();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        articleAdapter.setShowShimmer(false);
+                    }
+                }, 3000);
                 articleAdapter.notifyDataSetChanged();
                 Log.d(TAG, "Updated plantCategoryList: " + articleList.toString());
             }
@@ -83,4 +91,5 @@ public class HomeFragmentArticle extends Fragment implements RecyclerViewInterfa
     public void onItemClick(int recyclerViewId,int position) {
 
     }
+
 }

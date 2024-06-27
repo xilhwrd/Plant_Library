@@ -64,7 +64,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
     private void setGenreAdapter() {
         recyclerView = mView.findViewById(R.id.rcv_genre);
         genreList = new ArrayList<>();
-        genreAdapter = new GenreAdapter(genreList, R.layout.item_category_search,getContext(), R.id.rcv_genre,this);
+        genreAdapter = new GenreAdapter(genreList, R.layout.item_genre,getContext(), R.id.rcv_genre,this);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),3);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -108,7 +108,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
     private void setPlantCategoryAdapter(){
         recyclerView = mView.findViewById(R.id.rcv_cate);
         plantCategoryList = new ArrayList<>();
-        plantCategoryAdapter = new PlantCategoryAdapter(plantCategoryList,getContext(),R.layout.item_category_search, this, R.id.rcv_cate);
+        plantCategoryAdapter = new PlantCategoryAdapter(plantCategoryList, R.layout.item_category_search, getContext(),R.layout.item_category_search, this, R.id.rcv_cate);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -155,7 +155,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
                 handleGenreClick(position);
                 break;
             case R.id.rcv_cate:
-                handleCategoryClick(position);
+//                handleCategoryClick(position);
                 break;
             default:
                 Log.e("SearchFragment", "Unknown RecyclerView ID");
@@ -171,22 +171,10 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
         bundle.putString("category_name", selectedCategory.getCategoryName());
         bundle.putString("category_img", selectedCategory.getCategoryImage());
         bundle.putInt("category_id", selectedCategory.getCategoryID());
-        genreFragment.setArguments(bundle);
 
         Intent intent = new Intent(getActivity(), GenreActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
-//        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.frame_index);
-//
-//        // Kiểm tra nếu fragment hiện tại là SearchFragment
-//
-//        fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentById(R.id.frame_index));
-//        clearBackStack();
-//        fragmentTransaction.add(R.id.frame_index, genreFragment);
-//        clearBackStack();
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
     }
 
     private void handleGenreClick(int position) {
