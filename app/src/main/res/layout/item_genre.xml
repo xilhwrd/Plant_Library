@@ -30,10 +30,10 @@
 
             <ImageView
                 android:id="@+id/img_genre"
+                android:background="#ACACAC"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_bg_sign_up_finish"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

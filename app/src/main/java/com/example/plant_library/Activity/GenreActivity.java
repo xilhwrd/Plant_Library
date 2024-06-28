@@ -45,22 +45,25 @@ public class GenreActivity extends AppCompatActivity implements RecyclerViewInte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genre);
+
+        toolbarGenre = findViewById(R.id.toolbar_genre);
+        setSupportActionBar(toolbarGenre);
         setPlantsAdapter();
         setData();
 
 
-        toolbarGenre = findViewById(R.id.toolbar_genre);
-        setSupportActionBar(toolbarGenre);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(null);
             Drawable backArrow = getResources().getDrawable(R.drawable.bg_back_button);
-
-
-            // Thiết lập Drawable cho nút back trên Toolbar
             getSupportActionBar().setHomeAsUpIndicator(backArrow);
         }
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
     private void setPlantsAdapter(){
         recyclerView = findViewById(R.id.rcv_category_search);

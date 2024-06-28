@@ -99,8 +99,6 @@ public class MeFragment extends Fragment {
                         } else {
                             Log.e("MeFragment", "UserImage is null or empty");
                         }
-                    } else {
-                        userNameTextView.setText("Username not found");
                     }
                 }
 

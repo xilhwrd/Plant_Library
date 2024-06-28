@@ -2,13 +2,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape
-            android:shape="oval">
-            <solid android:color="@color/black"/>
-            <corners android:radius="50dp"/>
+    android:shape="oval">
+    <solid android:color="@color/black"/>
+    <corners android:radius="50dp"/>
         </shape>
     </item>
     <item android:left="0dp" android:top="0dp" android:right="1dp" android:bottom="1dp">
-    <shape android:shape="oval">
+        <shape android:shape="oval">
             <size android:height="30dp"
                 android:width="30dp"/>
             <solid android:color="@color/white" /> <!-- Màu của bóng -->
@@ -17,7 +17,7 @@
     </item>
     <item>
         <bitmap
-            android:src="@drawable/img_back"
+            android:src="@drawable/img_favorite_selected"
             android:gravity="center_vertical"/>
     </item>
 </layer-list>

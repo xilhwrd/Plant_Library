@@ -17,7 +17,7 @@
     </item>
     <item>
         <bitmap
-            android:src="@drawable/img_back"
+            android:src="@drawable/img_favorite"
             android:gravity="center_vertical"/>
     </item>
 </layer-list>

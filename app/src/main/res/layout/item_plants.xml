@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img_bg_sign_up_finish"
+                    android:background="#ACACAC"
                     app:shapeAppearanceOverlay="@style/CustomCardViewDetail2" />
                 <LinearLayout
                     android:layout_width="wrap_content"
