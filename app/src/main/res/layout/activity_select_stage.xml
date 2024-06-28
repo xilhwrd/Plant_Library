@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/bg"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SelectStageActivity">
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tv_select"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:fontFamily="@font/literata_24pt_medium"
+        android:text="Chọn giai đoạn của cây"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="30dp"
+        android:id="@+id/rcv_stage"
+        android:layout_below="@id/tv_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.recyclerview.widget.RecyclerView>
+    <TextView
+        android:paddingStart="30dp"
+        android:paddingRight="30dp"
+        android:layout_below="@id/rcv_stage"
+        android:layout_marginTop="40dp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textSize="11sp"
+        android:fontFamily="@font/generalsans_mediumitalic"
+        android:textColor="@color/black"
+        android:text="Hãy lựa chọn giai đoạn cây trồng phù hợp để chúng tôi có thể đưa ra phương pháp chăm sóc cây trồng của bạn hiệu quả nhất"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+</RelativeLayout>

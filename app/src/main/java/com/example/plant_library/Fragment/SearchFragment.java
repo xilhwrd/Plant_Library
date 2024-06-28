@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -46,6 +47,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
     GenreAdapter genreAdapter;
     RecyclerView recyclerView;
     PlantCategoryAdapter plantCategoryAdapter;
+    SearchView searchView;
     View mView;
     private FragmentHandler fragmentHandler;
     private List<PlantCategory> plantCategoryList;
@@ -56,11 +58,15 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_search, container, false);
         fragmentHandler = new FragmentHelper(getActivity().getSupportFragmentManager(), R.id.frame_search);
+        searchView = mView.findViewById(R.id.sv_search_view);
         setGenreAdapter();
         setPlantCategoryAdapter();
         return mView;
     }
 
+    private void searchView(){
+        searchView.setOn
+    }
     private void setGenreAdapter() {
         recyclerView = mView.findViewById(R.id.rcv_genre);
         genreList = new ArrayList<>();

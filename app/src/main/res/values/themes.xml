@@ -90,4 +90,20 @@
         <item name="android:solidColor">@color/main_color</item>
         <item name="color">@color/main_color</item>
     </style>
+
+
+    <style name="CustomCardViewStage" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/StageCardViewOverlay</item>
+    </style>
+
+    <style name="StageCardViewOverlay">
+        <item name="cornerFamily">rounded</item>
+        <!-- below items does not work with normal ImageView -->
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+        <item name="android:solidColor">@color/main_color</item>
+        <item name="color">@color/main_color</item>
+    </style>
 </resources>

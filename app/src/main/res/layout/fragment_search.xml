@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg">
- <LinearLayout
+ <RelativeLayout
      android:orientation="vertical"
      android:layout_width="match_parent"
      android:layout_height="match_parent">
@@ -20,33 +20,22 @@
     android:background="@drawable/bg_search"
     android:layout_height="50dp">
 
-
- <ImageView
-     android:id="@+id/search_icon"
-     android:layout_marginStart="20dp"
-     android:layout_width="20dp"
-     android:layout_height="20dp"
-     android:layout_alignParentStart="true"
-     android:layout_alignParentTop="true"
-     android:layout_alignParentBottom="true"
-     android:src="@drawable/img_search_icon" />
-
- <EditText
+ <androidx.appcompat.widget.SearchView
      android:singleLine="true"
-     android:id="@+id/edt_search"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
+     android:id="@+id/sv_search_view"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
      android:layout_alignParentTop="true"
      android:layout_alignParentEnd="true"
      android:layout_alignParentBottom="true"
-     android:layout_toEndOf="@+id/search_icon"
      android:backgroundTint="#EDEEF4"
      android:fontFamily="@font/generalsans_medium"
      android:hint="Search"
-     android:paddingLeft="20dp"
      android:textColor="@color/black"
      android:textSize="13sp" />
+
 </RelativeLayout>
+
  <androidx.core.widget.NestedScrollView
      android:layout_marginLeft="5dp"
      android:layout_marginRight="5dp"
@@ -104,5 +93,6 @@
      </LinearLayout>
       </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
-  </LinearLayout>
+
+  </RelativeLayout>
 </FrameLayout>

@@ -458,6 +458,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_add_garden"
                 android:layout_width="match_parent"
                 android:background="@drawable/bg_addgarden"
                 android:layout_height="match_parent"

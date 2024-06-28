@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,6 +44,7 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
     private ShapeableImageView imgPlant;
     private ImageView imgSun, imgWater, imgCare, imgBack, imgFavorite;
     private RecyclerView recyclerView;
+    private AppCompatButton addToGarden;
     private TextView plantName, plantScientificName, plantSpecies, plantDescript, plantSize, plantPH, plantTempurature, plantBLoom,
             plantPropagation, plantGrowth;
     private List<Plants> plantsList;
@@ -61,6 +63,7 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
         setSupportActionBar(toolbar);
         setToolBarClick();
         setSuggestPlantsAdapter();
+        setButtonClick();
         // Thêm nút back
 //        if (getSupportActionBar() != null) {
 //            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -75,7 +78,16 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
 
     }
 
-
+    private void setButtonClick(){
+        addToGarden = findViewById(R.id.btn_add_garden);
+        addToGarden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailActivity.this, SelectStageActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
     private void setToolBarClick(){
         imgBack = findViewById(R.id.back_img);
