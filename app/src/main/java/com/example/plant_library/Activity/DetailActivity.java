@@ -145,7 +145,7 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
             String species = bundle.getString("plant_spieces", "");
             String description = bundle.getString("plant_description");
             String growthRate = bundle.getString("plant_growth_rate", "");
-            String lightRequirements = bundle.getString("plant_light", "");
+            String lightRequirements = bundle.getString("plant_light_rate", "");
             String waterRequirements = bundle.getString("plant_water", "");
             String careRequirements = bundle.getString("plant_hard", "");
             String soilType = bundle.getString("plant_soil", "");

@@ -7,7 +7,8 @@ public class Plants {
     private String ScientificName, CommonName, Family, Genus, Species, Description, GrowthRate,
              WaterRequirements, CareRequirements, SoilType, PHRange,
             TemperatureRange, Bloomtime,Propagation, Size, PlantImage;
-    private Map<String, String> LightRequirements;
+//    private Map<String, String> LightRequirements;
+    private LightRequirements LightRequirements;
 //    private String LightRate,LightStage1, LightStage2, LightStage3, LightStage4;
     public Plants(){}
 
@@ -15,7 +16,7 @@ public class Plants {
                   String genus, String species, String description, String growthRate,
                   String lightRate, String lightStage2, String lightStage3, String lightStage4, String lightStage1,
                   String waterRequirements, String careRequirements,
-                  Map<String, String> lightRequirements,
+                  LightRequirements lightRequirements,
                   String soilType, String PHRange, String temperatureRange, String bloomtime,
                   String propagation, String size, String plantImage ) {
         this.PlantID = plantID;
@@ -199,13 +200,22 @@ public class Plants {
         AirPurifying = airPurifying;
     }
 
-    public Map<String, String> getLightRequirements() {
+    public com.example.plant_library.Object.LightRequirements getLightRequirements() {
         return LightRequirements;
     }
 
-    public void setLightRequirements(Map<String, String> lightRequirements) {
+    public void setLightRequirements(com.example.plant_library.Object.LightRequirements lightRequirements) {
         LightRequirements = lightRequirements;
     }
+
+
+    //    public Map<String, String> getLightRequirements() {
+//        return LightRequirements;
+//    }
+//
+//    public void setLightRequirements(Map<String, String> lightRequirements) {
+//        LightRequirements = lightRequirements;
+//    }
 
 //    public String getLightRate() {
 //        return LightRate;

@@ -62,7 +62,9 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantViewH
             holder.imgSun.setVisibility(View.VISIBLE);
             holder.imgWater.setVisibility(View.VISIBLE);
 
-                switch (plants.getLightRequirements().get("LightRate")) {
+            LightRequirements lightRequirements = plants.getLightRequirements();
+                switch (lightRequirements.getLightRate()) {
+//                switch (plants.getLightRequirements().get("LightRate")) {
                     case "1":
                         holder.imgSun.setImageResource(R.drawable.img_sun_level1);
                         break;
@@ -75,8 +77,8 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantViewH
                     default:
                         holder.imgSun.setImageResource(R.drawable.img_sun_level1);
                         break;
-                }
 
+            }
             switch (plants.getWaterRequirements()){
                 case "1" : holder.imgWater.setImageResource(R.drawable.img_water_level1);
                     break;
@@ -155,11 +157,11 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantViewH
                                 bundle.putString("plant_description", plant.getDescription());
                                 bundle.putString("plant_growth_rate", plant.getGrowthRate());
 
-                            bundle.putString("plant_light_rate", plant.getLightRequirements().get("LightRate"));
-                            bundle.putString("plant_light_stage1", plant.getLightRequirements().get("LightStage1"));
-                            bundle.putString("plant_light_stage2", plant.getLightRequirements().get("LightStage2"));
-                            bundle.putString("plant_light_stage3", plant.getLightRequirements().get("LightStage3"));
-                            bundle.putString("plant_light_stage4", plant.getLightRequirements().get("LightStage4"));
+//                            bundle.putString("plant_light_rate", plant.getLightRequirements().get("LightRate"));
+//                            bundle.putString("plant_light_stage1", plant.getLightRequirements().get("LightStage1"));
+//                            bundle.putString("plant_light_stage2", plant.getLightRequirements().get("LightStage2"));
+//                            bundle.putString("plant_light_stage3", plant.getLightRequirements().get("LightStage3"));
+//                            bundle.putString("plant_light_stage4", plant.getLightRequirements().get("LightStage4"));
 
 
 //                            bundle.putString("plant_light_rate", plant.getLightRate());
@@ -168,14 +170,14 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantViewH
 //                            bundle.putString("plant_light_stage3", plant.getLightStage3());
 //                            bundle.putString("plant_light_stage4", plant.getLightStage4());
 
-//                            LightRequirements lightRequirements = plant.getLightRequirements();
-//                            if (lightRequirements != null) {
-//                                bundle.putString("plant_light_rate", lightRequirements.getLightRate());
-//                                bundle.putString("plant_light_stage1", lightRequirements.getLightStage1());
-//                                bundle.putString("plant_light_stage2", lightRequirements.getLightStage2());
-//                                bundle.putString("plant_light_stage3", lightRequirements.getLightStage3());
-//                                bundle.putString("plant_light_stage4", lightRequirements.getLightStage4());
-//                            }
+                            LightRequirements lightRequirements = plant.getLightRequirements();
+                            if (lightRequirements != null) {
+                                bundle.putString("plant_light_rate", lightRequirements.getLightRate());
+                                bundle.putString("plant_light_stage1", lightRequirements.getLightStage1());
+                                bundle.putString("plant_light_stage2", lightRequirements.getLightStage2());
+                                bundle.putString("plant_light_stage3", lightRequirements.getLightStage3());
+                                bundle.putString("plant_light_stage4", lightRequirements.getLightStage4());
+                            }
 
                             bundle.putString("plant_water", plant.getWaterRequirements());
                                 bundle.putString("plant_hard", plant.getCareRequirements());
