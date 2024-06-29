@@ -1,17 +1,23 @@
 package com.example.plant_library.Object;
 
-public class Plants {
-    private int PlantID, CategoryID,  AirPurifying;;
-    private String ScientificName, CommonName, Family, Genus, Species, Description, GrowthRate,
-            LightRequirements, WaterRequirements, CareRequirements, SoilType, PHRange,
-            TemperatureRange, Bloomtime,Propagation, Size, PlantImage;
+import java.util.Map;
 
+public class Plants {
+    private int PlantID, CategoryID,  AirPurifying;
+    private String ScientificName, CommonName, Family, Genus, Species, Description, GrowthRate,
+             WaterRequirements, CareRequirements, SoilType, PHRange,
+            TemperatureRange, Bloomtime,Propagation, Size, PlantImage;
+    private Map<String, String> LightRequirements;
+//    private String LightRate,LightStage1, LightStage2, LightStage3, LightStage4;
     public Plants(){}
-    public Plants(int plantID,int categoryID, int airPurifying, String scientificName, String commonName, String family,
+
+    public Plants(int plantID, int categoryID, int airPurifying, String scientificName, String commonName, String family,
                   String genus, String species, String description, String growthRate,
-                  String lightRequirements, String waterRequirements, String careRequirements,
+                  String lightRate, String lightStage2, String lightStage3, String lightStage4, String lightStage1,
+                  String waterRequirements, String careRequirements,
+                  Map<String, String> lightRequirements,
                   String soilType, String PHRange, String temperatureRange, String bloomtime,
-                  String propagation, String size, String plantImage) {
+                  String propagation, String size, String plantImage ) {
         this.PlantID = plantID;
         this.CategoryID = categoryID;
         this.AirPurifying = airPurifying;
@@ -22,7 +28,6 @@ public class Plants {
         this.Species = species;
         this.Description = description;
         this.GrowthRate = growthRate;
-        this.LightRequirements = lightRequirements;
         this. WaterRequirements = waterRequirements;
         this.CareRequirements = careRequirements;
         this. SoilType = soilType;
@@ -32,6 +37,12 @@ public class Plants {
         this. Propagation = propagation;
         this.Size = size;
         this. PlantImage = plantImage;
+        this.LightRequirements = lightRequirements;
+//        this.LightRate = lightRate;
+//        this.LightStage2 = lightStage2;
+//        this.LightStage3 = lightStage3;
+//        this.LightStage4 = lightStage4;
+//        this.LightStage1 = lightStage1;
     }
 
     public int getCategoryID() {
@@ -106,13 +117,7 @@ public class Plants {
         GrowthRate = growthRate;
     }
 
-    public String getLightRequirements() {
-        return LightRequirements;
-    }
 
-    public void setLightRequirements(String lightRequirements) {
-        LightRequirements = lightRequirements;
-    }
 
     public String getWaterRequirements() {
         return WaterRequirements;
@@ -193,4 +198,52 @@ public class Plants {
     public void setAirPurifying(int airPurifying) {
         AirPurifying = airPurifying;
     }
+
+    public Map<String, String> getLightRequirements() {
+        return LightRequirements;
+    }
+
+    public void setLightRequirements(Map<String, String> lightRequirements) {
+        LightRequirements = lightRequirements;
+    }
+
+//    public String getLightRate() {
+//        return LightRate;
+//    }
+//
+//    public void setLightRate(String lightRate) {
+//        LightRate = lightRate;
+//    }
+//
+//    public String getLightStage2() {
+//        return LightStage2;
+//    }
+//
+//    public void setLightStage2(String lightStage2) {
+//        LightStage2 = lightStage2;
+//    }
+//
+//    public String getLightStage3() {
+//        return LightStage3;
+//    }
+//
+//    public void setLightStage3(String lightStage3) {
+//        LightStage3 = lightStage3;
+//    }
+//
+//    public String getLightStage4() {
+//        return LightStage4;
+//    }
+//
+//    public void setLightStage4(String lightStage4) {
+//        LightStage4 = lightStage4;
+//    }
+//
+//    public String getLightStage1() {
+//        return LightStage1;
+//    }
+//
+//    public void setLightStage1(String lightStage1) {
+//        LightStage1 = lightStage1;
+//    }
 }

@@ -32,6 +32,7 @@ import com.example.plant_library.Interface.OnGenreSelectedListener;
 import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.Article;
 import com.example.plant_library.Object.Genre;
+import com.example.plant_library.Object.LightRequirements;
 import com.example.plant_library.Object.PlantCategory;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
@@ -154,7 +155,9 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Plants plant = snapshot.getValue(Plants.class);
                     if (plant != null) {
-                        interestPlant.add(plant);
+
+                            interestPlant.add(plant);
+
                     }
                 }
                 Collections.shuffle(interestPlant);

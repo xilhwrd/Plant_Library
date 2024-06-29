@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frame_search"
+    android:windowSoftInputMode="adjustPan"
     android:layout_marginTop="20dp"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
@@ -33,7 +34,7 @@
      android:fontFamily="@font/generalsans_medium"
      android:hint="Search"
      android:textColor="@color/black"
-     android:textSize="13sp" />
+     android:textSize="11sp" />
 </RelativeLayout>
 
  <androidx.core.widget.NestedScrollView

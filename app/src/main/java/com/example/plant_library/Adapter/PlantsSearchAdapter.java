@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plant_library.Activity.DetailActivity;
 import com.example.plant_library.Interface.RecyclerViewInterface;
+import com.example.plant_library.Object.LightRequirements;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -57,7 +58,9 @@ public class PlantsSearchAdapter extends RecyclerView.Adapter<PlantsSearchAdapte
             holder.shimmerLayout.setShimmer(null);
         Plants plants = plantsList.get(position);
             Picasso.get().load(plants.getPlantImage()).into(holder.imgPlants);
+            holder.tvName.setBackground(null);
             holder.tvName.setText(""+plants.getCommonName());
+            holder.tvFamily.setBackground(null);
             holder.tvFamily.setText("" + plants.getFamily());
 
         }
@@ -113,7 +116,28 @@ public class PlantsSearchAdapter extends RecyclerView.Adapter<PlantsSearchAdapte
                                 bundle.putString("plant_description", plant.getDescription());
                                 bundle.putString("plant_growth_rate", plant.getGrowthRate());
 
-                                bundle.putString("plant_light", plant.getLightRequirements());
+                            bundle.putString("plant_light_rate", plant.getLightRequirements().get("LightRate"));
+                            bundle.putString("plant_light_stage1", plant.getLightRequirements().get("LightStage1"));
+                            bundle.putString("plant_light_stage2", plant.getLightRequirements().get("LightStage2"));
+                            bundle.putString("plant_light_stage3", plant.getLightRequirements().get("LightStage3"));
+                            bundle.putString("plant_light_stage4", plant.getLightRequirements().get("LightStage4"));
+
+
+//                                bundle.putString("plant_light_rate", plant.getLightRate());
+//                                bundle.putString("plant_light_stage1", plant.getLightStage1());
+//                                bundle.putString("plant_light_stage2", plant.getLightStage2());
+//                                bundle.putString("plant_light_stage3", plant.getLightStage3());
+//                                bundle.putString("plant_light_stage4", plant.getLightStage4());
+
+
+//                            LightRequirements lightRequirements = plant.getLightRequirements();
+//                            if (lightRequirements != null) {
+//                                bundle.putString("plant_light_rate", lightRequirements.getLightRate());
+//                                bundle.putString("plant_light_stage1", lightRequirements.getLightStage1());
+//                                bundle.putString("plant_light_stage2", lightRequirements.getLightStage2());
+//                                bundle.putString("plant_light_stage3", lightRequirements.getLightStage3());
+//                                bundle.putString("plant_light_stage4", lightRequirements.getLightStage4());
+//                            }
                                 bundle.putString("plant_water", plant.getWaterRequirements());
                                 bundle.putString("plant_hard", plant.getCareRequirements());
                                 bundle.putString("plant_soil", plant.getSoilType());
