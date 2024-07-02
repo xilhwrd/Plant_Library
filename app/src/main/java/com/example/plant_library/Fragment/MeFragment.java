@@ -1,18 +1,27 @@
 package com.example.plant_library.Fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.plant_library.Activity.AccountSettings;
+import com.example.plant_library.Activity.FavoriteActivity;
+import com.example.plant_library.Activity.MainActivity;
+import com.example.plant_library.Activity.SignUpActivity;
 import com.example.plant_library.Object.Genre;
 import com.example.plant_library.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +38,7 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MeFragment extends Fragment {
-    private TextView userEmailTextView, userNameTextView, accountSettingTextview;
+    private TextView userEmailTextView, userNameTextView, accountSettingTextview, logOut, favorite;
     private FirebaseAuth mAuth;
     private StorageReference mStorageRef;
     CircleImageView imgUser;
@@ -53,9 +62,11 @@ public class MeFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         userEmailTextView = mView.findViewById(R.id.tv_email_user);
         userNameTextView = mView.findViewById(R.id.tv_name_user);
+        logOut = mView.findViewById(R.id.tv_logout);
         accountSettingTextview = mView.findViewById(R.id.tv_account_setting);
         imgUser = mView.findViewById(R.id.cir_img_user);
         currentUser = mAuth.getCurrentUser();
+        favorite = mView.findViewById(R.id.tv_plant_favorite);
     }
     private void setOnClick(){
         accountSettingTextview.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +76,51 @@ public class MeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+            }
+        });
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), FavoriteActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
+    private void showDialog() {
+        Dialog dialog =new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottomsheet_layout);
+
+        AppCompatButton btnLogOut = dialog.findViewById(R.id.btn_logout);
+        TextView btnCancel = dialog.findViewById(R.id.tv_cancel);
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(getContext(), SignUpActivity.class);
+                startActivity(i);
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+    }
+
     private void setUserInformation(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {

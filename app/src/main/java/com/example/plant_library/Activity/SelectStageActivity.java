@@ -79,7 +79,6 @@ public class SelectStageActivity extends AppCompatActivity implements OnStageCli
     private void updateStageInDatabase(String stageName) {
         DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference().child("Plants");
         DatabaseReference plantRef = plantsRef.child(String.valueOf(plantID));
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         plantRef.child("Stage").child("StageName").setValue(stageName);
 
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());

@@ -1,84 +1,71 @@
-package com.example.plant_library.Fragment;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+package com.example.plant_library.Activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.plant_library.Activity.IndexActivity;
 import com.example.plant_library.Adapter.PlantsAdapter;
 import com.example.plant_library.Adapter.PlantsGardenAdapter;
-import com.example.plant_library.Interface.FragmentHandler;
 import com.example.plant_library.Interface.RecyclerViewInterface;
+import com.example.plant_library.Object.Favorite;
 import com.example.plant_library.Object.Garden;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class GardenFragment extends Fragment implements RecyclerViewInterface {
-    private View mView;
-    private RecyclerView recyclerView;
-    private List<Plants> plantsList;
-    private TextView tvCount;
-    private AppCompatButton btnAdd;
-    private PlantsGardenAdapter plantsAdapter;
-    private FragmentHandler fragmentHandler;
+public class FavoriteActivity extends AppCompatActivity implements RecyclerViewInterface {
+    RecyclerView recyclerView;
+    private List<Plants> plantsList ;
+     private PlantsAdapter plantsAdapter;
+    private Toolbar toolbar;
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        mView =  inflater.inflate(R.layout.fragment_garden, container, false);
-        tvCount = mView.findViewById(R.id.tv_garden_count);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(updateReceiver,
-                new IntentFilter("com.example.plant_library.UPDATE_GARDEN"));
-        setAirPlantsAdapter();
-        setClickButton();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_favorite);
+        LocalBroadcastManager.getInstance(this).registerReceiver(updateReceiver,
+                new IntentFilter("com.example.plant_library.UPDATE_FAVORITE"));
+        initUI();
+    }
+    private void initUI(){
+        recyclerView = findViewById(R.id.rcv_favorite);
+        setPlantsAdapter();
+        toolbar = findViewById(R.id.toolbar_favorite);
+        setSupportActionBar(toolbar);
 
-        return  mView;
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(null);
+            Drawable backArrow = getResources().getDrawable(R.drawable.bg_back_button);
+            getSupportActionBar().setHomeAsUpIndicator(backArrow);
+        }
     }
-    public void setFragmentHandler(FragmentHandler fragmentHandler) {
-        this.fragmentHandler = fragmentHandler;
-    }
-    public void setClickButton(){
-        btnAdd = mView.findViewById(R.id.btn_add_gardenfragment);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (fragmentHandler != null) {
-                    fragmentHandler.showFragment(new SearchFragment());
-                    ((IndexActivity) getActivity()).bottomNavigationView.setSelectedItemId(R.id.search_menu);
-                }
-            }
-        });
-    }
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        // Hủy đăng ký khi fragment bị hủy
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(updateReceiver);
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private BroadcastReceiver updateReceiver = new BroadcastReceiver() {
@@ -87,26 +74,26 @@ public class GardenFragment extends Fragment implements RecyclerViewInterface {
             getListPlants();
         }
     };
-
-    private void setAirPlantsAdapter(){
-        recyclerView = mView.findViewById(R.id.rcv_garden_plant);
+    private void setPlantsAdapter(){
         plantsList = new ArrayList<>();
-        plantsAdapter = new PlantsGardenAdapter(plantsList,this, getContext(), R.id.rcv_garden_plant);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        plantsAdapter = new PlantsAdapter(plantsList,this, this, R.id.rcv_garden_plant);
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(plantsAdapter);
         getListPlants();
     }
     private void getListPlants() {
-        DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference("Garden");
-        gardenRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        String userId = currentUser.getUid();
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference("Favorite").child(userId).child("plantIds");
+        favoriteRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot gardenSnapshot) {
                 List<Integer> plantIds = new ArrayList<>();
                 for (DataSnapshot snapshot : gardenSnapshot.getChildren()) {
-                    Garden gardenEntry = snapshot.getValue(Garden.class);
-                    if (gardenEntry != null) {
-                        plantIds.add(gardenEntry.getPlantID());
+                    String plantIdString = snapshot.getKey();
+                    if (plantIdString != null) {
+                        int plantId = Integer.parseInt(plantIdString);
+                        plantIds.add(plantId);
                     }
                 }
                 if (!plantIds.isEmpty()) {
@@ -115,7 +102,6 @@ public class GardenFragment extends Fragment implements RecyclerViewInterface {
                     plantsList.clear();
                     plantsAdapter.notifyDataSetChanged();
                     plantsAdapter.setShowShimmer(false);
-                    tvCount.setText("Hãy tìm cho mình một cây trồng ưa thích");
                 }
             }
 
@@ -137,7 +123,6 @@ public class GardenFragment extends Fragment implements RecyclerViewInterface {
                     Plants plant = snapshot.getValue(Plants.class);
                     if (plant != null && plantIds.contains(plant.getPlantID())) {
                         plantsList.add(plant);
-                        tvCount.setText("Bạn đang có " + plantsList.size() + " cây trồng");
                     }
                 }
                 plantsAdapter.notifyDataSetChanged();
@@ -158,10 +143,8 @@ public class GardenFragment extends Fragment implements RecyclerViewInterface {
         });
     }
 
-
     @Override
     public void onItemClick(int recyclerViewId, int position) {
 
     }
-
 }

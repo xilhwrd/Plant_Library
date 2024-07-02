@@ -6,19 +6,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plant_library.Adapter.PlantsAdapter;
 import com.example.plant_library.Interface.RecyclerViewInterface;
+import com.example.plant_library.Object.Favorite;
+import com.example.plant_library.Object.Garden;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -34,10 +42,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity implements RecyclerViewInterface {
     private Toolbar toolbar;
@@ -49,8 +61,9 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
             plantPropagation, plantGrowth;
     private List<Plants> plantsList;
     private PlantsAdapter plantsAdapter;
-    private boolean isCheck = false;
+    private boolean isCheck;
     String family = null;
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     int plantId = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +78,7 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
         setSuggestPlantsAdapter();
 //        getFromGarden();
         setButtonClick();
+        checkIfFavoriteAndSetIcon(currentUser.getUid(), plantId);
         // Thêm nút back
 //        if (getSupportActionBar() != null) {
 //            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -108,15 +122,88 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
             @Override
             public void onClick(View v) {
                 if (isCheck == false) {
+                    updateFavoriteInDatabase(currentUser.getUid(), plantId);
                     imgFavorite.setImageResource(R.drawable.bg_favorite_button_selected);
                     isCheck = true;
                 }else {
+                    deletePlantFromGarden(plantId);
                     imgFavorite.setImageResource(R.drawable.bg_favorite_button);
                     isCheck = false;
                 }
+
             }
         });
     }
+    private void checkIfFavoriteAndSetIcon(String userId, int plantId) {
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference("Favorite").child(userId).child("plantIds");
+        favoriteRef.child(String.valueOf(plantId)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    isCheck = true;
+                    imgFavorite.setImageResource(R.drawable.bg_favorite_button_selected);
+                } else {
+                    isCheck = false;
+                    imgFavorite.setImageResource(R.drawable.bg_favorite_button);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu cần
+                Log.e("checkIfFavorite", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    private void updateFavoriteInDatabase(String userId, int plantId) {
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference().child("Favorite").child(userId).child("plantIds");;
+        favoriteRef.child(String.valueOf(plantId)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Plant ID tồn tại trong bảng Garden
+                    Toast.makeText(DetailActivity.this, "Plant already exists in the favorite", Toast.LENGTH_SHORT).show();
+                } else {
+                    favoriteRef.child(String.valueOf(plantId)).setValue(true)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent("com.example.plant_library.UPDATE_FAVORITE");
+                                        LocalBroadcastManager.getInstance(DetailActivity.this).sendBroadcast(intent);
+                                    } else {
+                                        Toast.makeText(DetailActivity.this, "Failed to add to favorites", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu cần
+                Log.e("updateFavoriteInDatabase", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    private void deletePlantFromGarden(int plantID) {
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference("Favorite").child(currentUser.getUid()).child("plantIds");
+        favoriteRef.child(String.valueOf(plantId)).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        @Override
+        public void onComplete(@NonNull Task<Void> task) {
+            if (task.isSuccessful()) {
+                Toast.makeText(DetailActivity.this, "Đã xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent("com.example.plant_library.UPDATE_FAVORITE");
+                LocalBroadcastManager.getInstance(DetailActivity.this).sendBroadcast(intent);
+            } else {
+                Toast.makeText(DetailActivity.this, "Xóa khỏi danh sách yêu thích thất bại. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        });
+    }
+
+
 
     private void initUI(){
         imgPlant = findViewById(R.id.img_plant_detail);

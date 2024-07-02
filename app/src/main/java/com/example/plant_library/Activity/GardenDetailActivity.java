@@ -133,7 +133,6 @@ public class GardenDetailActivity extends AppCompatActivity {
                                         // Gửi broadcast để cập nhật GardenFragment
                                         Intent intent = new Intent("com.example.plant_library.UPDATE_GARDEN");
                                         LocalBroadcastManager.getInstance(GardenDetailActivity.this).sendBroadcast(intent);
-
                                         finish();
                                     } else {
                                         Toast.makeText(GardenDetailActivity.this, "Xóa cây thất bại. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();

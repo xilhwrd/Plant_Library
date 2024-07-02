@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 public class IndexActivity extends AppCompatActivity {
-    BottomNavigationView bottomNavigationView;
+   public BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
     SearchFragment searchFragment = new SearchFragment();
     GardenFragment gardenFragment = new GardenFragment();
@@ -35,6 +35,7 @@ public class IndexActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.nav_menu);
         fragmentHandler = new FragmentHelper(getSupportFragmentManager(), R.id.frame_index);
+        gardenFragment.setFragmentHandler(fragmentHandler);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -61,6 +62,7 @@ public class IndexActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.frame_index, homeFragment).commit();
         }
+
     }
     public void navigateToHome(int tabIndex) {
         bottomNavigationView.setSelectedItemId(R.id.home_menu);
