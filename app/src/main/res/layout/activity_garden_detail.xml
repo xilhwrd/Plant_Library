@@ -7,68 +7,128 @@
     android:layout_height="match_parent"
     tools:context=".Activity.GardenDetailActivity">
 
-    <TextView
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        android:text="Plant Name"
-        android:textSize="22sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:fontFamily="@font/literata_24pt_medium"
-        android:id="@+id/tv_garden_plant_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
+                android:text="Plant Name"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/literata_24pt_medium"
+                android:id="@+id/tv_garden_plant_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView"
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_garden_plant_name"
+                app:strokeColor="@color/main_color"
+                app:strokeWidth="1dp">
+
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendar_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#EDEEF4"
+                    app:mcv_selectionColor="@color/main_color"
+                    app:mcv_showOtherDates="other_months"></com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tv_garden_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/literata_24pt_medium"
+                android:text="Thông tin chăm sóc của cây"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_garden_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_garden_information"></androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                app:layout_constraintTop_toBottomOf="@id/rcv_garden_information"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        app:cardCornerRadius="20dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_garden_plant_name"
-        app:strokeColor="@color/main_color"
-        app:strokeWidth="1dp">
-
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-            android:id="@+id/calendar_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#EDEEF4"
-            app:mcv_selectionColor="@color/main_color"
-            app:mcv_showOtherDates="all"></com.prolificinteractive.materialcalendarview.MaterialCalendarView>
-    </com.google.android.material.card.MaterialCardView>
-
-    <TextView
-        android:id="@+id/tv_garden_information"
-        android:layout_marginStart="30dp"
-        android:text="Thông tin chăm sóc của cây"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:fontFamily="@font/literata_24pt_medium"
-        android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="10dp"
-        android:id="@+id/rcv_garden_information"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_garden_information">
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintStart_toStartOf="parent">
+        <LinearLayout
+            android:weightSum="5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginRight="10dp"
+            android:layout_weight="4"
+            android:id="@+id/btn_see_infor"
+            android:layout_width="0dp"
+            android:background="@drawable/bg_addgarden"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/generalsans_medium"
+            android:text="Thông tin cây "
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textColor="@color/white"/>
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:src="@drawable/img_delete"
+                android:layout_weight="1"
+                android:id="@+id/btn_delete_garden"
+                android:layout_width="0dp"
+                android:background="@drawable/bg_deletegarden"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/generalsans_medium"
+                android:text="Thông tin cây "
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.appcompat.widget.Toolbar
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"

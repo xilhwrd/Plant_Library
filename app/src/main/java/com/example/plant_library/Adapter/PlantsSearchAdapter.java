@@ -16,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plant_library.Activity.DetailActivity;
 import com.example.plant_library.Interface.RecyclerViewInterface;
+import com.example.plant_library.Object.CareRequirements;
 import com.example.plant_library.Object.LightRequirements;
 import com.example.plant_library.Object.Plants;
+import com.example.plant_library.Object.TemperatureRange;
+import com.example.plant_library.Object.WaterRequirements;
 import com.example.plant_library.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.squareup.picasso.Picasso;
@@ -138,11 +141,32 @@ public class PlantsSearchAdapter extends RecyclerView.Adapter<PlantsSearchAdapte
                                 bundle.putString("plant_light_stage3", lightRequirements.getLightStage3());
                                 bundle.putString("plant_light_stage4", lightRequirements.getLightStage4());
                             }
-                                bundle.putString("plant_water", plant.getWaterRequirements());
-                                bundle.putString("plant_hard", plant.getCareRequirements());
+//                                bundle.putString("plant_water", plant.getWaterRequirements());
+
+                            WaterRequirements waterRequirements = plant.getWaterRequirements();
+                            if (waterRequirements != null) {
+                                bundle.putString("plant_water_rate", waterRequirements.getWaterRate());
+                                bundle.putString("plant_water_stage1", waterRequirements.getWaterStage1());
+                                bundle.putString("plant_water_stage2", waterRequirements.getWaterStage2());
+                                bundle.putString("plant_water_stage3", waterRequirements.getWaterStage3());
+                                bundle.putString("plant_water_stage4", waterRequirements.getWaterStage4());
+                            }
+//                                bundle.putString("plant_hard", plant.getCareRequirements());
+
+                            CareRequirements careRequirements = plant.getCareRequirements();
+                            if (careRequirements != null) {
+                                bundle.putString("plant_hard_rate", careRequirements.getCareRate());
+                                bundle.putString("plant_hard_stage", careRequirements.getCareStage());
+                            }
                                 bundle.putString("plant_soil", plant.getSoilType());
                                 bundle.putString("plant_ph", plant.getPHRange());
-                                bundle.putString("plant_temperature", plant.getTemperatureRange());
+//                                bundle.putString("plant_temperature", plant.getTemperatureRange());
+                            TemperatureRange temperatureRange = plant.getTemperatureRange();
+                            if (temperatureRange != null) {
+                                bundle.putString("plant_temperature", temperatureRange.getTemperatureRate());
+                                bundle.putString("plant_hard_stage", temperatureRange.getTemperatureStage());
+                            }
+
                                 bundle.putString("plant_bloom", plant.getBloomtime());
                                 bundle.putString("plant_propagation", plant.getPropagation());
                                 bundle.putString("plant_size", plant.getSize());

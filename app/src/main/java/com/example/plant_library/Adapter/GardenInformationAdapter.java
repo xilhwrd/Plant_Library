@@ -1,6 +1,7 @@
 package com.example.plant_library.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.plant_library.Activity.DetailActivity;
 import com.example.plant_library.Object.GardenInformation;
-import com.example.plant_library.Object.Stage;
 import com.example.plant_library.R;
 
 import java.util.List;
@@ -48,6 +51,12 @@ import java.util.List;
 
                 boolean isVisible = gardenInformation.isVisibility();
                 holder.constraintLayoutEx.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+                if (isVisible) {
+                    holder.imgDownUp.setImageResource(R.drawable.img_up); // Đặt hình mũi tên chỉ lên
+                } else {
+                    holder.imgDownUp.setImageResource(R.drawable.img_down); // Đặt hình mũi tên chỉ xuống
+                }
+
             }
         }
 
@@ -61,13 +70,16 @@ import java.util.List;
 
 
         public class GardenInforViewHolder extends RecyclerView.ViewHolder{
-            private ImageView imgGarden;
+            private ImageView imgGarden, imgDownUp;
             private TextView tvTitle, tvContent;
             private ConstraintLayout constraintLayout, constraintLayoutEx;
             public GardenInforViewHolder(@NonNull View itemView) {
                 super(itemView);
 
+
                 imgGarden = itemView.findViewById(R.id.img_garden);
+
+                imgDownUp = itemView.findViewById(R.id.img_hide_garden);
                 tvTitle = itemView.findViewById(R.id.tv_title_garden);
                 tvContent = itemView.findViewById(R.id.tv_content_garden);
                 constraintLayout = itemView.findViewById(R.id.layout_garden);
@@ -78,13 +90,11 @@ import java.util.List;
                     public void onClick(View v) {
                         GardenInformation gardenInformation = gardenInformationList.get(getAdapterPosition());
                         gardenInformation.setVisibility(!gardenInformation.isVisibility());
+
                         notifyItemChanged(getAdapterPosition());
-//                        if(constraintLayoutEx.getVisibility() == View.GONE){
-//                            constraintLayoutEx.setVisibility(View.VISIBLE);
-//                        }
-//                        else { constraintLayoutEx.setVisibility(View.GONE);}
                     }
                 });
+
             }
         }
 }

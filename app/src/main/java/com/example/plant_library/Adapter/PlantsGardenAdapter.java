@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.plant_library.Activity.DetailActivity;
+import com.example.plant_library.Activity.GardenDetailActivity;
 import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.CareRequirements;
 import com.example.plant_library.Object.LightRequirements;
@@ -27,13 +27,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantViewHolder> {
+public class PlantsGardenAdapter extends RecyclerView.Adapter<PlantsGardenAdapter.PlantViewHolder> {
     private final RecyclerViewInterface recyclerViewInterface;
     private Context context;
     private List<Plants> plantsList;
     private final int recyclerViewId;
     private boolean showShimmer = true;
-    public PlantsAdapter(List<Plants> list,RecyclerViewInterface recyclerViewInterface, Context context, int recyclerViewId) {
+    public PlantsGardenAdapter(List<Plants> list, RecyclerViewInterface recyclerViewInterface, Context context, int recyclerViewId) {
         this.plantsList = list;
         this.recyclerViewInterface = recyclerViewInterface;
         this.context = context;
@@ -214,7 +214,7 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantViewH
                             TemperatureRange temperatureRange = plant.getTemperatureRange();
                             if (temperatureRange != null) {
                                 bundle.putString("plant_temperature", temperatureRange.getTemperatureRate());
-                                bundle.putString("plant_tempurature_stage", temperatureRange.getTemperatureStage());
+                                bundle.putString("plant_temperature_stage", temperatureRange.getTemperatureStage());
                             }
                             Stage stageRequirements = plant.getStage();
                             if (stageRequirements != null) {
@@ -226,14 +226,13 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantViewH
                             }
                             bundle.putString("plant_fert", plant.getFertilizing());
                             bundle.putString("plant_pests", plant.getPests());
-
                                 bundle.putString("plant_bloom", plant.getBloomtime());
                                 bundle.putString("plant_propagation", plant.getPropagation());
                                 bundle.putString("plant_size", plant.getSize());
                                 bundle.putString("plant_img", plant.getPlantImage());
 
-                                Intent intent = new Intent(context, DetailActivity.class);
-                                intent.putExtra("plant_infor", bundle);
+                                Intent intent = new Intent(context, GardenDetailActivity.class);
+                                intent.putExtra("plant_infor_garden", bundle);
                                 context.startActivity(intent);
                         }
                     }

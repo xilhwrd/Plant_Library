@@ -10,22 +10,26 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.plant_library.Object.Genre;
-import com.example.plant_library.Object.Stage;
+import com.example.plant_library.Interface.OnStageClickListener;
+import com.example.plant_library.Object.StageObj;
 import com.example.plant_library.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class StageAdapter extends RecyclerView.Adapter<StageAdapter.StageViewHolder> {
+    private final OnStageClickListener onStageClickListener;
     private Context context;
-    private List<Stage> stageList;
+    private List<StageObj> stageList;
+    private int plantId;
 
-    public StageAdapter(Context context) {
+    public StageAdapter(OnStageClickListener onStageClickListener, Context context, int plantId) {
+        this.onStageClickListener = onStageClickListener;
+        this.plantId = plantId;
         this.context = context;
     }
-    public void setData(List<Stage> list){
+    public void setData(List<StageObj> list){
         this.stageList = list;
+
         notifyDataSetChanged();
     }
 
@@ -38,7 +42,7 @@ public class StageAdapter extends RecyclerView.Adapter<StageAdapter.StageViewHol
 
     @Override
     public void onBindViewHolder(@NonNull StageAdapter.StageViewHolder holder, int position) {
-        Stage stage = stageList.get(position);
+        StageObj stage = stageList.get(position);
         if(stage == null){
             return;
         }else {
@@ -67,7 +71,20 @@ public class StageAdapter extends RecyclerView.Adapter<StageAdapter.StageViewHol
             tvStageTime = itemView.findViewById(R.id.tv_stage_time);
             tvStageName = itemView.findViewById(R.id.tv_stage_name);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    StageObj stage = stageList.get(getAdapterPosition());
+                    String stageName = stage.getStageName();
+
+                    if (onStageClickListener != null) {
+                        onStageClickListener.onStageClick(stageName);
+
+                    }
+                }
+            });
         }
     }
+
 }
 

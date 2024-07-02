@@ -1,23 +1,30 @@
 package com.example.plant_library.Object;
 
-import java.util.Map;
-
 public class Plants {
     private int PlantID, CategoryID,  AirPurifying;
     private String ScientificName, CommonName, Family, Genus, Species, Description, GrowthRate,
-             WaterRequirements, CareRequirements, SoilType, PHRange,
-            TemperatureRange, Bloomtime,Propagation, Size, PlantImage;
+//             WaterRequirements, CareRequirements,TemperatureRange, Stage,
+             SoilType, PHRange, Fertilizing, Pests,
+             Bloomtime,Propagation, Size, PlantImage;
 //    private Map<String, String> LightRequirements;
     private LightRequirements LightRequirements;
+    private WaterRequirements WaterRequirements;
+    private CareRequirements CareRequirements;
+    private TemperatureRange TemperatureRange;
+    private Stage Stage;
 //    private String LightRate,LightStage1, LightStage2, LightStage3, LightStage4;
     public Plants(){}
 
     public Plants(int plantID, int categoryID, int airPurifying, String scientificName, String commonName, String family,
                   String genus, String species, String description, String growthRate,
                   String lightRate, String lightStage2, String lightStage3, String lightStage4, String lightStage1,
-                  String waterRequirements, String careRequirements,
-                  LightRequirements lightRequirements,
-                  String soilType, String PHRange, String temperatureRange, String bloomtime,
+//                  String waterRequirements,String careRequirements, String temperatureRange,
+
+                  LightRequirements lightRequirements, WaterRequirements waterRequirements,
+                  CareRequirements careRequirements, TemperatureRange temperatureRange,
+                  Stage stage,
+                  String soilType, String PHRange,  String bloomtime, String fertilizing, String pests,
+//                  String stage,
                   String propagation, String size, String plantImage ) {
         this.PlantID = plantID;
         this.CategoryID = categoryID;
@@ -29,7 +36,7 @@ public class Plants {
         this.Species = species;
         this.Description = description;
         this.GrowthRate = growthRate;
-        this. WaterRequirements = waterRequirements;
+//        this. WaterRequirements = waterRequirements;
         this.CareRequirements = careRequirements;
         this. SoilType = soilType;
         this.PHRange = PHRange;
@@ -39,6 +46,10 @@ public class Plants {
         this.Size = size;
         this. PlantImage = plantImage;
         this.LightRequirements = lightRequirements;
+        this.WaterRequirements = waterRequirements;
+        this.Stage= stage;
+        this.Fertilizing = fertilizing;
+        this.Pests = pests;
 //        this.LightRate = lightRate;
 //        this.LightStage2 = lightStage2;
 //        this.LightStage3 = lightStage3;
@@ -120,21 +131,21 @@ public class Plants {
 
 
 
-    public String getWaterRequirements() {
-        return WaterRequirements;
-    }
-
-    public void setWaterRequirements(String waterRequirements) {
-        WaterRequirements = waterRequirements;
-    }
-
-    public String getCareRequirements() {
-        return CareRequirements;
-    }
-
-    public void setCareRequirements(String careRequirements) {
-        CareRequirements = careRequirements;
-    }
+//    public String getWaterRequirements() {
+//        return WaterRequirements;
+//    }
+//
+//    public void setWaterRequirements(String waterRequirements) {
+//        WaterRequirements = waterRequirements;
+//    }
+//
+//    public String getCareRequirements() {
+//        return CareRequirements;
+//    }
+//
+//    public void setCareRequirements(String careRequirements) {
+//        CareRequirements = careRequirements;
+//    }
 
     public String getSoilType() {
         return SoilType;
@@ -152,13 +163,38 @@ public class Plants {
         this.PHRange = PHRange;
     }
 
-    public String getTemperatureRange() {
-        return TemperatureRange;
+//    public String getTemperatureRange() {
+//        return TemperatureRange;
+//    }
+//
+//    public void setTemperatureRange(String temperatureRange) {
+//        TemperatureRange = temperatureRange;
+//    }
+
+
+    public String getFertilizing() {
+        return Fertilizing;
     }
 
-    public void setTemperatureRange(String temperatureRange) {
-        TemperatureRange = temperatureRange;
+    public void setFertilizing(String fertilizing) {
+        Fertilizing = fertilizing;
     }
+
+    public String getPests() {
+        return Pests;
+    }
+
+    public void setPests(String pests) {
+        Pests = pests;
+    }
+
+//    public String getStage() {
+//        return Stage;
+//    }
+//
+//    public void setStage(String stage) {
+//        Stage = stage;
+//    }
 
     public String getBloomtime() {
         return Bloomtime;
@@ -208,8 +244,39 @@ public class Plants {
         LightRequirements = lightRequirements;
     }
 
+    public com.example.plant_library.Object.WaterRequirements getWaterRequirements() {
+        return WaterRequirements;
+    }
 
-    //    public Map<String, String> getLightRequirements() {
+    public void setWaterRequirements(com.example.plant_library.Object.WaterRequirements waterRequirements) {
+        WaterRequirements = waterRequirements;
+    }
+
+    public com.example.plant_library.Object.CareRequirements getCareRequirements() {
+        return CareRequirements;
+    }
+
+    public void setCareRequirements(com.example.plant_library.Object.CareRequirements careRequirements) {
+        CareRequirements = careRequirements;
+    }
+
+    public com.example.plant_library.Object.TemperatureRange getTemperatureRange() {
+        return TemperatureRange;
+    }
+
+    public void setTemperatureRange(com.example.plant_library.Object.TemperatureRange temperatureRange) {
+        TemperatureRange = temperatureRange;
+    }
+
+    public com.example.plant_library.Object.Stage getStage() {
+        return Stage;
+    }
+
+    public void setStage(com.example.plant_library.Object.Stage stage) {
+        Stage = stage;
+    }
+
+//    public Map<String, String> getLightRequirements() {
 //        return LightRequirements;
 //    }
 //
