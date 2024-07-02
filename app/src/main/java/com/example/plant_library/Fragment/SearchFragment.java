@@ -115,11 +115,11 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
         recyclerView.setLayoutManager(manager);
 
         recyclerView.setAdapter(plantsAdapter);
-        getListInterestPlants();
+        getListPlants();
 
 
     }
-    private void getListInterestPlants() {
+    private void getListPlants() {
         DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference("Plants");
         plantsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

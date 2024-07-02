@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,7 +79,8 @@ public class FavoriteActivity extends AppCompatActivity implements RecyclerViewI
         plantsList = new ArrayList<>();
         plantsAdapter = new PlantsAdapter(plantsList,this, this, R.id.rcv_garden_plant);
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
-        recyclerView.setLayoutManager(manager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(plantsAdapter);
         getListPlants();
     }

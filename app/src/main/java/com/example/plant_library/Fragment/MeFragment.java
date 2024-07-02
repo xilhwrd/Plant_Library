@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.plant_library.Activity.AccountSettings;
 import com.example.plant_library.Activity.FavoriteActivity;
+import com.example.plant_library.Activity.HistoryActivity;
 import com.example.plant_library.Activity.MainActivity;
 import com.example.plant_library.Activity.SignUpActivity;
 import com.example.plant_library.Object.Genre;
@@ -38,7 +39,7 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MeFragment extends Fragment {
-    private TextView userEmailTextView, userNameTextView, accountSettingTextview, logOut, favorite;
+    private TextView userEmailTextView, userNameTextView, accountSettingTextview, logOut, favorite, history;
     private FirebaseAuth mAuth;
     private StorageReference mStorageRef;
     CircleImageView imgUser;
@@ -67,6 +68,7 @@ public class MeFragment extends Fragment {
         imgUser = mView.findViewById(R.id.cir_img_user);
         currentUser = mAuth.getCurrentUser();
         favorite = mView.findViewById(R.id.tv_plant_favorite);
+        history = mView.findViewById(R.id.tv_plant_history);
     }
     private void setOnClick(){
         accountSettingTextview.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +88,13 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), FavoriteActivity.class);
+                startActivity(intent);
+            }
+        });
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), HistoryActivity.class);
                 startActivity(intent);
             }
         });

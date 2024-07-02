@@ -78,6 +78,7 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
         setSuggestPlantsAdapter();
 //        getFromGarden();
         setButtonClick();
+        getFromGarden();
         checkIfFavoriteAndSetIcon(currentUser.getUid(), plantId);
         // Thêm nút back
 //        if (getSupportActionBar() != null) {
@@ -98,10 +99,9 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
         addToGarden.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle =new Bundle();
-                bundle.putInt("plant_id",plantId);
+
                 Intent intent = new Intent(DetailActivity.this, SelectStageActivity.class);
-                intent.putExtra("plant_infor", bundle);
+                intent.putExtra("plant_id", plantId);
                 startActivity(intent);
             }
         });
@@ -222,102 +222,101 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
         plantGrowth = findViewById(R.id.tv_growth_rate);
 
     }
-//    private void getFromGarden(){
-//        Intent intent = getIntent();
-//        plantId = intent.getIntExtra("plantID", -1); // Default value -1 if not found
-//
-//        if (plantId != -1) {
-//            DatabaseReference plantRef = FirebaseDatabase.getInstance().getReference().child("Plants").child(String.valueOf(plantId));
-//            plantRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    if (dataSnapshot.exists()) {
-//                        String scientificName = dataSnapshot.child("ScientificName").getValue(String.class);
-//                        String commonName = dataSnapshot.child("CommonName").getValue(String.class);
-//                        String family = dataSnapshot.child("Family").getValue(String.class);
-//                        String genus = dataSnapshot.child("Genus").getValue(String.class);
-//                        String species = dataSnapshot.child("Species").getValue(String.class);
-//                        String description = dataSnapshot.child("Description").getValue(String.class);
-//                        String growthRate = dataSnapshot.child("GrowthRate").getValue(String.class);
-//                        String lightRequirements = dataSnapshot.child("LightRequirements").child("LightRate").getValue(String.class);
-//                        String waterRequirements = dataSnapshot.child("WaterRequirements").child("WaterRate").getValue(String.class);
-//                        String careRequirements = dataSnapshot.child("CareRequirements").child("CareRate").getValue(String.class);
-//                        String soilType = dataSnapshot.child("SoilType").getValue(String.class);
-//                        String phRange = dataSnapshot.child("PHRange").getValue(String.class);
-//                        String temperatureRange = dataSnapshot.child("TemperatureRange").child("TemperatureRate").getValue(String.class);
-//                        String bloomTime = dataSnapshot.child("Bloomtime").getValue(String.class);
-//                        String propagation = dataSnapshot.child("Propagation").getValue(String.class);
-//                        String size = dataSnapshot.child("Size").getValue(String.class);
-//                        String plantImage = dataSnapshot.child("PlantImage").getValue(String.class);
-//                        Picasso.get().load(plantImage).into(imgPlant);
-//                        plantName.setText(commonName);
-//                        plantSize.setText(size);
-//                        plantSpecies.setText(species);
-//                        plantDescript.setText(description);
-//                        plantPH.setText(phRange);
-//                        plantTempurature.setText(temperatureRange);
-//                        plantBLoom.setText(bloomTime);
-//                        plantPropagation.setText(propagation);
-//                        plantGrowth.setText(growthRate);
-//                        switch (lightRequirements) {
-//                            case "1":
-//                                imgSun.setImageResource(R.drawable.img_sun_level1);
-//                                break;
-//                            case "2":
-//                                imgSun.setImageResource(R.drawable.img_sun_level2);
-//                                break;
-//                            case "3":
-//                                imgSun.setImageResource(R.drawable.img_sun_level3);
-//                                break;
-//                            default:
-//                                imgSun.setImageResource(R.drawable.img_sun_level1);
-//                                break;
-//                        }
-//
-//                        switch (waterRequirements) {
-//                            case "1":
-//                                imgWater.setImageResource(R.drawable.img_water_level1);
-//                                break;
-//                            case "2":
-//                                imgWater.setImageResource(R.drawable.img_water_level2);
-//                                break;
-//                            case "3":
-//                                imgWater.setImageResource(R.drawable.img_water_level3);
-//                                break;
-//                            default:
-//                                imgWater.setImageResource(R.drawable.img_water_level1);
-//                                break;
-//                        }
-//
-//                        switch (careRequirements) {
-//                            case "1":
-//                                imgCare.setImageResource(R.drawable.img_hard_level1);
-//                                break;
-//                            case "2":
-//                                imgCare.setImageResource(R.drawable.img_hard_level2);
-//                                break;
-//                            case "3":
-//                                imgCare.setImageResource(R.drawable.img_hard_level3);
-//                                break;
-//                            default:
-//                                imgCare.setImageResource(R.drawable.img_hard_level1);
-//                                break;
-//                        }
-//                } else {
-//                    Log.e("DetailActivity", "Plant does not exist");
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.e("DetailActivity", "Database error: " + databaseError.getMessage());
-//            }
-//        });
-//    } else {
-//        Log.e("DetailActivity", "Invalid plant ID");
-//    }
-//
-//    }
+    private void getFromGarden(){
+        int plantIdGarden = getIntent().getIntExtra("plantID", -1); // Default value -1 if not found
+        Log.d(TAG, "plant idd" + plantIdGarden);
+        if (plantIdGarden != -1) {
+            DatabaseReference plantRef = FirebaseDatabase.getInstance().getReference().child("Plants").child(String.valueOf(plantIdGarden));
+            plantRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String scientificName = dataSnapshot.child("ScientificName").getValue(String.class);
+                        String commonName = dataSnapshot.child("CommonName").getValue(String.class);
+                        String family = dataSnapshot.child("Family").getValue(String.class);
+                        String genus = dataSnapshot.child("Genus").getValue(String.class);
+                        String species = dataSnapshot.child("Species").getValue(String.class);
+                        String description = dataSnapshot.child("Description").getValue(String.class);
+                        String growthRate = dataSnapshot.child("GrowthRate").getValue(String.class);
+                        String lightRequirements = dataSnapshot.child("LightRequirements").child("LightRate").getValue(String.class);
+                        String waterRequirements = dataSnapshot.child("WaterRequirements").child("WaterRate").getValue(String.class);
+                        String careRequirements = dataSnapshot.child("CareRequirements").child("CareRate").getValue(String.class);
+                        String soilType = dataSnapshot.child("SoilType").getValue(String.class);
+                        String phRange = dataSnapshot.child("PHRange").getValue(String.class);
+                        String temperatureRange = dataSnapshot.child("TemperatureRange").child("TemperatureRate").getValue(String.class);
+                        String bloomTime = dataSnapshot.child("Bloomtime").getValue(String.class);
+                        String propagation = dataSnapshot.child("Propagation").getValue(String.class);
+                        String size = dataSnapshot.child("Size").getValue(String.class);
+                        String plantImage = dataSnapshot.child("PlantImage").getValue(String.class);
+                        Picasso.get().load(plantImage).into(imgPlant);
+                        plantName.setText(commonName);
+                        plantSize.setText(size);
+                        plantSpecies.setText(species);
+                        plantDescript.setText(description);
+                        plantPH.setText(phRange);
+                        plantTempurature.setText(temperatureRange);
+                        plantBLoom.setText(bloomTime);
+                        plantPropagation.setText(propagation);
+                        plantGrowth.setText(growthRate);
+                        switch (lightRequirements) {
+                            case "1":
+                                imgSun.setImageResource(R.drawable.img_sun_level1);
+                                break;
+                            case "2":
+                                imgSun.setImageResource(R.drawable.img_sun_level2);
+                                break;
+                            case "3":
+                                imgSun.setImageResource(R.drawable.img_sun_level3);
+                                break;
+                            default:
+                                imgSun.setImageResource(R.drawable.img_sun_level1);
+                                break;
+                        }
+
+                        switch (waterRequirements) {
+                            case "1":
+                                imgWater.setImageResource(R.drawable.img_water_level1);
+                                break;
+                            case "2":
+                                imgWater.setImageResource(R.drawable.img_water_level2);
+                                break;
+                            case "3":
+                                imgWater.setImageResource(R.drawable.img_water_level3);
+                                break;
+                            default:
+                                imgWater.setImageResource(R.drawable.img_water_level1);
+                                break;
+                        }
+
+                        switch (careRequirements) {
+                            case "1":
+                                imgCare.setImageResource(R.drawable.img_hard_level1);
+                                break;
+                            case "2":
+                                imgCare.setImageResource(R.drawable.img_hard_level2);
+                                break;
+                            case "3":
+                                imgCare.setImageResource(R.drawable.img_hard_level3);
+                                break;
+                            default:
+                                imgCare.setImageResource(R.drawable.img_hard_level1);
+                                break;
+                        }
+                } else {
+                    Log.e("DetailActivity", "Plant does not exist");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("DetailActivity", "Database error: " + databaseError.getMessage());
+            }
+        });
+    } else {
+        Log.e("DetailActivity", "Invalid plant ID");
+    }
+
+    }
     private void getPlantInformation(){
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("plant_infor");
