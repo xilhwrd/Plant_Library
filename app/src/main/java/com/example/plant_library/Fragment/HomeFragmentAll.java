@@ -153,11 +153,9 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Plants plant = snapshot.getValue(Plants.class);
-                    if (plant != null) {
-
-                            interestPlant.add(plant);
-
+                    Plants plants = snapshot.getValue(Plants.class);
+                    if (plants != null) {
+                        interestPlant.add(plants);
                     }
                 }
                 Collections.shuffle(interestPlant);

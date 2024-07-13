@@ -3,6 +3,7 @@ package com.example.plant_library.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,21 @@ import com.example.plant_library.Activity.GardenDetailActivity;
 import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.CareRequirements;
 import com.example.plant_library.Object.LightRequirements;
+import com.example.plant_library.Object.PlantInstance;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.Object.Stage;
 import com.example.plant_library.Object.TemperatureRange;
 import com.example.plant_library.Object.WaterRequirements;
+import com.example.plant_library.Object.WaterStage;
 import com.example.plant_library.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -33,6 +43,7 @@ public class PlantsGardenAdapter extends RecyclerView.Adapter<PlantsGardenAdapte
     private List<Plants> plantsList;
     private final int recyclerViewId;
     private boolean showShimmer = true;
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     public PlantsGardenAdapter(List<Plants> list, RecyclerViewInterface recyclerViewInterface, Context context, int recyclerViewId) {
         this.plantsList = list;
         this.recyclerViewInterface = recyclerViewInterface;
@@ -159,16 +170,30 @@ public class PlantsGardenAdapter extends RecyclerView.Adapter<PlantsGardenAdapte
                         if (pos != RecyclerView.NO_POSITION && pos < plantsList.size() && !showShimmer){
                             recyclerViewInterface.onItemClick(recyclerViewId,pos);
                             Plants plant = plantsList.get(pos);
-                            Bundle bundle = new Bundle();
 
-                                bundle.putInt("plant_id",plant.getPlantID());
-                                bundle.putString("plant_scientificName",plant.getScientificName());
-                                bundle.putString("plant_commonName",plant.getCommonName());
-                                bundle.putString("plant_family", plant.getFamily());
-                                bundle.putString("plant_genus", plant.getGenus());
-                                bundle.putString("plant_spieces", plant.getSpecies());
-                                bundle.putString("plant_description", plant.getDescription());
-                                bundle.putString("plant_growth_rate", plant.getGrowthRate());
+                            DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference("Garden")
+                                    .child(currentUser.getUid())
+                                    .child("Plants");
+
+                            gardenRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot gardenSnapshot) {
+                                    int currentIndex = 0;
+                                    for (DataSnapshot snapshot : gardenSnapshot.getChildren()) {
+                                        if (currentIndex == pos) {
+                                            String plantKey = snapshot.getKey();
+
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("plant_key", plantKey);
+
+                                            bundle.putInt("plant_id",plant.getPlantID());
+                                            bundle.putString("plant_scientificName",plant.getScientificName());
+                                            bundle.putString("plant_commonName",plant.getCommonName());
+                                            bundle.putString("plant_family", plant.getFamily());
+                                            bundle.putString("plant_genus", plant.getGenus());
+                                            bundle.putString("plant_spieces", plant.getSpecies());
+                                            bundle.putString("plant_description", plant.getDescription());
+                                            bundle.putString("plant_growth_rate", plant.getGrowthRate());
 
 //                            bundle.putString("plant_light_rate", plant.getLightRequirements().get("LightRate"));
 //                            bundle.putString("plant_light_stage1", plant.getLightRequirements().get("LightStage1"));
@@ -183,70 +208,98 @@ public class PlantsGardenAdapter extends RecyclerView.Adapter<PlantsGardenAdapte
 //                            bundle.putString("plant_light_stage3", plant.getLightStage3());
 //                            bundle.putString("plant_light_stage4", plant.getLightStage4());
 
-                            LightRequirements lightRequirements = plant.getLightRequirements();
-                            if (lightRequirements != null) {
-                                bundle.putString("plant_light_rate", lightRequirements.getLightRate());
-                                bundle.putString("plant_light_stage1", lightRequirements.getLightStage1());
-                                bundle.putString("plant_light_stage2", lightRequirements.getLightStage2());
-                                bundle.putString("plant_light_stage3", lightRequirements.getLightStage3());
-                                bundle.putString("plant_light_stage4", lightRequirements.getLightStage4());
-                            }
-                            WaterRequirements waterRequirements = plant.getWaterRequirements();
-                            if (waterRequirements != null) {
-                                bundle.putString("plant_water_rate", waterRequirements.getWaterRate());
-                                bundle.putString("plant_water_stage1", waterRequirements.getWaterStage1());
-                                bundle.putString("plant_water_stage2", waterRequirements.getWaterStage2());
-                                bundle.putString("plant_water_stage3", waterRequirements.getWaterStage3());
-                                bundle.putString("plant_water_stage4", waterRequirements.getWaterStage4());
-                            }
+                                            LightRequirements lightRequirements = plant.getLightRequirements();
+                                            if (lightRequirements != null) {
+                                                bundle.putString("plant_light_rate", lightRequirements.getLightRate());
+                                                bundle.putString("plant_light_stage1", lightRequirements.getLightStage1());
+                                                bundle.putString("plant_light_stage2", lightRequirements.getLightStage2());
+                                                bundle.putString("plant_light_stage3", lightRequirements.getLightStage3());
+                                                bundle.putString("plant_light_stage4", lightRequirements.getLightStage4());
+                                            }
+                                            WaterRequirements waterRequirements = plant.getWaterRequirements();
+                                            if (waterRequirements != null) {
+                                                bundle.putString("plant_water_rate", waterRequirements.getWaterRate());
+
+                                                WaterStage waterStage1 = waterRequirements.getWaterStage1();
+                                                if (waterStage1 != null) {
+                                                    bundle.putString("plant_water_stage1_description", waterStage1.getDescription());
+                                                    bundle.putInt("plant_water_stage1_interval", waterStage1.getWateringInterval());
+                                                }
+
+                                                WaterStage waterStage2 = waterRequirements.getWaterStage2();
+                                                if (waterStage2 != null) {
+                                                    bundle.putString("plant_water_stage2_description", waterStage2.getDescription());
+                                                    bundle.putInt("plant_water_stage2_interval", waterStage2.getWateringInterval());
+                                                }
+
+                                                WaterStage waterStage3 = waterRequirements.getWaterStage3();
+                                                if (waterStage3 != null) {
+                                                    bundle.putString("plant_water_stage3_description", waterStage3.getDescription());
+                                                    bundle.putInt("plant_water_stage3_interval", waterStage3.getWateringInterval());
+                                                }
+
+                                                WaterStage waterStage4 = waterRequirements.getWaterStage4();
+                                                if (waterStage4 != null) {
+                                                    bundle.putString("plant_water_stage4_description", waterStage4.getDescription());
+                                                    bundle.putInt("plant_water_stage4_interval", waterStage4.getWateringInterval());
+                                                }
+                                            }
+//                            if (waterRequirements != null) {
+//                                bundle.putString("plant_water_rate", waterRequirements.getWaterRate());
+//                                bundle.putString("plant_water_stage1", waterRequirements.getWaterStage1());
+//                                bundle.putString("plant_water_stage2", waterRequirements.getWaterStage2());
+//                                bundle.putString("plant_water_stage3", waterRequirements.getWaterStage3());
+//                                bundle.putString("plant_water_stage4", waterRequirements.getWaterStage4());
+//                            }
 
 //                            bundle.putString("plant_water", plant.getWaterRequirements());
 //                                bundle.putString("plant_hard", plant.getCareRequirements());
 
-                            CareRequirements careRequirements = plant.getCareRequirements();
-                            if (careRequirements != null) {
-                                bundle.putString("plant_hard_rate", careRequirements.getCareRate());
-                                bundle.putString("plant_hard_stage", careRequirements.getCareStage());
-                            }
-                                bundle.putString("plant_soil", plant.getSoilType());
-                                bundle.putString("plant_ph", plant.getPHRange());
+                                            CareRequirements careRequirements = plant.getCareRequirements();
+                                            if (careRequirements != null) {
+                                                bundle.putString("plant_hard_rate", careRequirements.getCareRate());
+                                                bundle.putString("plant_hard_stage", careRequirements.getCareStage());
+                                            }
+                                            bundle.putString("plant_soil", plant.getSoilType());
+                                            bundle.putString("plant_ph", plant.getPHRange());
 //                                bundle.putString("plant_temperature", plant.getTemperatureRange());
-                            TemperatureRange temperatureRange = plant.getTemperatureRange();
-                            if (temperatureRange != null) {
-                                bundle.putString("plant_temperature", temperatureRange.getTemperatureRate());
-                                bundle.putString("plant_temperature_stage", temperatureRange.getTemperatureStage());
-                            }
-                            Stage stageRequirements = plant.getStage();
-                            if (stageRequirements != null) {
-                                bundle.putString("plant_stage_name", stageRequirements.getStageName());
-                                bundle.putInt("plant_stage_day1", stageRequirements.getStageDay1());
-                                bundle.putInt("plant_stage_day2", stageRequirements.getStageDay2());
-                                bundle.putInt("plant_stage_day3", stageRequirements.getStageDay3());
-                                bundle.putInt("plant_stage_day4", stageRequirements.getStageDay4());
-                            }
-                            bundle.putString("plant_fert", plant.getFertilizing());
-                            bundle.putString("plant_pests", plant.getPests());
-                                bundle.putString("plant_bloom", plant.getBloomtime());
-                                bundle.putString("plant_propagation", plant.getPropagation());
-                                bundle.putString("plant_size", plant.getSize());
-                                bundle.putString("plant_img", plant.getPlantImage());
+                                            TemperatureRange temperatureRange = plant.getTemperatureRange();
+                                            if (temperatureRange != null) {
+                                                bundle.putString("plant_temperature", temperatureRange.getTemperatureRate());
+                                                bundle.putString("plant_temperature_stage", temperatureRange.getTemperatureStage());
+                                            }
+                                            Stage stageRequirements = plant.getStage();
+                                            if (stageRequirements != null) {
+                                                bundle.putString("plant_stage_name", stageRequirements.getStageName());
+                                                bundle.putInt("plant_stage_day1", stageRequirements.getStageDay1());
+                                                bundle.putInt("plant_stage_day2", stageRequirements.getStageDay2());
+                                                bundle.putInt("plant_stage_day3", stageRequirements.getStageDay3());
+                                                bundle.putInt("plant_stage_day4", stageRequirements.getStageDay4());
+                                            }
+                                            bundle.putString("plant_fert", plant.getFertilizing());
+                                            bundle.putString("plant_pests", plant.getPests());
+                                            bundle.putString("plant_bloom", plant.getBloomtime());
+                                            bundle.putString("plant_propagation", plant.getPropagation());
+                                            bundle.putString("plant_size", plant.getSize());
+                                            bundle.putString("plant_img", plant.getPlantImage());
 
-                                Intent intent = new Intent(context, GardenDetailActivity.class);
+                                            Intent intent = new Intent(context, GardenDetailActivity.class);
                                 intent.putExtra("plant_infor_garden", bundle);
                                 context.startActivity(intent);
+                                            break;
                         }
+                                        currentIndex++;
+                    }
+                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // Xử lý khi có lỗi xảy ra với Firebase
+                                    Log.e("PlantViewHolder", "Database error: " + error.getMessage());
+                                }
+                            });}
                     }
                 }
             });
-//            plantsLayout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Bundle bundle = new Bundle();
-//                    bundle.putInt("plant_id",plants.getPlantID);
-//                    Intent intent = new Intent(context, DetailActivity.class);
-//                    context.startActivity(intent);
-//                }
-//            });
         }
     }
 

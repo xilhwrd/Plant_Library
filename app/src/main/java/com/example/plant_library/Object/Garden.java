@@ -1,35 +1,27 @@
 package com.example.plant_library.Object;
 
+import java.util.List;
 import java.util.Map;
 
 public class Garden {
-        private Map<String, Boolean> PlantID;
-        private String DatePlanted;
+    private List<PlantInstance> plants;
 
-        public Garden() {
-            // Default constructor required for calls to DataSnapshot.getValue(Garden.class)
-        }
-
-    public Garden(Map<String, Boolean> plantID, String datePlanted) {
-        PlantID = plantID;
-        DatePlanted = datePlanted;
+    public Garden() {
+        // Default constructor required for calls to DataSnapshot.getValue(Garden.class)
     }
 
-    public Map<String, Boolean> getPlantID() {
-        return PlantID;
+    public Garden(List<PlantInstance> plants) {
+        this.plants = plants;
     }
 
-    public void setPlantID(Map<String, Boolean> plantID) {
-        PlantID = plantID;
+    public List<PlantInstance> getPlants() {
+        return plants;
     }
 
-    public String getDatePlanted() {
-        return DatePlanted;
+    public void setPlants(List<PlantInstance> plants) {
+        this.plants = plants;
     }
 
-    public void setDatePlanted(String datePlanted) {
-        DatePlanted = datePlanted;
-    }
 }
 
 

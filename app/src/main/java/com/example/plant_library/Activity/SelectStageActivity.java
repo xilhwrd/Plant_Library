@@ -31,10 +31,12 @@ import android.util.Log;
 import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SelectStageActivity extends AppCompatActivity implements OnStageClickListener {
     private RecyclerView recyclerView;
@@ -85,40 +87,27 @@ public class SelectStageActivity extends AppCompatActivity implements OnStageCli
     private void updateStageInDatabase(String stageName, int plantId) {
         DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference().child("Plants");
         DatabaseReference plantRef = plantsRef.child(String.valueOf(plantId));
-        plantRef.child("Stage").child("StageName").setValue(stageName);
+//        plantRef.child("Stage").child("StageName").setValue(stageName);
 
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
-        // Thêm vào bảng Garden nếu chưa tồn tại
-        DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference().child("Garden").child(currentUser.getUid()).child("PlantID");
-        gardenRef.child(String.valueOf(plantId)).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    // Plant ID tồn tại trong bảng Garden
-                    Toast.makeText(SelectStageActivity.this, "Plant already exists in the garden", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Plant ID không tồn tại trong bảng Garden, thêm vào
-                    gardenRef.child("DatePlanted").setValue(currentDate);
-                    gardenRef.child(String.valueOf(plantId)).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(SelectStageActivity.this, "Đã được thêm vào vườn của bạn", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent("com.example.plant_library.UPDATE_GARDEN");
-                                LocalBroadcastManager.getInstance(SelectStageActivity.this).sendBroadcast(intent);
-                            } else {
-                                Toast.makeText(SelectStageActivity.this, "Không thể thêm cây vào vườn. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-            }
+        DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference().child("Garden").child(currentUser.getUid()).child("Plants");
+        Map<String, Object> newPlantInstance = new HashMap<>();
+        newPlantInstance.put("PlantID", plantId);
+        newPlantInstance.put("DatePlanted", currentDate);
+        newPlantInstance.put("StageName", stageName);
+
+        gardenRef.push().setValue(newPlantInstance).addOnCompleteListener(new OnCompleteListener<Void>() {
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi nếu cần
-                Log.e("updateStageInDatabase", "Database error: " + error.getMessage());
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(SelectStageActivity.this, "Đã được thêm vào vườn của bạn", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent("com.example.plant_library.UPDATE_GARDEN");
+                    LocalBroadcastManager.getInstance(SelectStageActivity.this).sendBroadcast(intent);
+                } else {
+                    Toast.makeText(SelectStageActivity.this, "Không thể thêm cây vào vườn. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

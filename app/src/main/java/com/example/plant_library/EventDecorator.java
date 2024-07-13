@@ -1,11 +1,10 @@
 package com.example.plant_library;
-import android.content.Context;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -16,14 +15,15 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 
+import java.util.List;
+
 public class EventDecorator implements DayViewDecorator {
 
-    private final CalendarDay eventDay;
+    private final List<CalendarDay> eventDay;
     private final int color;
-
     private final boolean isVEvent; // true nếu là sự kiện A (V), false nếu là sự kiện B (X)
 
-    public EventDecorator(CalendarDay eventDay, int color, boolean isVEvent) {
+    public EventDecorator(List<CalendarDay> eventDay, int color, boolean isVEvent) {
         this.eventDay = eventDay;
         this.color = color;
         this.isVEvent = isVEvent;
@@ -31,7 +31,8 @@ public class EventDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        return day.equals(eventDay); // Trả về true nếu ngày này là ngày có sự kiện
+        // Trả về true nếu ngày này có trong danh sách eventDay
+        return eventDay.contains(day);
     }
 
     @Override
@@ -82,16 +83,12 @@ public class EventDecorator implements DayViewDecorator {
 
         @Override
         public void setColorFilter(@Nullable ColorFilter colorFilter) {
-
+            // Không cần implement
         }
 
         @Override
         public int getOpacity() {
             return PixelFormat.OPAQUE;
         }
-
-
     }
 }
-
-

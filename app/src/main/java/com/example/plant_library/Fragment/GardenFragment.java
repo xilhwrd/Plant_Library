@@ -25,6 +25,7 @@ import com.example.plant_library.Adapter.PlantsGardenAdapter;
 import com.example.plant_library.Interface.FragmentHandler;
 import com.example.plant_library.Interface.RecyclerViewInterface;
 import com.example.plant_library.Object.Garden;
+import com.example.plant_library.Object.PlantInstance;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,21 +103,25 @@ public class GardenFragment extends Fragment implements RecyclerViewInterface {
         getListPlants();
     }
     private void getListPlants() {
-        DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference("Garden").child(currentUser.getUid()).child("PlantID");
+        DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference("Garden").child(currentUser.getUid()).child("Plants");
         gardenRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot gardenSnapshot) {
-                List<Integer> plantIds = new ArrayList<>();
+                List<PlantInstance> plantInstances = new ArrayList<>();
                 for (DataSnapshot snapshot : gardenSnapshot.getChildren()) {
-                    String plantIdString = snapshot.getKey();
-                    if (plantIdString != null && !plantIdString.equals("DatePlanted")) {
-                        int plantId = Integer.parseInt(plantIdString);
-                        plantIds.add(plantId);
+                    PlantInstance plantInstance = snapshot.getValue(PlantInstance.class);
+                    if (plantInstance != null) {
+                        plantInstances.add(plantInstance);
+                        Log.e("getListPlants", "Database error: " + plantInstance.getStageName());
                     }
                 }
-                if (!plantIds.isEmpty()) {
-                    fetchPlantsByIds(plantIds);
-                } else {
+                if (!plantInstances.isEmpty()) {
+                    List<Integer> plantIds = new ArrayList<>();
+                    for (PlantInstance instance : plantInstances) {
+                        plantIds.add(instance.getPlantID());
+                    }
+                    fetchPlantsByIds(plantInstances);
+                }  else {
                     plantsList.clear();
                     plantsAdapter.notifyDataSetChanged();
                     plantsAdapter.setShowShimmer(false);
@@ -132,18 +137,20 @@ public class GardenFragment extends Fragment implements RecyclerViewInterface {
         });
     }
 
-    private void fetchPlantsByIds(List<Integer> plantIds) {
+    private void fetchPlantsByIds(List<PlantInstance> plantInstances) {
         DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference("Plants");
         plantsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 plantsList.clear();
+                for (PlantInstance instance : plantInstances) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Plants plant = snapshot.getValue(Plants.class);
-                    if (plant != null && plantIds.contains(plant.getPlantID())) {
+                    if (plant != null && plant.getPlantID() == instance.getPlantID()) {
                         plantsList.add(plant);
                         tvCount.setText("Bạn đang có " + plantsList.size() + " cây trồng");
                     }
+                }
                 }
                 plantsAdapter.notifyDataSetChanged();
                 Handler handler = new Handler();

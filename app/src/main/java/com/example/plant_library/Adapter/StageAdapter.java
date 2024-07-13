@@ -79,7 +79,6 @@ public class StageAdapter extends RecyclerView.Adapter<StageAdapter.StageViewHol
 
                     if (onStageClickListener != null) {
                         onStageClickListener.onStageClick(stageName);
-
                     }
                 }
             });

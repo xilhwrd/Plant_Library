@@ -21,6 +21,7 @@ import com.example.plant_library.Object.Plants;
 import com.example.plant_library.Object.Stage;
 import com.example.plant_library.Object.TemperatureRange;
 import com.example.plant_library.Object.WaterRequirements;
+import com.example.plant_library.Object.WaterStage;
 import com.example.plant_library.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.squareup.picasso.Picasso;
@@ -192,13 +193,42 @@ public class PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantViewH
                                 bundle.putString("plant_light_stage4", lightRequirements.getLightStage4());
                             }
                             WaterRequirements waterRequirements = plant.getWaterRequirements();
+
                             if (waterRequirements != null) {
                                 bundle.putString("plant_water_rate", waterRequirements.getWaterRate());
-                                bundle.putString("plant_water_stage1", waterRequirements.getWaterStage1());
-                                bundle.putString("plant_water_stage2", waterRequirements.getWaterStage2());
-                                bundle.putString("plant_water_stage3", waterRequirements.getWaterStage3());
-                                bundle.putString("plant_water_stage4", waterRequirements.getWaterStage4());
+
+                                WaterStage waterStage1 = waterRequirements.getWaterStage1();
+                                if (waterStage1 != null) {
+                                    bundle.putString("plant_water_stage1_description", waterStage1.getDescription());
+                                    bundle.putInt("plant_water_stage1_interval", waterStage1.getWateringInterval());
+                                }
+
+                                WaterStage waterStage2 = waterRequirements.getWaterStage2();
+                                if (waterStage2 != null) {
+                                    bundle.putString("plant_water_stage2_description", waterStage2.getDescription());
+                                    bundle.putInt("plant_water_stage2_interval", waterStage2.getWateringInterval());
+                                }
+
+                                WaterStage waterStage3 = waterRequirements.getWaterStage3();
+                                if (waterStage3 != null) {
+                                    bundle.putString("plant_water_stage3_description", waterStage3.getDescription());
+                                    bundle.putInt("plant_water_stage3_interval", waterStage3.getWateringInterval());
+                                }
+
+                                WaterStage waterStage4 = waterRequirements.getWaterStage4();
+                                if (waterStage4 != null) {
+                                    bundle.putString("plant_water_stage4_description", waterStage4.getDescription());
+                                    bundle.putInt("plant_water_stage4_interval", waterStage4.getWateringInterval());
+                                }
                             }
+
+//                            if (waterRequirements != null) {
+//                                bundle.putString("plant_water_rate", waterRequirements.getWaterRate());
+//                                bundle.putString("plant_water_stage1", waterRequirements.getWaterStage1());
+//                                bundle.putString("plant_water_stage2", waterRequirements.getWaterStage2());
+//                                bundle.putString("plant_water_stage3", waterRequirements.getWaterStage3());
+//                                bundle.putString("plant_water_stage4", waterRequirements.getWaterStage4());
+//                            }
 
 //                            bundle.putString("plant_water", plant.getWaterRequirements());
 //                                bundle.putString("plant_hard", plant.getCareRequirements());

@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plant_library.Adapter.GardenInformationAdapter;
 import com.example.plant_library.EventDecorator;
 import com.example.plant_library.Object.GardenInformation;
+import com.example.plant_library.Object.PlantInstance;
 import com.example.plant_library.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import android.content.DialogInterface;
@@ -35,8 +40,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class GardenDetailActivity extends AppCompatActivity {
     MaterialCalendarView calendarView;
@@ -46,8 +57,10 @@ public class GardenDetailActivity extends AppCompatActivity {
     private AppCompatButton btnSeeInfor;
     private AppCompatImageButton btnDelete;
     private TextView tvPlantName;
+    private List<CalendarDay> wateringDays = new ArrayList<>();
     int plantId;
-    String stageName = null;
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    String stageNameView = null;
 
 
     @Override
@@ -69,17 +82,18 @@ public class GardenDetailActivity extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(backArrow);
         }
          calendarView = findViewById(R.id.calendar_view);
+        calendarView.setClickable(false);
+        calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_NONE);
         // Áp dụng EventDecorator cho sự kiện A (V) và B (X)
         CalendarDay eventDayA = CalendarDay.from(2024, 6, 30);
         CalendarDay eventDayB = CalendarDay.from(2024, 6, 29);
-
-        EventDecorator eventDecoratorA = new EventDecorator(eventDayA, Color.WHITE, true);
-        EventDecorator eventDecoratorB = new EventDecorator(eventDayB, Color.BLACK, false);
-
-        calendarView.addDecorator(eventDecoratorA);
-        calendarView.addDecorator(eventDecoratorB);
-        calendarView.invalidate();
-
+//
+//        EventDecorator eventDecoratorA = new EventDecorator(eventDayA, R.color.main_color, true);
+//        EventDecorator eventDecoratorB = new EventDecorator(eventDayB, Color.BLACK, false);
+//
+//        calendarView.addDecorator(eventDecoratorA);
+//        calendarView.addDecorator(eventDecoratorB);
+//        calendarView.invalidate();
 
         recyclerView = findViewById(R.id.rcv_garden_information);
         adapter = new GardenInformationAdapter(this);
@@ -154,9 +168,10 @@ public class GardenDetailActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("plant_infor_garden");
 
         if (bundle != null) {
+            String plantKey = bundle.getString("plant_key");
             plantId = bundle.getInt("plant_id", -1); // Default value -1 if not found
             String plantName = bundle.getString("plant_commonName");
-            stageName = bundle.getString("plant_stage_name");
+            stageNameView = bundle.getString("plant_stage_name");
             int stageDay1 = bundle.getInt("plant_stage_day1");
             int stageDay2 = bundle.getInt("plant_stage_day2");
             int stageDay3 = bundle.getInt("plant_stage_day3");
@@ -169,10 +184,20 @@ public class GardenDetailActivity extends AppCompatActivity {
             String lightStage4 = bundle.getString("plant_light_stage4");
 
             String waterRate = bundle.getString("plant_water_rate");
-            String waterStage1 = bundle.getString("plant_water_stage1");
-            String waterStage2 = bundle.getString("plant_water_stage2");
-            String waterStage3 = bundle.getString("plant_water_stage3");
-            String waterStage4 = bundle.getString("plant_water_stage4");
+            String waterStage1Description = bundle.getString("plant_water_stage1_description");
+            int waterStage1Interval = bundle.getInt("plant_water_stage1_interval");
+            String waterStage2Description = bundle.getString("plant_water_stage2_description");
+            int waterStage2Interval = bundle.getInt("plant_water_stage2_interval");
+            String waterStage3Description = bundle.getString("plant_water_stage3_description");
+            int waterStage3Interval = bundle.getInt("plant_water_stage3_interval");
+            String waterStage4Description = bundle.getString("plant_water_stage4_description");
+            int waterStage4Interval = bundle.getInt("plant_water_stage4_interval");
+
+
+//            String waterStage1 = bundle.getString("plant_water_stage1");
+//            String waterStage2 = bundle.getString("plant_water_stage2");
+//            String waterStage3 = bundle.getString("plant_water_stage3");
+//            String waterStage4 = bundle.getString("plant_water_stage4");
 
             String careRate = bundle.getString("plant_hard_rate");
             String careStage = bundle.getString("plant_hard_stage");
@@ -183,32 +208,76 @@ public class GardenDetailActivity extends AppCompatActivity {
             String feztStage = bundle.getString("plant_fert", "");
             String pestsStage = bundle.getString("plant_pests", "");
             tvPlantName.setText(plantName);
-            List<GardenInformation> gardenInformationList = new ArrayList<>();
-            switch (stageName) {
-                case "Nảy mầm":
-                    gardenInformationList =getListInfor (stageName, careStage, waterStage1, lightStage1, temperatureStage, feztStage, pestsStage);
-                    break;
-                case "Cây giống":
-                    gardenInformationList =getListInfor(stageName, careStage, waterStage2, lightStage2, temperatureStage, feztStage, pestsStage);
-                    break;
-                case "Phát triển":
-                    gardenInformationList =getListInfor(stageName, careStage, waterStage3, lightStage3, temperatureStage, feztStage, pestsStage);
-                    break;
-                case "Nở hoa":
-                    gardenInformationList =getListInfor(stageName, careStage, waterStage4, lightStage4, temperatureStage, feztStage, pestsStage);
-                    break;
-                default:
-                    Log.e("getInfor", "Unknown stage name: " + stageName);
-                    break;
-            }
+
+            DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference("Garden").child(currentUser.getUid()).child("Plants").child(plantKey);
+            gardenRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot gardenSnapshot) {
+                    List<GardenInformation> gardenInformationList = new ArrayList<>();
+//                    for (DataSnapshot snapshot : gardenSnapshot.getChildren()) {
+//                        PlantInstance plantInstance = snapshot.getValue(PlantInstance.class);
+                    if (gardenSnapshot.exists()) {
+                        PlantInstance plantInstance = gardenSnapshot.getValue(PlantInstance.class);
+                        Log.e("getInfor", "Database error: " + plantKey);
+                        if (plantInstance != null && plantInstance.getPlantID() == plantId ) {
+                            String stageName = plantInstance.getStageName();
+                            String datePlanted = plantInstance.getDatePlanted();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                            try {
+                                Date datePlantedDate = dateFormat.parse(datePlanted);
+                                Date currentDate = new Date(); // Current date
+                                long diff = currentDate.getTime() - datePlantedDate.getTime() ;
+                                long daysSincePlanted = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                            switch (stageName) {
+                                case "Nảy mầm":
+                                    wateringDays.clear();
+                                    addWateringDays(wateringDays, datePlantedDate, waterStage1Interval, stageDay1);
+                                    gardenInformationList = getListInfor(daysSincePlanted +1,stageName,stageNameView, careStage, waterStage1Description, lightStage1, temperatureStage, feztStage, pestsStage);
+                                    break;
+                                case "Cây giống":
+                                    wateringDays.clear();
+                                    addWateringDays(wateringDays, datePlantedDate, waterStage2Interval, stageDay2);
+                                    gardenInformationList = getListInfor(daysSincePlanted +1,stageName,stageNameView, careStage, waterStage2Description, lightStage2, temperatureStage, feztStage, pestsStage);
+                                    break;
+                                case "Phát triển":
+                                    wateringDays.clear();
+                                    addWateringDays(wateringDays, datePlantedDate, waterStage3Interval, stageDay3);
+                                    gardenInformationList = getListInfor(daysSincePlanted+1,stageName,stageNameView, careStage, waterStage3Description, lightStage3, temperatureStage, feztStage, pestsStage);
+                                    break;
+                                case "Nở hoa":
+                                    wateringDays.clear();
+                                    addWateringDays(wateringDays, datePlantedDate, waterStage4Interval, stageDay4);
+                                    gardenInformationList = getListInfor(daysSincePlanted+1,stageName,stageNameView, careStage, waterStage4Description, lightStage4, temperatureStage, feztStage, pestsStage);
+                                    break;
+                                default:
+                                    Log.e("getInfor", "Unknown stage name: " + stageName);
+                                    break;
+                            }
+                            EventDecorator eventDecorator = new EventDecorator(wateringDays,getColor(R.color.main_color), false);
+                            calendarView.addDecorator(eventDecorator);
+                                calendarView.invalidate();
+                                calendarView.invalidateDecorators();
+                            }catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                    }
+                    }
             adapter.setData(gardenInformationList);
             recyclerView.setAdapter(adapter);
         }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                    Log.e("getInfor", "Database error: " + error.getMessage());
+                }
+            });
+            }
     }
-    private List<GardenInformation> getListInfor(String overView, String careDescript, String water, String light, String tempurature, String fert, String pests) {
+    private List<GardenInformation> getListInfor(Long date,String stage, String overView, String careDescript, String water, String light, String tempurature, String fert, String pests) {
         List<GardenInformation> gardenInformationList = new ArrayList<>();
 
-        gardenInformationList.add(new GardenInformation("Tổng quan","Cây của bạn đang ở giai đoạn " +overView,R.drawable.img_eye));
+        gardenInformationList.add(new GardenInformation("Tổng quan","Cây của bạn đã thêm vào vườn được "+date+" ngày và đang ở giai đoạn: " +stage+ "\n"+overView,R.drawable.img_eye));
         gardenInformationList.add(new GardenInformation("Độ chăm sóc",careDescript,R.drawable.img_care_garden));
         gardenInformationList.add(new GardenInformation("Nước",water,R.drawable.img_water_garden));
         gardenInformationList.add(new GardenInformation("Ánh sáng",light,R.drawable.img_light_garden));
@@ -222,6 +291,16 @@ public class GardenDetailActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
-
-
+    private void addWateringDays(List<CalendarDay> wateringDays, Date startDate, int interval, int stageDays) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        wateringDays.add(CalendarDay.from(calendar));
+        // Thêm các ngày tiếp theo với khoảng cách là interval
+        for (int i = 1; i < stageDays; i++) {
+            calendar.add(Calendar.DAY_OF_MONTH, interval);
+            wateringDays.add(CalendarDay.from(calendar));
+            Log.d("addWateringDays", "Added watering day: " + calendar.getTime().toString());
+            i = i + interval;
+        }
+    }
 }
