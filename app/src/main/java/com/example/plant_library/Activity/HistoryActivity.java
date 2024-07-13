@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plant_library.Adapter.PlantsAdapter;
 import com.example.plant_library.Interface.RecyclerViewInterface;
+import com.example.plant_library.Object.PlantInstance;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -82,20 +83,23 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
     }
     private void getListPlants() {
         String userId = currentUser.getUid();
-        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference("History").child(userId).child("PlantID");
-        favoriteRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference("History").child(userId).child("Plants");
+        historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot gardenSnapshot) {
-                List<Integer> plantIds = new ArrayList<>();
+                List<PlantInstance> plantInstances = new ArrayList<>();
                 for (DataSnapshot snapshot : gardenSnapshot.getChildren()) {
-                    String plantIdString = snapshot.getKey();
-                    if (plantIdString != null) {
-                        int plantId = Integer.parseInt(plantIdString);
-                        plantIds.add(plantId);
+                    PlantInstance plantInstance = snapshot.getValue(PlantInstance.class);
+                    if (plantInstance != null) {
+                        plantInstances.add(plantInstance);
                     }
                 }
-                if (!plantIds.isEmpty()) {
-                    fetchPlantsByIds(plantIds);
+                if (!plantInstances.isEmpty()) {
+                    List<Integer> plantIds = new ArrayList<>();
+                    for (PlantInstance instance : plantInstances) {
+                        plantIds.add(instance.getPlantID());
+                    }
+                    fetchPlantsByIds(plantInstances);
                 } else {
                     plantsList.clear();
                     plantsAdapter.notifyDataSetChanged();
@@ -111,17 +115,19 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
         });
     }
 
-    private void fetchPlantsByIds(List<Integer> plantIds) {
+    private void fetchPlantsByIds(List<PlantInstance> plantInstances) {
         DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference("Plants");
         plantsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 plantsList.clear();
+                for (PlantInstance instance : plantInstances) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Plants plant = snapshot.getValue(Plants.class);
-                    if (plant != null && plantIds.contains(plant.getPlantID())) {
+                    if (plant != null && plant.getPlantID() == instance.getPlantID()) {
                         plantsList.add(plant);
                     }
+                }
                 }
                 plantsAdapter.notifyDataSetChanged();
                 Handler handler = new Handler();

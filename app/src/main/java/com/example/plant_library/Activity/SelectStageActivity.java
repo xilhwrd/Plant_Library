@@ -55,7 +55,7 @@ public class SelectStageActivity extends AppCompatActivity implements OnStageCli
 
         getBundleData();
         setStageAdapter();
-        upDateHistory(plantID);
+
     }
 
     private void getBundleData(){
@@ -82,6 +82,7 @@ public class SelectStageActivity extends AppCompatActivity implements OnStageCli
     @Override
     public void onStageClick(String stageName) {
         updateStageInDatabase(stageName, plantID);
+        upDateHistory(stageName,plantID);
         onBackPressed();
     }
     private void updateStageInDatabase(String stageName, int plantId) {
@@ -112,33 +113,25 @@ public class SelectStageActivity extends AppCompatActivity implements OnStageCli
         });
     }
 
-    private void upDateHistory( int plantId){
+    private void upDateHistory(String stageName, int plantId){
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference().child("History").child(currentUser.getUid()).child("PlantID");
-        gardenRef.child(String.valueOf(plantId)).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    } else {
-                    // Plant ID không tồn tại trong bảng Garden, thêm vào
-                    gardenRef.child("DatePlanted").setValue(currentDate);
-                    gardenRef.child(String.valueOf(plantId)).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Intent intent = new Intent("com.example.plant_library.UPDATE_HISTORY");
-                                LocalBroadcastManager.getInstance(SelectStageActivity.this).sendBroadcast(intent);
-                            }
-                        }
-                    });
-                }
-            }
+        DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference().child("History").child(currentUser.getUid()).child("Plants");
+        Map<String, Object> newPlantInstance = new HashMap<>();
+        newPlantInstance.put("PlantID", plantId);
+        newPlantInstance.put("DatePlanted", currentDate);
+        newPlantInstance.put("StageName", stageName);
+
+        gardenRef.push().setValue(newPlantInstance).addOnCompleteListener(new OnCompleteListener<Void>() {
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi nếu cần
-                Log.e("updateStageInDatabase", "Database error: " + error.getMessage());
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Intent intent = new Intent("com.example.plant_library.UPDATE_HISTORY");
+                    LocalBroadcastManager.getInstance(SelectStageActivity.this).sendBroadcast(intent);
+                } else {
+                    Toast.makeText(SelectStageActivity.this, "Không thể thêm cây vào vườn. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
-    }
+}
