@@ -146,7 +146,7 @@ public class LoginFragment1 extends Fragment {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
                 hideProgressBar();
-                Intent i = new Intent(getActivity(), Index.class);
+                Intent i = new Intent(getActivity(), IndexActivity.class);
                 startActivity(i);
                 getActivity().finishAffinity();
             } catch (ApiException e) {

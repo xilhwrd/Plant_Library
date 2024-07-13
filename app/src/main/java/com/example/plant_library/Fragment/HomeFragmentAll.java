@@ -286,7 +286,7 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
 
     private void getListLowMain() {
         DatabaseReference plantRef = FirebaseDatabase.getInstance().getReference("Plants");
-        Query query = plantRef.orderByChild("CareRequirements").equalTo("1");
+        Query query = plantRef.orderByChild("CareRequirements/CareRate").equalTo("1");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

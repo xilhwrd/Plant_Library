@@ -102,7 +102,7 @@ public class HomeFragmentFlowering extends Fragment implements RecyclerViewInter
 
     private void loadPlantsEasyCare() {
         DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference("Plants");
-        Query query = plantsRef.orderByChild("CareRequirements").equalTo("1");
+        Query query = plantsRef.orderByChild("CareRequirements/CareRate").equalTo("1");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -82,7 +82,7 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
     }
     private void getListPlants() {
         String userId = currentUser.getUid();
-        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference("History").child(userId).child("plantIds");
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference("History").child(userId).child("PlantID");
         favoriteRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot gardenSnapshot) {
