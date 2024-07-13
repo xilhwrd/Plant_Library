@@ -80,6 +80,42 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_garden_information"></androidx.recyclerview.widget.RecyclerView>
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_infor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/literata_24pt_medium"
+                android:text="i"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_garden_plant_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_garden_plant_name" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_garden_detail"
+                android:visibility="gone"
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_infor"
+                app:strokeColor="@color/main_color"
+                app:strokeWidth="1dp">
+
+                <TextView
+                    android:id="@+id/tv_infor2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/generalsans_medium"
+                    android:text="i"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+            </com.google.android.material.card.MaterialCardView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="120dp"

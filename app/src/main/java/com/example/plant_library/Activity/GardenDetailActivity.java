@@ -15,8 +15,11 @@ import com.example.plant_library.EventDecorator;
 import com.example.plant_library.Object.GardenInformation;
 import com.example.plant_library.Object.PlantInstance;
 import com.example.plant_library.R;
+import com.example.plant_library.WateringReminderReceiver;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +33,9 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -56,9 +62,11 @@ public class GardenDetailActivity extends AppCompatActivity {
     private GardenInformationAdapter adapter;
     private AppCompatButton btnSeeInfor;
     private AppCompatImageButton btnDelete;
-    private TextView tvPlantName;
+    private TextView tvPlantName, tvInfor, tvInfor2;
+    private MaterialCardView materialCardView;
     private List<CalendarDay> wateringDays = new ArrayList<>();
     int plantId;
+    String plantKey = null;
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String stageNameView = null;
 
@@ -73,6 +81,9 @@ public class GardenDetailActivity extends AppCompatActivity {
         btnSeeInfor = findViewById(R.id.btn_see_infor);
         toolbarGarden = findViewById(R.id.toolbar_garden);
         tvPlantName = findViewById(R.id.tv_garden_plant_name);
+        tvInfor = findViewById(R.id.tv_infor);
+        tvInfor2 = findViewById(R.id.tv_infor2);
+        materialCardView = findViewById(R.id.cardView_garden_detail);
         setSupportActionBar(toolbarGarden);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,6 +114,14 @@ public class GardenDetailActivity extends AppCompatActivity {
         setClick();
     }
     public void setClick(){
+
+        tvInfor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvInfor2.setText("Nếu ngày được đánh dấu màu xanh, điều đó nói rằng bạn sẽ cần tưới nước cho cây");
+                materialCardView.setVisibility(View.VISIBLE);
+            }
+        });
         btnSeeInfor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +141,7 @@ public class GardenDetailActivity extends AppCompatActivity {
                         .setPositiveButton("Có", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Xóa cây từ Firebase
-                                deletePlantFromGarden(plantId);
+                                deletePlantFromGarden(plantKey);
                             }
                         })
                         .setNegativeButton("Không", null)
@@ -132,43 +151,37 @@ public class GardenDetailActivity extends AppCompatActivity {
             }
         });
     }
-    private void deletePlantFromGarden(int plantID) {
-        DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference().child("Garden");
-        Query query = gardenRef.orderByChild("plantID").equalTo(plantID);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void deletePlantFromGarden(String plantKey) {
+        DatabaseReference gardenRef = FirebaseDatabase.getInstance().getReference().child("Garden").child(currentUser.getUid()).child("Plants").child(plantKey);
+
+        gardenRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    snapshot.getRef().removeValue()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(GardenDetailActivity.this, "Đã xóa cây thành công!", Toast.LENGTH_SHORT).show();
-                                        // Gửi broadcast để cập nhật GardenFragment
-                                        Intent intent = new Intent("com.example.plant_library.UPDATE_GARDEN");
-                                        LocalBroadcastManager.getInstance(GardenDetailActivity.this).sendBroadcast(intent);
-                                        finish();
-                                    } else {
-                                        Toast.makeText(GardenDetailActivity.this, "Xóa cây thất bại. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(GardenDetailActivity.this, "Đã xóa cây thành công!", Toast.LENGTH_SHORT).show();
+                    // Gửi broadcast để cập nhật GardenFragment
+                    Intent intent = new Intent("com.example.plant_library.UPDATE_GARDEN");
+                    LocalBroadcastManager.getInstance(GardenDetailActivity.this).sendBroadcast(intent);
+                    finish();
+                } else {
+                    Toast.makeText(GardenDetailActivity.this, "Xóa cây thất bại. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
                 }
             }
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onFailure(@NonNull Exception e) {
                 // Xử lý lỗi nếu có
-                Toast.makeText(GardenDetailActivity.this, "Lỗi: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GardenDetailActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
     public void getInfor() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("plant_infor_garden");
 
         if (bundle != null) {
-            String plantKey = bundle.getString("plant_key");
+            plantKey = bundle.getString("plant_key");
             plantId = bundle.getInt("plant_id", -1); // Default value -1 if not found
             String plantName = bundle.getString("plant_commonName");
             stageNameView = bundle.getString("plant_stage_name");
@@ -228,6 +241,45 @@ public class GardenDetailActivity extends AppCompatActivity {
                                 Date currentDate = new Date(); // Current date
                                 long diff = currentDate.getTime() - datePlantedDate.getTime() ;
                                 long daysSincePlanted = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+                                //chuyển giai đoạn
+                                boolean stageChanged = false;
+                                switch (stageName) {
+                                    case "Nảy mầm":
+                                        if (daysSincePlanted >= stageDay1) {
+                                            stageName = "Cây giống";
+                                            gardenRef.child("StageName").setValue(stageName);
+                                            stageChanged = true;
+                                        }
+                                        break;
+                                    case "Cây giống":
+                                        if (daysSincePlanted >= stageDay1 + stageDay2) {
+                                            stageName = "Phát triển";
+                                            gardenRef.child("StageName").setValue(stageName);
+                                            stageChanged = true;
+                                        }
+                                        break;
+                                    case "Phát triển":
+                                        if (daysSincePlanted >= stageDay1 + stageDay2 + stageDay3) {
+                                            stageName = "Nở hoa";
+                                            gardenRef.child("StageName").setValue(stageName);
+                                            stageChanged = true;
+                                        }
+                                        break;
+                                    case "Nở hoa":
+                                        // Đây là giai đoạn cuối, không cần chuyển
+                                        break;
+                                    default:
+                                        Log.e("getInfor", "Unknown stage name: " + stageName);
+                                        break;
+                                }
+
+                                if (stageChanged) {
+                                    // Cập nhật lại dữ liệu giai đoạn sau khi chuyển giai đoạn
+                                    gardenRef.child("StageName").setValue(stageName);
+                                }
+
+                                //set thông tin
                             switch (stageName) {
                                 case "Nảy mầm":
                                     wateringDays.clear();
@@ -257,6 +309,7 @@ public class GardenDetailActivity extends AppCompatActivity {
                             calendarView.addDecorator(eventDecorator);
                                 calendarView.invalidate();
                                 calendarView.invalidateDecorators();
+                                setWateringReminders(wateringDays, plantName);
                             }catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -296,11 +349,40 @@ public class GardenDetailActivity extends AppCompatActivity {
         calendar.setTime(startDate);
         wateringDays.add(CalendarDay.from(calendar));
         // Thêm các ngày tiếp theo với khoảng cách là interval
-        for (int i = 1; i < stageDays; i++) {
+        for (int i = 0; i < stageDays; i += interval) {
+            if (calendar.getTimeInMillis() > System.currentTimeMillis()) {
+                wateringDays.add(CalendarDay.from(calendar));
+                Log.d("addWateringDays", "Added watering day: " + calendar.getTime().toString());
+            }
             calendar.add(Calendar.DAY_OF_MONTH, interval);
-            wateringDays.add(CalendarDay.from(calendar));
-            Log.d("addWateringDays", "Added watering day: " + calendar.getTime().toString());
-            i = i + interval;
+        }
+    }
+    private void scheduleWateringReminder(Context context, CalendarDay wateringDay, String plantName, int notificationId) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, wateringDay.getYear());
+        calendar.set(Calendar.MONTH, wateringDay.getMonth() - 1); // Tháng trong Calendar bắt đầu từ 0
+        calendar.set(Calendar.DAY_OF_MONTH, wateringDay.getDay());
+        calendar.set(Calendar.HOUR_OF_DAY, 8); // Thời gian trong ngày khi thông báo (8 giờ sáng)
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
+            return; // Bỏ qua ngày đã qua
+        }
+        Intent intent = new Intent(context, WateringReminderReceiver.class);
+        intent.putExtra("plant_name", plantName);
+        intent.putExtra("notification_id", notificationId);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
+    }
+
+    private void setWateringReminders(List<CalendarDay> wateringDays, String plantName) {
+        int notificationId = 0;
+        for (CalendarDay day : wateringDays) {
+            scheduleWateringReminder(this, day, plantName, notificationId++);
         }
     }
 }
