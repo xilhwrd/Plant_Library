@@ -425,7 +425,7 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
 //                    if (plant != null && plant.getFamily().equals(family) && plant.getPlantID() != plantId ) {
 //                        plantsList.add(plant);
 //                    }
-                    if (plant != null && family != null) {
+                    if (plant != null && family != null ) {
                         if (plant.getFamily() != null && plant.getFamily().equals(family) && plant.getPlantID() != plantId) {
                             plantsList.add(plant);
                         }
@@ -438,7 +438,7 @@ public class DetailActivity extends AppCompatActivity implements RecyclerViewInt
                     public void run() {
                         plantsAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
                 Log.d(TAG, "Number of plants loaded: " + plantsList.size());
             }
 

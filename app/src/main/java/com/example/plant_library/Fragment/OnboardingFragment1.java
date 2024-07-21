@@ -32,13 +32,12 @@ public class OnboardingFragment1 extends Fragment {
 
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
 
-        String blackText = "Update extremely useful\n" +
-                "plant";
+        String blackText = "Cập nhật\n cực kỳ hữu ích";
         SpannableString firstSpannable = new SpannableString(blackText);
         firstSpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, blackText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         stringBuilder.append(firstSpannable);
 
-        String greenText = " knowledge";
+        String greenText = " về cây";
         SpannableString secondSpannable = new SpannableString(greenText);
         secondSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#0D9276")), 0, greenText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         stringBuilder.append(secondSpannable);

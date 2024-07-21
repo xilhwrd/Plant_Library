@@ -172,7 +172,7 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
                     public void run() {
                         interestPlantsAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
                 Log.d(TAG, "Number of plants loaded: " + interestPlant.size());
             }
 
@@ -211,7 +211,7 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
                     public void run() {
                         airPlantAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
             }
 
             @Override
@@ -262,7 +262,7 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
                     public void run() {
                         plantCategoryAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
             }
 
             @Override
@@ -309,7 +309,7 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
                     public void run() {
                         lowMainPlantAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
             }
 
             @Override
@@ -354,7 +354,7 @@ public class HomeFragmentAll extends Fragment implements RecyclerViewInterface {
                     public void run() {
                         otherCateAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
                 Log.d(TAG, "Updated plantCategoryList: " + otherCateAdapter.toString());
             }
 

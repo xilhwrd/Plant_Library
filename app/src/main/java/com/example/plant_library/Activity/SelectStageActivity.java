@@ -75,7 +75,7 @@ public class SelectStageActivity extends AppCompatActivity implements OnStageCli
         stageList.add(new StageObj("Trong 2-4 tuần",R.drawable.img_stage1,"Nảy mầm"));
         stageList.add(new StageObj("Trong 4-6 tháng",R.drawable.img_stage2,"Cây giống"));
         stageList.add(new StageObj("Trong 2-3 tháng",R.drawable.img_stage3,"Phát triển"));
-        stageList.add(new StageObj("Trong 6-8 tuần",R.drawable.img_stage4,"Nở hoa"));
+        stageList.add(new StageObj("Trong 6-8 tuần",R.drawable.img_stage4,"Nở hoa / Trưởng thành"));
         return stageList;
     }
 

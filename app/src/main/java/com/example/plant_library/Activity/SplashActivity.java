@@ -2,6 +2,8 @@ package com.example.plant_library.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.plant_library.BootReceiver;
 import com.example.plant_library.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -9,8 +11,14 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -22,6 +30,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class SplashActivity extends AppCompatActivity {
     View view;
     ImageView imgLogo;
@@ -31,7 +41,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         imgLogo = findViewById(R.id.img_logo);
-
+        createNotificationChannel();
+        setDailyCheckAlarm(this);
         setAnim();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -49,7 +60,7 @@ public class SplashActivity extends AppCompatActivity {
            Intent i = new Intent(SplashActivity.this, IndexActivity.class);
            startActivity(i);
        }else{
-           Intent i = new Intent(SplashActivity.this, SignUpActivity.class);
+           Intent i = new Intent(SplashActivity.this, OnboardingActivity.class);
            startActivity(i);
        }
     }
@@ -91,5 +102,32 @@ public class SplashActivity extends AppCompatActivity {
         },1000);
 
     }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Watering Reminder";
+            String description = "Channel for watering reminders";
+            int importance = NotificationManager.IMPORTANCE_HIGH; // Đảm bảo thông báo hiển thị nổi bật
+            NotificationChannel channel = new NotificationChannel("WateringReminderChannel", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+    private void setDailyCheckAlarm(Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, BootReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
 }

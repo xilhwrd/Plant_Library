@@ -137,7 +137,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
                     public void run() {
                         plantsAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
                 Log.d(ContentValues.TAG, "Number of plants loaded: " + plantsList.size());
             }
 
@@ -181,7 +181,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
                     public void run() {
                         genreAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
                 Log.d(TAG, "Updated plantCategoryList: " + genreList.toString());
             }
 
@@ -225,7 +225,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
                     public void run() {
                         plantCategoryAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
                 Log.d(TAG, "Updated plantCategoryList: " + plantCategoryList.toString());
             }
 

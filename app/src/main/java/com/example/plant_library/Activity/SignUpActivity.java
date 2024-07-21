@@ -152,7 +152,6 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 finishAffinity();
-                                Toast.makeText(SignUpActivity.this, "User registered successfully", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(SignUpActivity.this, SignUpFinishActivity.class));
                                 prgSignUp.setVisibility(View.GONE);
                             } else {

@@ -117,7 +117,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/generalsans_light"
-                    android:text="Partial sun"
+                    android:text="Mức nắng"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -142,7 +142,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/generalsans_light"
-                    android:text="Moderate"
+                    android:text="Tưới nước"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -170,7 +170,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/generalsans_light"
-                    android:text="Average care"
+                    android:text="Độ khó"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </RelativeLayout>
@@ -205,7 +205,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/generalsans_medium"
                     android:padding="15dp"
-                    android:text="Mature Size"
+                    android:text="Kích thước"
                     android:textColor="@android:color/black"
                     android:textSize="10sp" />
 
@@ -242,7 +242,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/generalsans_medium"
                     android:padding="15dp"
-                    android:text="pH Range"
+                    android:text="Độ pH "
                     android:textColor="@android:color/black"
                     android:textSize="10sp" />
 
@@ -279,7 +279,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/generalsans_medium"
                     android:padding="15dp"
-                    android:text="Temperature"
+                    android:text="Nhiệt độ"
                     android:textColor="@android:color/black"
                     android:textSize="10sp" />
 
@@ -316,7 +316,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/generalsans_medium"
                     android:padding="15dp"
-                    android:text="Bloom Time"
+                    android:text="Nở hoa"
                     android:textColor="@android:color/black"
                     android:textSize="10sp" />
 
@@ -353,7 +353,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/generalsans_medium"
                     android:padding="15dp"
-                    android:text="Propagation"
+                    android:text="Nhân giống"
                     android:textColor="@android:color/black"
                     android:textSize="10sp" />
 
@@ -441,9 +441,13 @@
             android:paddingStart="15dp"
             android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/tv_suggest"
             android:layout_marginTop="10dp" />
+        <LinearLayout
+            android:layout_below="@id/rcv_suggest"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

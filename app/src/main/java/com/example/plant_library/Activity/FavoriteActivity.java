@@ -134,7 +134,7 @@ public class FavoriteActivity extends AppCompatActivity implements RecyclerViewI
                     public void run() {
                         plantsAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
             }
 
             @Override

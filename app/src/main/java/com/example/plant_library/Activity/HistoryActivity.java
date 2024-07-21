@@ -136,7 +136,7 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
                     public void run() {
                         plantsAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
             }
 
             @Override

@@ -6,19 +6,19 @@
     <string name="next">Next</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="onboard1">Update extremely useful
-plant knowledge</string>
-    <string name="onboard2">Supports quick search and classification of plants</string>
-    <string name="onboard3">Plant care is easy with the schedule provided</string>
-    <string name="onboard1decrip">Story articles revolving  around related topics are continuously updated</string>
-    <string name="onboard2decrip">Searching by image and classifying by plant properties helps find in a snap</string>
-    <string name="onboard3decrip">Determine the plant\'\s condition to come up with the most appropriate care process</string>
-    <string name="sign_up_finish1">Congratulation!</string>
-    <string name="sign_up_finish2">Account is created!</string>
-    <string name="sign_up_finish3">Time to start exploring the world of plants and start building your own garden.</string>
-    <string name="login_welcome">Welcome Back</string>
-    <string name="forgot_password">Forgot Password</string>
-    <string name="forgot_password_decrip">*We will send you a message to resent your password</string>
+    <string name="onboard1">Cập nhật kiến thức cây trồng
+        cực kỳ hữu ích</string>
+    <string name="onboard2">Hỗ trợ tìm kiếm và phân loại cây trồng nhanh chóng</string>
+    <string name="onboard3">Chăm sóc cây dễ dàng với lịch trình được cung cấp</string>
+    <string name="onboard1decrip">Các bài viết xoay quanh chủ đề được cập nhật liên tục</string>
+    <string name="onboard2decrip">Tìm kiếm và phân loại theo đặc tính thực vật giúp tìm kiếm trong tích tắc</string>
+    <string name="onboard3decrip">Xác định tình trạng cây để đưa ra quy trình chăm sóc phù hợp nhất</string>
+    <string name="sign_up_finish1">Chúc mừng!</string>
+    <string name="sign_up_finish2">Tài khoản đã được tạo!</string>
+    <string name="sign_up_finish3">Đã đến lúc bắt đầu khám phá thế giới thực vật và bắt đầu xây dựng khu vườn của riêng bạn.</string>
+    <string name="login_welcome">Chào Mừng Trở Lại</string>
+    <string name="forgot_password">Quên Mật Khẩu</string>
+    <string name="forgot_password_decrip">*Chúng tôi sẽ gửi cho bạn một tin nhắn để gửi lại mật khẩu của bạn </string>
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_decrip">Set your new password and re-enter. It must contain at least 8 characters.</string>
 </resources>

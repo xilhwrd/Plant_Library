@@ -31,12 +31,12 @@ public class OnboardingFragment3 extends Fragment {
         tvTitle = mView.findViewById(R.id.tv_title_ob3);
 
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
-        String greenText = "Plant care";
+        String greenText = "Chăm sóc cây";
         SpannableString greenSpannable = new SpannableString(greenText);
         greenSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#0D9276")), 0, greenText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         stringBuilder.append(greenSpannable);
 
-        String blackText = " is easy with the schedule provided";
+        String blackText = " dễ dàng với lịch trình được cung cấp";
         SpannableString blackSpannable = new SpannableString(blackText);
         blackSpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, blackText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         stringBuilder.append(blackSpannable);

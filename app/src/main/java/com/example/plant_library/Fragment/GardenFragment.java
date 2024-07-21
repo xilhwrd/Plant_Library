@@ -1,5 +1,7 @@
 package com.example.plant_library.Fragment;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -46,6 +50,8 @@ public class GardenFragment extends Fragment implements RecyclerViewInterface {
     private List<Plants> plantsList;
     private TextView tvCount;
     private AppCompatButton btnAdd;
+    private List<Plants> suggestList;
+    private PlantsAdapter suggestAdapter;
     private PlantsGardenAdapter plantsAdapter;
     private FragmentHandler fragmentHandler;
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -59,6 +65,7 @@ public class GardenFragment extends Fragment implements RecyclerViewInterface {
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(updateReceiver,
                 new IntentFilter("com.example.plant_library.UPDATE_GARDEN"));
         setAirPlantsAdapter();
+        setSuggestPlantsAdapter();
         setClickButton();
 
         return  mView;
@@ -159,13 +166,62 @@ public class GardenFragment extends Fragment implements RecyclerViewInterface {
                     public void run() {
                         plantsAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Xử lý lỗi nếu cần
                 Log.e("fetchPlantsByIds", "Database error: " + error.getMessage());
+            }
+        });
+    }
+    private void setSuggestPlantsAdapter(){
+        recyclerView = mView.findViewById(R.id.rcv_suggest_garden);
+        suggestList = new ArrayList<>();
+        suggestAdapter = new PlantsAdapter(suggestList,this, getContext(), R.id.rcv_suggest_garden);
+
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        GridLayoutManager manager1 = new GridLayoutManager(getContext(),2);
+        recyclerView.setLayoutManager(manager1);
+
+        recyclerView.setAdapter(suggestAdapter);
+        getListInterestPlants();
+
+
+    }
+    private void getListInterestPlants() {
+        DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference("Plants");
+        plantsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Plants plants = snapshot.getValue(Plants.class);
+                    if (plants != null) {
+                        suggestList.add(plants);
+                    }
+                }
+                Collections.shuffle(suggestList);
+                List<Plants> limitedInterestPlant = suggestList;
+                if (suggestList.size() > 10) {
+                    limitedInterestPlant = suggestList.subList(0, 10);
+                }
+
+                // Update the adapter's data and notify changes
+                suggestAdapter.updateData(limitedInterestPlant);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        suggestAdapter.setShowShimmer(false);
+                    }
+                }, 1500);
+                Log.d(TAG, "Number of plants loaded: " + suggestList.size());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
             }
         });
     }

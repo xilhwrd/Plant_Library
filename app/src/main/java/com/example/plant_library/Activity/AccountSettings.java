@@ -1,6 +1,7 @@
 package com.example.plant_library.Activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ import java.util.Map;
 
 public class AccountSettings extends AppCompatActivity {
     private TextView tvImageUserChange;
+    private ProgressBar progressBar;
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST = 123;
 
@@ -39,6 +42,7 @@ public class AccountSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_settings);
 
+        progressBar = findViewById(R.id.prg_Acc);
         tvImageUserChange = findViewById(R.id.tv_image_user);
         tvImageUserChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +53,7 @@ public class AccountSettings extends AppCompatActivity {
     }
 
     private void checkStoragePermission() {
+        progressBar.setVisibility(View.VISIBLE);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -84,12 +89,16 @@ public class AccountSettings extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(AccountSettings.this, "Upload successful", Toast.LENGTH_SHORT).show();
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     String downloadUrl = uri.toString();
                                     saveImageUrlToDatabase(downloadUrl);
+                                    Toast.makeText(AccountSettings.this, "Thành công", Toast.LENGTH_SHORT).show();
+                                    Intent returnIntent = new Intent();
+                                    returnIntent.putExtra("imageUrl", downloadUrl);
+                                    setResult(Activity.RESULT_OK, returnIntent);
+                                    finish();
                                 }
                             });
                         }
@@ -119,7 +128,7 @@ public class AccountSettings extends AppCompatActivity {
         reference.updateChildren(updates)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(AccountSettings.this, "Image URL saved to database successfully", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(AccountSettings.this, "Image URL saved to database successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(AccountSettings.this, "Failed to save image URL to database", Toast.LENGTH_SHORT).show();
                     }

@@ -62,7 +62,7 @@
             android:shadowDx="2"
             android:shadowColor="@color/black"
             android:fontFamily="@font/generalsans_medium"
-            android:text="Next"
+            android:text="Tiếp theo"
             android:textColor="@color/next_text"
             android:elevation="20dp"
             android:textSize="14sp" />

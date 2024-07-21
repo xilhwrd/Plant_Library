@@ -55,17 +55,17 @@ public class OnboardingActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0 || position == 1){
-                    btnNext.setText("Next");
+                    btnNext.setText("Tiếp theo");
                     tvSkip.setVisibility(View.VISIBLE);
                     buttonNextClick();
                 }
                 if(position == 2){
                     tvSkip.setVisibility(View.INVISIBLE);
-                    btnNext.setText("Start");
+                    btnNext.setText("Bắt đầu");
                     btnNext.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(OnboardingActivity.this, SplashActivity.class);
+                            Intent intent = new Intent(OnboardingActivity.this, SignUpActivity.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.enter_left_to_right,R.anim.exit_left_to_right);
                         }

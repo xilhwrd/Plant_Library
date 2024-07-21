@@ -20,7 +20,6 @@ import com.example.plant_library.R;
 import com.google.android.material.tabs.TabLayout;
 
 import org.w3c.dom.Text;
-
 public class HomeFragment extends Fragment implements RecyclerViewInterface, OnGenreSelectedListener {
     private View mView;
     private TextView tab1, tab2, tab3, tab4;
@@ -31,6 +30,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, OnG
     private HomeFragmentAll homeFragmentAll = new HomeFragmentAll();
     private HomeFragmentArticle homeFragmentArticle = new HomeFragmentArticle();
     private HomeFragmentFlowering homeFragmentFlowering = new HomeFragmentFlowering();
+    private HomeFragmentFoliage homeFragmentFoliage = new HomeFragmentFoliage();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, OnG
                     setBG(tab1, tab2, tab4);
                     break;
                 case R.id.tab_foliage:
-                    selectedFragment = homeFragmentFlowering;
+                    selectedFragment = homeFragmentFoliage;
                     tab4.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                     tab4.setTextColor(getResources().getColor(R.color.white));
                     setBG(tab1, tab2, tab3);
@@ -110,7 +110,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, OnG
         if (homeFragmentAll.isAdded()) transaction.hide(homeFragmentAll);
         if (homeFragmentArticle.isAdded()) transaction.hide(homeFragmentArticle);
         if (homeFragmentFlowering.isAdded()) transaction.hide(homeFragmentFlowering);
-//        if (homeFragmentFoliage.isAdded()) transaction.hide(homeFragmentFoliage);
+        if (homeFragmentFoliage.isAdded()) transaction.hide(homeFragmentFoliage);
 
         // Show the selected fragment
         if (fragment.isAdded()) {
@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, OnG
                 setBG(tab1, tab2, tab4);
                 break;
             case 3:
-                selectedFragment = homeFragmentFlowering;
+                selectedFragment = homeFragmentFoliage;
                 tab3.setBackground(getResources().getDrawable(R.drawable.bg_tab_selected));
                 tab3.setTextColor(getResources().getColor(R.color.white));
                 setBG(tab1, tab2, tab4);

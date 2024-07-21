@@ -1,5 +1,7 @@
 package com.example.plant_library.Fragment;
 
+
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,9 +17,11 @@ import android.view.Window;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.plant_library.Activity.AccountSettings;
 import com.example.plant_library.Activity.FavoriteActivity;
 import com.example.plant_library.Activity.HistoryActivity;
@@ -45,16 +49,21 @@ public class MeFragment extends Fragment {
     CircleImageView imgUser;
     private FirebaseUser currentUser;
     View mView;
+    private static final int PICK_IMAGE_REQUEST = 1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView =  inflater.inflate(R.layout.fragment_me, container, false);
         initUI();
-        setOnClick();
         setUserInformation();
-        // Lấy email của người dùng và đưa vào TextView
+        setOnClick();
 
+
+        imgUser.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AccountSettings.class);
+            startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        });
         return mView;
     }
     private void initUI(){
@@ -136,7 +145,7 @@ public class MeFragment extends Fragment {
             String email = currentUser.getEmail();
             userEmailTextView.setText(""+email);
             String username = currentUser.getDisplayName();
-            if (username.isEmpty() || username == null){
+            if (username == null || username.isEmpty()){
                 loadDataUser();
             }else {
                 userNameTextView.setText(username);
@@ -171,6 +180,18 @@ public class MeFragment extends Fragment {
                     userNameTextView.setText("Error loading username");
                 }
             });
+        }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            String newImageUrl = data.getStringExtra("imageUrl");
+            if (newImageUrl != null && !newImageUrl.isEmpty()) {
+                Picasso.get().load(newImageUrl).into(imgUser);
+            }
+            // Reload user data to ensure all details are up to date
+            loadDataUser();
         }
     }
 }

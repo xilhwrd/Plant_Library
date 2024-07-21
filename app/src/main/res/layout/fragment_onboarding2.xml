@@ -8,6 +8,8 @@
     tools:context=".Fragment.OnboardingFragment1">
 
     <TextView
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:id="@+id/tv_title_ob2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

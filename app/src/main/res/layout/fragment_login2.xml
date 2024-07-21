@@ -77,7 +77,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/bg_button_signup"
         android:fontFamily="@font/generalsans_light"
-        android:text="Submit"
+        android:text="Đồng ý"
         android:textAllCaps="false"
         android:textColor="@color/white" />
     <RelativeLayout

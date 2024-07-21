@@ -30,12 +30,12 @@ public class OnboardingFragment2 extends Fragment {
         tvTitle = mView.findViewById(R.id.tv_title_ob2);
 
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
-        String greenText = "Supports";
+        String greenText = "Hỗ trợ";
         SpannableString greenSpannable = new SpannableString(greenText);
         greenSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#0D9276")), 0, greenText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         stringBuilder.append(greenSpannable);
 
-        String blackText = " quick search and classification of plants";
+        String blackText = " tìm kiếm và phân loại thực vật nhanh chóng";
         SpannableString blackSpannable = new SpannableString(blackText);
         blackSpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, blackText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         stringBuilder.append(blackSpannable);

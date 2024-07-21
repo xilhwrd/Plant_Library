@@ -12,15 +12,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.plant_library.Adapter.ArticleAdapter;
-import com.example.plant_library.Adapter.PlantCategoryAdapter;
 import com.example.plant_library.Adapter.PlantsAdapter;
 import com.example.plant_library.Interface.RecyclerViewInterface;
-import com.example.plant_library.Object.Article;
 import com.example.plant_library.Object.Plants;
 import com.example.plant_library.R;
 import com.google.firebase.database.DataSnapshot;
@@ -33,22 +29,22 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragmentFlowering extends Fragment implements RecyclerViewInterface {
+public class HomeFragmentFoliage extends Fragment implements RecyclerViewInterface {
     View mView;
     RecyclerView recyclerView;
-    private PlantsAdapter plantsAdapter, easyPlantsAdapter;
+    private PlantsAdapter plantsAdapter, easyPlantsAdapter, helioPlantsAdapter;
     private ConstraintLayout constraintLayout;
-    private List<Plants> plantsList, easyPlantsList;
+    private List<Plants> plantsList, easyPlantsList, helioPlantsList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mView = inflater.inflate(R.layout.fragment_home_flowering, container, false);
+        mView = inflater.inflate(R.layout.fragment_home_foliage, container, false);
         setEverbloomingAdapter();
         loadPlantsExcludingNonBlooming();
         setEasyCareAdapter();
         loadPlantsEasyCare();
-
+        setHelioAdapter();
         return mView;
     }
     private void setEverbloomingAdapter(){
@@ -69,7 +65,7 @@ public class HomeFragmentFlowering extends Fragment implements RecyclerViewInter
                 plantsList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Plants plant = snapshot.getValue(Plants.class);
-                    if (plant != null && !plant.getBloomtime().contains("Không nở hoa")) {
+                    if (plant != null && plant.getBloomtime().contains("Không nở hoa")) {
                         plantsList.add(plant);
                     }
                 }
@@ -109,7 +105,7 @@ public class HomeFragmentFlowering extends Fragment implements RecyclerViewInter
                 easyPlantsList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Plants plant = snapshot.getValue(Plants.class);
-                    if (plant != null && !plant.getBloomtime().contains("Không nở hoa")) {
+                    if (plant != null && plant.getBloomtime().contains("Không nở hoa")) {
                         easyPlantsList.add(plant);
                     }
                 }
@@ -119,6 +115,48 @@ public class HomeFragmentFlowering extends Fragment implements RecyclerViewInter
                     @Override
                     public void run() {
                         easyPlantsAdapter.setShowShimmer(false);
+                    }
+                }, 1500);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+            }
+        });
+    }
+
+    private void setHelioAdapter(){
+        recyclerView = mView.findViewById(R.id.rcv_heliophilous);
+        helioPlantsList = new ArrayList<>();
+        helioPlantsAdapter = new PlantsAdapter(helioPlantsList,this, getContext(), R.id.rcv_heliophilous);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(manager);
+
+        recyclerView.setAdapter(helioPlantsAdapter);
+        loadPlantsHelio();
+    }
+
+    private void loadPlantsHelio() {
+        DatabaseReference plantsRef = FirebaseDatabase.getInstance().getReference("Plants");
+        Query query = plantsRef.orderByChild("LightRequirements/LightRate").equalTo("2");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                helioPlantsList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Plants plant = snapshot.getValue(Plants.class);
+                    if (plant != null && plant.getBloomtime().contains("Không nở hoa")) {
+                        helioPlantsList.add(plant);
+                    }
+                }
+                helioPlantsAdapter.notifyDataSetChanged();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        helioPlantsAdapter.setShowShimmer(false);
                     }
                 }, 1500);
 

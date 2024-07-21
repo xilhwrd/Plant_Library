@@ -142,7 +142,7 @@ public class GenreActivity extends AppCompatActivity implements RecyclerViewInte
                     public void run() {
                         plantsAdapter.setShowShimmer(false);
                     }
-                }, 3000);
+                }, 1500);
                 Log.d(TAG, "Number of plants loaded: " + plantList.size());
             }
 
