@@ -76,7 +76,14 @@ public class GardenDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_garden_detail);
 
-        testWateringReminder();
+        initUI();
+        adapter = new GardenInformationAdapter(this);
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(manager);
+        getInfor();
+        setClick();
+    }
+    public void initUI(){
         btnDelete = findViewById(R.id.btn_delete_garden);
         btnSeeInfor = findViewById(R.id.btn_see_infor);
         toolbarGarden = findViewById(R.id.toolbar_garden);
@@ -92,26 +99,11 @@ public class GardenDetailActivity extends AppCompatActivity {
             Drawable backArrow = getResources().getDrawable(R.drawable.bg_back_button);
             getSupportActionBar().setHomeAsUpIndicator(backArrow);
         }
-         calendarView = findViewById(R.id.calendar_view);
+        calendarView = findViewById(R.id.calendar_view);
         calendarView.setClickable(false);
         calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_NONE);
-        // Áp dụng EventDecorator cho sự kiện A (V) và B (X)
-        CalendarDay eventDayA = CalendarDay.from(2024, 6, 30);
-        CalendarDay eventDayB = CalendarDay.from(2024, 6, 29);
-//
-//        EventDecorator eventDecoratorA = new EventDecorator(eventDayA, R.color.main_color, true);
-//        EventDecorator eventDecoratorB = new EventDecorator(eventDayB, Color.BLACK, false);
-//
-//        calendarView.addDecorator(eventDecoratorA);
-//        calendarView.addDecorator(eventDecoratorB);
-//        calendarView.invalidate();
 
         recyclerView = findViewById(R.id.rcv_garden_information);
-        adapter = new GardenInformationAdapter(this);
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(manager);
-        getInfor();
-        setClick();
     }
     public void setClick(){
 
@@ -309,7 +301,7 @@ public class GardenDetailActivity extends AppCompatActivity {
                             calendarView.addDecorator(eventDecorator);
                                 calendarView.invalidate();
                                 calendarView.invalidateDecorators();
-                                setWateringReminders(wateringDays, plantName);
+//                                setWateringReminders(wateringDays, plantName);
                             }catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -357,56 +349,5 @@ public class GardenDetailActivity extends AppCompatActivity {
             calendar.add(Calendar.DAY_OF_MONTH, interval);
         }
     }
-    private void scheduleWateringReminder(Context context, CalendarDay wateringDay, String plantName, int notificationId) {
-        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.YEAR, wateringDay.getYear());
-//        calendar.set(Calendar.MONTH, wateringDay.getMonth() - 1); // Tháng trong Calendar bắt đầu từ 0
-//        calendar.set(Calendar.DAY_OF_MONTH, wateringDay.getDay());
-//        calendar.set(Calendar.HOUR_OF_DAY, 20); // Thời gian trong ngày khi thông báo (8 giờ sáng)
-//        calendar.set(Calendar.MINUTE, 46);
-//        calendar.set(Calendar.SECOND, 0);
-        Log.d("WateringReminderService", "Scheduling reminder for " + calendar.getTime().toString() + " with ID " + notificationId);
 
-        calendar.add(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-//        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
-//            return; // Bỏ qua ngày đã qua
-//        }
-        Intent intent = new Intent(context, WateringReminderReceiver.class);
-        intent.putExtra("plant_name", plantName);
-        intent.putExtra("notification_id", notificationId);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (alarmManager != null) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            Log.d("WateringReminderService", "Reminder set for " + calendar.getTime().toString());
-
-        }
-    }
-
-    private void setWateringReminders(List<CalendarDay> wateringDays, String plantName) {
-//        int notificationId = 0;
-//        for (CalendarDay day : wateringDays) {
-//            scheduleWateringReminder(this, day, plantName, notificationId++);
-//        }
-        Calendar today = Calendar.getInstance();
-        CalendarDay todayDay = CalendarDay.from(today);
-
-        for (CalendarDay day : wateringDays) {
-            if (day.equals(todayDay)) {
-                scheduleWateringReminder(this, day, plantName, todayDay.hashCode());
-                break; // Chỉ cần lên lịch một lần
-            }
-        }
-    }
-    public void testWateringReminder() {
-        List<CalendarDay> testDays = new ArrayList<>();
-        CalendarDay testDay = new CalendarDay(Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH) + 1,
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        testDays.add(testDay);
-
-        setWateringReminders(testDays, "Test Plant");
-    }
 }
